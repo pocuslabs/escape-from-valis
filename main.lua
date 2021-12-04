@@ -1,7 +1,15 @@
 local cartographer = require "lib/cartographer"
 
+WIDTH = 1024
+HEIGHT = 768
+
 function love.load()
-  map = cartographer.load("data/map.lua")
+  love.window.setMode(WIDTH, HEIGHT)
+  Map = cartographer.load("data/map.lua")
+  Player = {
+    x = 0,
+    y = 0
+  }
 end
 
 function love.update(dt)
@@ -9,5 +17,5 @@ function love.update(dt)
 end
 
 function love.draw()
-  map:draw()
+  Map:draw()
 end
