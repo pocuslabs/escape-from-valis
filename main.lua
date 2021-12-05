@@ -18,6 +18,28 @@ local function tlen(t)
   return count
 end
 
+local function every(t)
+  local res = true
+
+  for val in pairs(t) do
+    if not val then res = false end
+  end
+
+  return res
+end
+
+local function tequals(t1, t2)
+  if not t1 or not t2 then return nil end
+
+  local elementEquals = {}
+
+  for i, v in ipairs(t1) do
+    table.insert(elementEquals, t2[i] == v)
+  end
+
+  return every(elementEquals)
+end
+
 local Player = Object:extend()
 
 function Player:new(x, y)
@@ -139,9 +161,15 @@ end
 
 function love.keyreleased(key, scancode)
   KeyState:off(key)
+  
+  local dx, dy = Keys.getDirection(key)
+  local dir = { dx, dy }
+  if tequals(dir, P1.queue[1]) then
+    table.remove(P1.queue, 1)
+  end
 
   if Keys.isDirection(key) and tlen(P1.queue) > 0 then
-    local dx, dy = P1:moveFromQueue()
+    P1:moveFromQueue()
   else
     P1.dx = 0
     P1.dy = 0
