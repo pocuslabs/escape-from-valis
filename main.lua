@@ -1,7 +1,5 @@
 local cartographer = require "lib/cartographer"
-local logger = require("lib/logging/file") {
-  filename = "~/log.txt"
-}
+Object = require "classic"
 
 WIDTH = 1024
 HEIGHT = 768
