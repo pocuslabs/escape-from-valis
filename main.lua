@@ -42,6 +42,7 @@ function Player:new(x, y)
   self.y = y or 1
   self.dx = 0
   self.dy = 0
+  self.speed = 1
 end
 
 function Player:isMovable(dx, dy)
@@ -107,11 +108,19 @@ function Player:stepBack()
 end
 
 function Player:move(dt)
-  local speed = const.TILE * const.SPEED * dt
+  local speed = const.TILE * const.SPEED * self.speed * dt
   self.ox = self.x
   self.x = self.x + self.dx * speed
   self.oy = self.y
   self.y = self.y + self.dy * speed
+end
+
+function Player:run()
+  self.speed = 1.75
+end
+
+function Player:walk()
+  self.speed = 1
 end
 
 local Keys = Object:extend()
@@ -182,6 +191,10 @@ function love.keypressed(key, scancode, isrepeat)
 
   KeyState:on(key)
 
+  if key == "s" then
+    P1:run()
+  end
+  
   if P1:isMoving() then return end
 
   if key == "escape" then
@@ -195,6 +208,7 @@ end
 function love.keyreleased(key, scancode)
   KeyState:off(key)
   print("STATE", tlen(KeyState.state))
+
   if Keys.isDirection(key) and tlen(KeyState.state) == 0 then
     P1.dx = 0
     P1.dy = 0
@@ -209,5 +223,7 @@ function love.keyreleased(key, scancode)
     local dx, dy = Keys.getDirection(firstKey)
     print("DX,DY", dx, dy)
     P1:setMovement(dx, dy)
+  elseif key == "s" then
+    P1:walk()
   end
 end
