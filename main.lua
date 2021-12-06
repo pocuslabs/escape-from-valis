@@ -1,12 +1,7 @@
 local cartographer = require "lib/cartographer"
 Object = require "lib/classic"
-
-WIDTH = 1024
-HEIGHT = 768
-TILE = 32
-SPEED = 2
-
-MoveQueue = {}
+local const = require "constants"
+local spritely = require "spritely"
 
 local function tlen(t)
   local count = 0
@@ -54,7 +49,7 @@ function Player:isMovable(dx, dy)
   local nx = self.x + dx
   local ny = self.y + dy
 
-  return nx >= 0 and nx <= WIDTH and ny >= 0 and ny <= HEIGHT
+  return nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
 end
 
 function Player:isMoving()
@@ -129,17 +124,18 @@ function love.conf(t)
 end
 
 function love.load()
-  love.window.setMode(WIDTH, HEIGHT)
+  love.window.setMode(const.WIDTH, const.HEIGHT)
   Map = cartographer.load("data/map.lua")
-  Spritesheet = love.graphics.newImage("gfx/blowhard.png")
-  PlayerQuad = love.graphics.newQuad(0, 32, 32, 32, Spritesheet:getDimensions())
+  local selector = spritely.load("gfx/blowhard.png", { padding = 0, margin = 0 })
+  Spritesheet, PlayerQuad = selector(1, 1)
+
   P1 = Player()
   KeyState = Keys()
 end
 
 function love.update(dt)
-  P1.x = P1.x + P1.dx * TILE * SPEED * dt
-  P1.y = P1.y + P1.dy * TILE * SPEED * dt
+  P1.x = P1.x + P1.dx * const.TILE * const.SPEED * dt
+  P1.y = P1.y + P1.dy * const.TILE * const.SPEED * dt
 end
 
 function love.draw()
