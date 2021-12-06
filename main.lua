@@ -101,6 +101,19 @@ function Player:isColliding(x, y)
   return isColliding
 end
 
+function Player:stepBack()
+  self.x = self.ox
+  self.y = self.oy
+end
+
+function Player:move(dt)
+  local speed = const.TILE * const.SPEED * dt
+  self.ox = self.x
+  self.x = self.x + self.dx * speed
+  self.oy = self.y
+  self.y = self.y + self.dy * speed
+end
+
 local Keys = Object:extend()
 
 function Keys:new()
@@ -149,9 +162,12 @@ end
 
 function love.update(dt)
   if P1:isMovable() then
-    P1.x = P1.x + P1.dx * const.TILE * const.SPEED * dt
-    P1.y = P1.y + P1.dy * const.TILE * const.SPEED * dt
+    P1:move(dt)
   else
+    if P1:isColliding() then
+      P1:stepBack()
+    end
+
     P1:setMovement(0, 0)
   end
 end
