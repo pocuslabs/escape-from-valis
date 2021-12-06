@@ -1,4 +1,4 @@
-local constants = require("constants")
+local constants = require("mod/constants")
 
 local function load(filename, opts)
   if not opts then opts = {} end
