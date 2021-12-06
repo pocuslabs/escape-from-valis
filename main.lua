@@ -50,11 +50,9 @@ function Player:isMovable(dx, dy)
   local nx = self.x + dx
   local ny = self.y + dy
 
-  local layer = Map.layers[1]
-  local gid = layer:getTileAtPixelPosition(nx, ny)
-  local issolid = Map:getTileProperty(gid, "Solid")
+  local isColliding = P1:isColliding(nx, ny)
 
-  return not issolid and nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
+  return not isColliding and nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
 end
 
 function Player:isMoving()
@@ -68,14 +66,39 @@ function Player:setMovement(dx, dy)
 
   local nx = P1.x + dx
   local ny = P1.y + dy
-  local layer = Map.layers[1]
-  local gid = layer:getTileAtPixelPosition(nx, ny)
-  local issolid = Map:getTileProperty(gid, "Solid")
+  local isColliding = P1:isColliding(nx, ny)
 
-  if issolid then return end
+  if isColliding then return end
 
   P1.dx = dx
   P1.dy = dy
+end
+
+function Player:isColliding(x, y)
+  if not x or not y then
+    x = self.x
+    y = self.y
+  end
+
+  local corners = {
+    { x, y },
+    { math.min(x + const.TILE, const.WIDTH), y },
+    { x, math.min(const.HEIGHT, y + const.TILE) },
+    { math.min(x + const.TILE, const.WIDTH), math.min(const.HEIGHT, y + const.TILE) }
+  }
+
+  local isColliding = false
+  for _, corner in ipairs(corners) do
+    local cx, cy = unpack(corner)
+    local layer = Map.layers[1]
+    local gid = layer:getTileAtPixelPosition(cx, cy)
+    local issolid = Map:getTileProperty(gid, "Solid")
+    if issolid then
+      isColliding = true
+    end
+  end
+
+  return isColliding
 end
 
 local Keys = Object:extend()
