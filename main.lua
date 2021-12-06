@@ -69,9 +69,7 @@ function Player:moveFromQueue()
 end
 
 function Player:setMovement(dx, dy)
-  if not P1:isMovable(dx, dy) or P1:isMoving() then
-    print("OPE")
-    P1:queueMove(dx, dy)
+  if not P1:isMovable(dx, dy) then
     return
   end
 
@@ -146,7 +144,10 @@ end
 function love.keypressed(key, scancode, isrepeat)
   if isrepeat then return end
 
-  KeyState[key] = true
+  KeyState:on(key)
+
+  if P1:isMoving() then return end
+  
   if key == "escape" then
      love.event.quit()
   elseif Keys.isDirection(key) then
@@ -157,17 +158,20 @@ end
 
 function love.keyreleased(key, scancode)
   KeyState:off(key)
-  
-  local dx, dy = Keys.getDirection(key)
-  local dir = { dx, dy }
-  if tequals(dir, P1.queue[1]) then
-    table.remove(P1.queue, 1)
-  end
-
-  if Keys.isDirection(key) and tlen(P1.queue) > 0 then
-    P1:moveFromQueue()
-  else
+  print("STATE", tlen(KeyState.state))
+  if Keys.isDirection(key) and tlen(KeyState.state) == 0 then
     P1.dx = 0
     P1.dy = 0
+  elseif Keys.isDirection(key) and tlen(KeyState.state) > 0 then
+    print("HIT")
+    local firstKey
+    for k in pairs(KeyState.state) do
+      firstKey = k
+      break
+    end
+    print("KEY", firstKey)
+    local dx, dy = Keys.getDirection(firstKey)
+    print("DX,DY", dx, dy)
+    P1:setMovement(dx, dy)
   end
 end
