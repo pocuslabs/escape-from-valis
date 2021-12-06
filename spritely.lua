@@ -14,6 +14,9 @@ local function load(filename, opts)
     if not w then w = constants.TILE end
     if not h then h = constants.TILE end
 
+    if x < 1 then x = 1 end
+    if y < 1 then y = 1 end
+
     local marginLeft
     if x == 1 then
       marginLeft = 0
