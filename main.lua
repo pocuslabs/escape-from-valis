@@ -42,30 +42,23 @@ function Player:new(x, y)
   self.y = y or 1
   self.dx = 0
   self.dy = 0
-  self.queue = {}
 end
 
 function Player:isMovable(dx, dy)
+  dx = dx or 0
+  dy = dy or 0
   local nx = self.x + dx
   local ny = self.y + dy
 
-  return nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
+  local layer = Map.layers[1]
+  local gid = layer:getTileAtPixelPosition(nx, ny)
+  local issolid = Map:getTileProperty(gid, "Solid")
+
+  return not issolid and nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
 end
 
 function Player:isMoving()
   return self.dx ~= 0 or self.dy ~= 0
-end
-
-function Player:queueMove(dx, dy)
-  table.insert(self.queue, { dx, dy })
-end
-
-function Player:moveFromQueue()
-  local dx, dy = unpack(self.queue[1])
-  table.remove(self.queue, 1)
-
-  self.dx = dx
-  self.dy = dy
 end
 
 function Player:setMovement(dx, dy)
@@ -77,7 +70,7 @@ function Player:setMovement(dx, dy)
   local ny = P1.y + dy
   local layer = Map.layers[1]
   local gid = layer:getTileAtPixelPosition(nx, ny)
-  local issolid = Map:getTileProperty(gid, "solid")
+  local issolid = Map:getTileProperty(gid, "Solid")
 
   if issolid then return end
 
@@ -132,8 +125,12 @@ function love.load()
 end
 
 function love.update(dt)
-  P1.x = P1.x + P1.dx * const.TILE * const.SPEED * dt
-  P1.y = P1.y + P1.dy * const.TILE * const.SPEED * dt
+  if P1:isMovable() then
+    P1.x = P1.x + P1.dx * const.TILE * const.SPEED * dt
+    P1.y = P1.y + P1.dy * const.TILE * const.SPEED * dt
+  else
+    P1:setMovement(0, 0)
+  end
 end
 
 function love.draw()
@@ -147,7 +144,7 @@ function love.keypressed(key, scancode, isrepeat)
   KeyState:on(key)
 
   if P1:isMoving() then return end
-  
+
   if key == "escape" then
      love.event.quit()
   elseif Keys.isDirection(key) then
