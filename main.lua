@@ -44,7 +44,7 @@ end
 function love.load()
   love.window.setMode(const.WIDTH, const.HEIGHT)
   Map = cartographer.load("data/map.lua")
-  local selector = spritely.load("gfx/blowhard.png", { padding = 0, margin = 0 })
+  local selector = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
   Spritesheet, PlayerQuad = selector(1, 1)
 
   P1 = Player()

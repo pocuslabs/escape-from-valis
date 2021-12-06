@@ -45,9 +45,10 @@ local function load(filename, opts)
       prevTop = (y - 1) * h + (y - 1) * padding
     end
 
-    local originX = marginLeft + prevLeft + x * w
-    local originY = marginTop + prevTop + y * h
-
+    local originX = marginLeft + prevLeft + (x - 1) * w
+    local originY = marginTop + prevTop + (y - 1) * h
+    print("OX, OY", originX, originY)
+    print("Mtop, MLeft, P", marginTop, marginLeft, prevLeft, prevTop)
     local quad = love.graphics.newQuad(originX, originY, w, h, spritesheet:getDimensions())
     return spritesheet, quad
   end
