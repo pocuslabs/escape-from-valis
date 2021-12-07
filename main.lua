@@ -4,6 +4,7 @@ local const = require "mod/constants"
 local spritely = require "mod/spritely"
 local Player = require "mod/player"
 local Keys = require "mod/keys"
+local contextual = require "mod/contextual"
 
 local function tlen(t)
   local count = 0
@@ -66,6 +67,7 @@ end
 function love.draw()
   Map:draw()
   love.graphics.draw(Spritesheet, PlayerQuad, P1.x, P1.y)
+  contextual.say("Hello, contextual!")
 end
 
 function love.keypressed(key, scancode, isrepeat)
