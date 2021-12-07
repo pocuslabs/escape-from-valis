@@ -1,10 +1,25 @@
-local cartographer = require "lib/cartographer"
 Object = require "lib/classic"
+local cartographer = require "lib/cartographer"
+local helium = require "lib/helium"
+
 local const = require "mod/constants"
 local spritely = require "mod/spritely"
 local Player = require "mod/player"
 local Keys = require "mod/keys"
 local contextual = require "mod/contextual"
+
+local font = love.graphics.newFont("fonts/roboto/RobotoSlab-Regular.ttf", 32)
+
+local DEFAULT_MARGIN = 16
+
+local function rgb(r, g, b)
+  return r / 255, g / 255, b / 255
+end
+
+local DisplayModes = {
+  FULL = "FULL",
+  FIT = "FIT"
+}
 
 local function tlen(t)
   local count = 0
@@ -38,6 +53,34 @@ local function tequals(t1, t2)
   return every(elementEquals)
 end
 
+local textCreator = helium(function (param, view)
+  local displayMode = param.display or "FULL"
+  if not DisplayModes[displayMode] then return nil end
+
+  local width = view.w
+  local height = view.h
+
+  local outerX = DEFAULT_MARGIN
+  local outerY = height * 3/4 - DEFAULT_MARGIN
+  local outerWidth = width - DEFAULT_MARGIN * 2
+  local outerHeight = height * 1/4
+  love.graphics.setColor(rgb(100, 100, 100))
+  love.graphics.rectangle("fill", outerX, outerY, outerWidth, outerHeight)
+
+  local innerX = outerX + DEFAULT_MARGIN
+  local innerY = outerY + DEFAULT_MARGIN
+  local innerWidth = outerWidth - DEFAULT_MARGIN * 2
+  local innerHeight = outerHeight - DEFAULT_MARGIN * 2
+  love.graphics.setColor(rgb(128, 128, 128))
+  love.graphics.rectangle("fill", innerX, innerY, innerWidth, innerHeight)
+
+  local textX = innerX + DEFAULT_MARGIN / 2
+  local textY = innerY + DEFAULT_MARGIN / 2
+  local textObject = love.graphics.newText(font, text)
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(textObject, textX, textY)
+end)
+
 function love.conf(t)
   t.console = true
 end
@@ -50,6 +93,8 @@ function love.load()
 
   P1 = Player()
   KeyState = Keys()
+  Scene = helium.scene.new(true)
+  Scene:activate()
 end
 
 function love.update(dt)
