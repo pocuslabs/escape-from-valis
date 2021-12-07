@@ -6,7 +6,26 @@ local function rgb(r, g, b)
   return r / 255, g / 255, b / 255
 end
 
-local function say(text)
+local DisplayModes = {
+  FULL = "FULL",
+  FIT = "FIT"
+}
+
+-- say(text, opts)
+-- Display the given text in a selected font, with optional parameters to control display
+--
+-- opts = {
+--   display: "FULL" or "FIT"
+-- }
+--
+-- A display option of "FULL" will show a text box the width of the screen, a full size box
+-- A display option of "FIT" will center a text box and try to fit the box to the text
+local function say(text, opts)
+  if not opts then opts = {} end
+
+  local displayMode = opts.display or "FULL"
+  if not DisplayModes[displayMode] then return nil end
+
   local width = love.graphics.getWidth()
   local height = love.graphics.getHeight()
 
