@@ -17,20 +17,6 @@ local function load(filename, opts)
     if x < 1 then x = 1 end
     if y < 1 then y = 1 end
 
-    local marginLeft
-    if x == 1 then
-      marginLeft = 0
-    else
-      marginLeft = margin
-    end
-
-    local marginTop
-    if y == 1 then
-      marginTop = 0
-    else
-      marginTop = margin
-    end
-
     local prevLeft
     if x == 1 then
       prevLeft = 0
@@ -45,10 +31,8 @@ local function load(filename, opts)
       prevTop = (y - 1) * h + (y - 1) * padding
     end
 
-    local originX = marginLeft + prevLeft + (x - 1) * w
-    local originY = marginTop + prevTop + (y - 1) * h
-    print("OX, OY", originX, originY)
-    print("Mtop, MLeft, P", marginTop, marginLeft, prevLeft, prevTop)
+    local originX = margin + prevLeft + (x - 1) * w
+    local originY = margin + prevTop + (y - 1) * h
     local quad = love.graphics.newQuad(originX, originY, w, h, spritesheet:getDimensions())
     return spritesheet, quad
   end
