@@ -8,7 +8,7 @@ local function load(filename, opts)
   local spritesheet = love.graphics.newImage(filename)
 
   -- x and y are tile coordinates, 1-indexed
-  -- each increment to x / y goes by w / h
+  -- i.e. each increment to x / y goes by w / h units, respectively
   local selector = function (x, y, w, h)
     if not x or not y then return nil end
     if not w then w = constants.TILE end
