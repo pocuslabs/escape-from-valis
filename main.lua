@@ -6,9 +6,8 @@ local const = require "mod/constants"
 local spritely = require "mod/spritely"
 local Player = require "mod/player"
 local Keys = require "mod/keys"
-local contextual = require "mod/contextual"
 
-local font = love.graphics.newFont("fonts/roboto/RobotoSlab-Regular.ttf", 32)
+local font = love.graphics.newFont("fonts/merriweather/Merriweather-Regular.ttf", 32)
 
 local DEFAULT_MARGIN = 16
 
@@ -54,32 +53,35 @@ local function tequals(t1, t2)
 end
 
 local textCreator = helium(function (param, view)
-  local displayMode = param.display or "FULL"
-  if not DisplayModes[displayMode] then return nil end
+  return function ()
+    local outerX = 0
+    local outerY = 0
+    local outerWidth = view.w
+    local outerHeight = view.h
+    love.graphics.setColor(rgb(100, 100, 100))
+    love.graphics.rectangle("fill", outerX, outerY, outerWidth, outerHeight)
 
-  local width = view.w
-  local height = view.h
+    local innerX = outerX + DEFAULT_MARGIN
+    local innerY = outerY + DEFAULT_MARGIN
+    local innerWidth = view.w - (DEFAULT_MARGIN * 2)
+    local innerHeight = view.h - (DEFAULT_MARGIN * 2)
+    love.graphics.setColor(rgb(128, 128, 128))
+    love.graphics.rectangle("fill", innerX, innerY, innerWidth, innerHeight)
 
-  local outerX = DEFAULT_MARGIN
-  local outerY = height * 3/4 - DEFAULT_MARGIN
-  local outerWidth = width - DEFAULT_MARGIN * 2
-  local outerHeight = height * 1/4
-  love.graphics.setColor(rgb(100, 100, 100))
-  love.graphics.rectangle("fill", outerX, outerY, outerWidth, outerHeight)
-
-  local innerX = outerX + DEFAULT_MARGIN
-  local innerY = outerY + DEFAULT_MARGIN
-  local innerWidth = outerWidth - DEFAULT_MARGIN * 2
-  local innerHeight = outerHeight - DEFAULT_MARGIN * 2
-  love.graphics.setColor(rgb(128, 128, 128))
-  love.graphics.rectangle("fill", innerX, innerY, innerWidth, innerHeight)
-
-  local textX = innerX + DEFAULT_MARGIN / 2
-  local textY = innerY + DEFAULT_MARGIN / 2
-  local textObject = love.graphics.newText(font, text)
-  love.graphics.setColor(1, 1, 1, 1)
-  love.graphics.draw(textObject, textX, textY)
+    local textX = innerX + DEFAULT_MARGIN
+    local textY = innerY + DEFAULT_MARGIN
+    local textObject = love.graphics.newText(font, param.text)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.draw(textObject, textX, textY)
+  end
 end)
+
+local function action()
+  if TextBox then
+    TextBox:undraw()
+    TextBox = nil
+  end
+end
 
 function love.conf(t)
   t.console = true
@@ -95,6 +97,15 @@ function love.load()
   KeyState = Keys()
   Scene = helium.scene.new(true)
   Scene:activate()
+
+  local winWidth, winHeight = love.graphics.getDimensions()
+  local x = 16
+  local w = winWidth - x - DEFAULT_MARGIN * 2
+  local h = font:getHeight() * 3 + DEFAULT_MARGIN * 2
+  local y = winHeight - h - DEFAULT_MARGIN * 2
+  print("X, Y, W, H", x, y, w, h)
+  TextBox = textCreator({ text = "Hey Dad! I like beer!" }, w, h)
+  TextBox:draw(x, y)
 end
 
 function love.update(dt)
@@ -107,12 +118,14 @@ function love.update(dt)
 
     P1:setMovement(0, 0)
   end
+
+  Scene:update(dt)
 end
 
 function love.draw()
   Map:draw()
   love.graphics.draw(Spritesheet, PlayerQuad, P1.x, P1.y)
-  contextual.say("Hello, contextual!")
+  Scene:draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
@@ -136,23 +149,22 @@ end
 
 function love.keyreleased(key, scancode)
   KeyState:off(key)
-  print("STATE", tlen(KeyState.state))
 
   if Keys.isDirection(key) and tlen(KeyState.state) == 0 then
     P1.dx = 0
     P1.dy = 0
   elseif Keys.isDirection(key) and tlen(KeyState.state) > 0 then
-    print("HIT")
     local firstKey
     for k in pairs(KeyState.state) do
       firstKey = k
       break
     end
-    print("KEY", firstKey)
+
     local dx, dy = Keys.getDirection(firstKey)
-    print("DX,DY", dx, dy)
     P1:setMovement(dx, dy)
   elseif key == "s" then
     P1:walk()
+  elseif key == "x" then
+    action()
   end
 end
