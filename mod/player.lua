@@ -3,9 +3,11 @@ local const = require("mod/constants")
 
 local Player = Object:extend()
 
-function Player:new(x, y)
-  self.x = x or 1
-  self.y = y or 1
+function Player:new(spritesheet, quad)
+  self.spritesheet = spritesheet
+  self.quad = quad
+  self.x = 1
+  self.y = 1
   self.dx = 0
   self.dy = 0
   self.speed = 1
@@ -87,6 +89,10 @@ end
 
 function Player:walk()
   self.speed = 1
+end
+
+function Player:draw()
+  love.graphics.draw(self.spritesheet, self.quad, P1.x, P1.y)
 end
 
 return Player
