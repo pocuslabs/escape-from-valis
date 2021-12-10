@@ -57,17 +57,19 @@ function Player:isColliding(x, y)
   }
 
   local isColliding = false
+  local gid = nil
   for _, corner in ipairs(corners) do
     local cx, cy = unpack(corner)
-    local layer = Map.layers[1]
-    local gid = layer:getTileAtPixelPosition(cx, cy)
-    local issolid = Map:getTileProperty(gid, "Solid")
+    local layer = State.map.layers[1]
+    local thisGid = layer:getTileAtPixelPosition(cx, cy)
+    local issolid = State.map:getTileProperty(thisGid, "Solid")
     if issolid then
       isColliding = true
+      gid = thisGid
     end
   end
 
-  return isColliding
+  return isColliding, gid
 end
 
 function Player:stepBack()
@@ -92,7 +94,7 @@ function Player:walk()
 end
 
 function Player:draw()
-  love.graphics.draw(self.spritesheet, self.quad, P1.x, P1.y)
+  love.graphics.draw(self.spritesheet, self.quad, State.player.x, State.player.y)
 end
 
 return Player
