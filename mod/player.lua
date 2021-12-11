@@ -13,13 +13,13 @@ function Player:new(spritesheet, quad)
   self.speed = 1
 end
 
-function Player:isMovable(dx, dy)
+function Player:isMovable(map, dx, dy)
   dx = dx or 0
   dy = dy or 0
   local nx = self.x + dx
   local ny = self.y + dy
 
-  local isColliding = self:isColliding(nx, ny)
+  local isColliding = self:isColliding(map, nx, ny)
 
   return not isColliding and nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
 end
@@ -28,14 +28,14 @@ function Player:isMoving()
   return self.dx ~= 0 or self.dy ~= 0
 end
 
-function Player:setMovement(dx, dy)
-  if not self:isMovable(dx, dy) then
+function Player:setMovement(map, dx, dy)
+  if not self:isMovable(map, dx, dy) then
     return
   end
 
   local nx = self.x + dx
   local ny = self.y + dy
-  local isColliding = self:isColliding(nx, ny)
+  local isColliding = self:isColliding(map, nx, ny)
 
   if isColliding then return end
 
@@ -43,7 +43,7 @@ function Player:setMovement(dx, dy)
   self.dy = dy
 end
 
-function Player:isColliding(x, y)
+function Player:isColliding(map, x, y)
   if not x or not y then
     x = self.x
     y = self.y
@@ -52,7 +52,7 @@ function Player:isColliding(x, y)
   local corners = {
     { x, y },
     { math.min(x + const.TILE_SIZE, const.WIDTH), y },
-    { x, math.min(const.HEIGHT, y + const.TILE) },
+    { x, math.min(const.HEIGHT, y + const.TILE_SIZE) },
     { math.min(x + const.TILE_SIZE, const.WIDTH), math.min(const.HEIGHT, y + const.TILE_SIZE) }
   }
 
@@ -60,9 +60,9 @@ function Player:isColliding(x, y)
   local gid = nil
   for _, corner in ipairs(corners) do
     local cx, cy = unpack(corner)
-    local layer = State.map.layers[1]
+    local layer = map.layers[1]
     local thisGid = layer:getTileAtPixelPosition(cx, cy)
-    local issolid = State.map:getTileProperty(thisGid, "Solid")
+    local issolid = map:getTileProperty(thisGid, "Solid")
     if issolid then
       isColliding = true
       gid = thisGid
@@ -94,7 +94,7 @@ function Player:walk()
 end
 
 function Player:draw()
-  love.graphics.draw(self.spritesheet, self.quad, State.player.x, State.player.y)
+  love.graphics.draw(self.spritesheet, self.quad, self.x, self.y)
 end
 
 return Player

@@ -11,8 +11,8 @@ local function load(filename, opts)
   -- i.e. each increment to x / y goes by w / h units, respectively
   local selector = function (x, y, w, h)
     if not x or not y then return nil end
-    if not w then w = constants.TILE end
-    if not h then h = constants.TILE end
+    if not w then w = constants.TILE_SIZE end
+    if not h then h = constants.TILE_SIZE end
 
     if x < 1 then x = 1 end
     if y < 1 then y = 1 end
