@@ -1,4 +1,4 @@
-Object = require "lib/classic"
+Object = require("lib/classic")
 local const = require("mod/constants")
 
 local Player = Object:extend()

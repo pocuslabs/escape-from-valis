@@ -1,14 +1,14 @@
-require("batteries"):export()Object = require "lib/classic"
-Gamestate = require "lib/hump/gamestate"
-local cartographer = require "lib/cartographer"
-local helium = require "lib/helium"
+require("batteries"):export()Object = require("lib/classic")
+Gamestate = require("lib/hump/gamestate")
+local cartographer = require("lib/cartographer")
+local helium = require("lib/helium")
 
-local const = require "mod/constants"
-local spritely = require "mod/spritely"
-local Player = require "mod/player"
-local Keys = require "mod/keys"
-local widgets = require "mod/widgets"
-local h = require "mod/helpers"
+local const = require("mod/constants")
+local spritely = require("mod/spritely")
+local Player = require("mod/player")
+local Keys = require("mod/keys")
+local widgets = require("mod/widgets")
+local h = require("mod/helpers")
 
 local Game = {
   keys = {}

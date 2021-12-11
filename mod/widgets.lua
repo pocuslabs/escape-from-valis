@@ -1,6 +1,6 @@
-local helium = require "lib/helium"
-local const = require "mod/constants"
-local helpers = require "mod/helpers"
+local helium = require("lib/helium")
+local const = require("mod/constants")
+local helpers = require("mod/helpers")
 
 local rgb = helpers.rgb
 local DEFAULT_MARGIN = const.DEFAULT_MARGIN
