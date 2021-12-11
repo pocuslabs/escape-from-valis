@@ -24,10 +24,21 @@ local function tequals(t1, t2)
   return every(elementEquals)
 end
 
+local function tlen(t)
+  local count = 0
+
+  for _ in pairs(t) do
+    count = count + 1
+  end
+
+  return count
+end
+
 local helpers = {
   rgb = rgb,
   every = every,
-  tequals = tequals
+  tequals = tequals,
+  tlen = tlen
 }
 
 return helpers

@@ -1,4 +1,5 @@
-Object = require "lib/classic"
+require("batteries"):export()Object = require "lib/classic"
+Gamestate = require "lib/hump/gamestate"
 local cartographer = require "lib/cartographer"
 local helium = require "lib/helium"
 
@@ -7,25 +8,20 @@ local spritely = require "mod/spritely"
 local Player = require "mod/player"
 local Keys = require "mod/keys"
 local widgets = require "mod/widgets"
+local h = require "mod/helpers"
 
-State = {
+local Game = {
   keys = {}
 }
 
-local function tlen(t)
-  local count = 0
-
-  for _ in pairs(t) do
-    count = count + 1
-  end
-
-  return count
-end
+local overworldState = {}
+local pauseState = {}
+local homeState = {}
 
 local function action()
-  if State.currentText then
-    State.currentText:undraw()
-    State.currentText = nil
+  if Game.currentText then
+    Game.currentText:undraw()
+    Game.currentText = nil
   end
 end
 
@@ -35,22 +31,22 @@ end
 
 function love.load()
   love.window.setMode(const.WIDTH, const.HEIGHT)
-  State.map = cartographer.load("data/map.lua")
+  Game.map = cartographer.load("data/map.lua")
   local selector = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
   local spritesheet, quad = selector(1, 1)
 
-  State.player = Player(spritesheet, quad)
-  State.keys = Keys()
+  Game.player = Player(spritesheet, quad)
+  Game.keys = Keys()
   Scene = helium.scene.new(true)
   Scene:activate()
 
   local text, dim = widgets.makeText("Hey Dad, I like beer!")
   text:draw(dim.x, dim.y)
-  State.currentText = text
+  Game.currentText = text
 end
 
 function love.update(dt)
-  local player = State.player
+  local player = Game.player
 
   if player:isMovable() then
     player:move(dt)
@@ -66,16 +62,16 @@ function love.update(dt)
 end
 
 function love.draw()
-  State.map:draw()
-  State.player:draw()
+  Game.map:draw()
+  Game.player:draw()
   Scene:draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
   if isrepeat then return end
-  local player = State.player
+  local player = Game.player
 
-  State.keys:on(key)
+  Game.keys:on(key)
 
   if key == "s" then
     player:run()
@@ -92,15 +88,15 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.keyreleased(key, scancode)
-  State.keys:off(key)
-  local player = State.player
+  Game.keys:off(key)
+  local player = Game.player
 
-  if Keys.isDirection(key) and tlen(State.keys.state) == 0 then
+  if Keys.isDirection(key) and h.tlen(Game.keys.state) == 0 then
     player.dx = 0
     player.dy = 0
-  elseif Keys.isDirection(key) and tlen(State.keys.state) > 0 then
+  elseif Keys.isDirection(key) and h.tlen(Game.keys.state) > 0 then
     local firstKey
-    for k in pairs(State.keys.state) do
+    for k in pairs(Game.keys.state) do
       firstKey = k
       break
     end

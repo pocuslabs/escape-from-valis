@@ -1,9 +1,12 @@
 local constants = {
   WIDTH = 1024,
   HEIGHT = 768,
-  TILE = 32,
+  TILE_SIZE = 32,
   SPEED = 2,
-  DEFAULT_MARGIN = 16
+  DEFAULT_MARGIN = 16,
+  TILES = {
+    
+  }
 }
 
 return constants

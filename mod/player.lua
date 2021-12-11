@@ -51,9 +51,9 @@ function Player:isColliding(x, y)
 
   local corners = {
     { x, y },
-    { math.min(x + const.TILE, const.WIDTH), y },
+    { math.min(x + const.TILE_SIZE, const.WIDTH), y },
     { x, math.min(const.HEIGHT, y + const.TILE) },
-    { math.min(x + const.TILE, const.WIDTH), math.min(const.HEIGHT, y + const.TILE) }
+    { math.min(x + const.TILE_SIZE, const.WIDTH), math.min(const.HEIGHT, y + const.TILE_SIZE) }
   }
 
   local isColliding = false
@@ -78,7 +78,7 @@ function Player:stepBack()
 end
 
 function Player:move(dt)
-  local speed = const.TILE * const.SPEED * self.speed * dt
+  local speed = const.TILE_SIZE * const.SPEED * self.speed * dt
   self.ox = self.x
   self.x = self.x + self.dx * speed
   self.oy = self.y
