@@ -46,9 +46,12 @@ function love.load()
   local text, dim = widgets.makeText("Hey Dad, I like beer!")
   text:draw(dim.x, dim.y)
   Game.currentText = text
+
+  Gamestate.registerEvents()
+  Gamestate.switch(overworldState)
 end
 
-function love.update(dt)
+function overworldState:update(dt)
   local player = Game.player
 
   if player:isMovable(Game.map) then
@@ -64,13 +67,13 @@ function love.update(dt)
   Scene:update(dt)
 end
 
-function love.draw()
+function overworldState:draw()
   Game.map:draw()
   Game.player:draw()
   Scene:draw()
 end
 
-function love.keypressed(key, scancode, isrepeat)
+function overworldState:keypressed(key, scancode, isrepeat)
   if isrepeat then return end
   local player = Game.player
 
@@ -90,7 +93,7 @@ function love.keypressed(key, scancode, isrepeat)
   end
 end
 
-function love.keyreleased(key, scancode)
+function overworldState:keyreleased(key, scancode)
   Game.keys:off(key)
   local player = Game.player
 
