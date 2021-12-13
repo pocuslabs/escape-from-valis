@@ -1,16 +1,12 @@
+local suit = require("lib/suit")
+
 local Keys = require("mod/keys")
 local help = require("mod/helpers")
 local pauseState = require("mod/states/pause")
 
+local gui = suit.new()
+
 local overworldState = {}
-
-function overworldState:enter()
-  Scene:activate()
-end
-
-function overworldState:leave()
-  Scene:deactivate()
-end
 
 function overworldState:update(dt)
   local player = Game.player
@@ -24,14 +20,12 @@ function overworldState:update(dt)
 
     player:setMovement(Game.map, 0, 0)
   end
-
-  Scene:update(dt)
 end
 
 function overworldState:draw()
   Game.map:draw()
   Game.player:draw()
-  Scene:draw()
+  gui:draw()
 end
 
 function overworldState:keypressed(key, scancode, isrepeat)
@@ -56,7 +50,7 @@ end
 
 function overworldState:keyreleased(key, scancode)
   Game.keys:off(key)
-  
+
   if key == 'return' then
     Gamestate.switch(pauseState)
     return
