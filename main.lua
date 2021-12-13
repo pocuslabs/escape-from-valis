@@ -1,8 +1,8 @@
 require("lib/batteries"):export()
 Object = require("lib/classic")
 Gamestate = require("lib/hump/gamestate")
-local helium = require("lib/helium")
 local cartographer = require("lib/cartographer")
+local suit = require("lib/suit")
 
 local spritely = require("mod/spritely")
 local const = require("mod/constants")
@@ -34,12 +34,15 @@ function love.load()
   Game.keys = Keys()
 
   local text, dim = widgets.makeText("Hey Dad, I like beer!")
-  text:draw(dim.x, dim.y, dim.w, dim.h)
-  Game.currentText = text
-
-  Scene = helium.scene.new(true)
-  Scene:activate()
 
   Gamestate.registerEvents()
   Gamestate.switch(overworldState)
+end
+
+function love.update(dt)
+
+end
+
+function love.draw()
+  gui:draw()
 end
