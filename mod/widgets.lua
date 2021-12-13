@@ -31,11 +31,12 @@ end)
 
 local function makeText(text)
   local winWidth, winHeight = love.graphics.getDimensions()
+  local font = love.graphics.getFont()
   local x = 16
   local w = winWidth - x - DEFAULT_MARGIN * 2
-  local h = Font:getHeight() * 3 + DEFAULT_MARGIN * 2
+  local h = font:getHeight() * 3 + DEFAULT_MARGIN * 2
   local y = winHeight - h - DEFAULT_MARGIN * 2
-  local textBox = textCreator({ text = text, font = Font }, w, h)
+  local textBox = textCreator({ text = text, font = font }, w, h)
   return textBox, { x = x, y = y, w = w, h = h }
 end
 

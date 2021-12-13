@@ -93,6 +93,13 @@ function Player:walk()
   self.speed = 1
 end
 
+function Player:act()
+  if Game.currentText then
+    Game.currentText:undraw()
+    Game.currentText = nil
+  end
+end
+
 function Player:draw()
   love.graphics.draw(self.spritesheet, self.quad, self.x, self.y)
 end
