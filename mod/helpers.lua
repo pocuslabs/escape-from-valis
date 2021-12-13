@@ -1,5 +1,6 @@
-local function rgb(r, g, b)
-  return r / 255, g / 255, b / 255
+local function rgba(r, g, b, a)
+  a = a or 1
+  return r / 255, g / 255, b / 255, a
 end
 
 local function every(t)
@@ -35,7 +36,7 @@ local function tlen(t)
 end
 
 local helpers = {
-  rgb = rgb,
+  rgba = rgba,
   every = every,
   tequals = tequals,
   tlen = tlen
