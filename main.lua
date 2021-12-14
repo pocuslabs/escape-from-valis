@@ -10,8 +10,6 @@ local overworldState = require("mod.states.overworld")
 local Player = require("mod.player")
 local Keys = require("mod.keys")
 
-local gui = suit.new()
-
 Game = {
   keys = {},
   showIntro = true
@@ -44,5 +42,4 @@ function love.update(dt)
 end
 
 function love.draw()
-  gui:draw()
 end

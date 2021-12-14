@@ -1,4 +1,5 @@
 Object = require("lib.classic")
+
 local const = require("mod.constants")
 
 local Player = Object:extend()
@@ -94,9 +95,8 @@ function Player:walk()
 end
 
 function Player:act()
-  if Game.currentText then
-    Game.currentText:undraw()
-    Game.currentText = nil
+  if Game.showIntro then
+    Game.showIntro = false
   end
 end
 
