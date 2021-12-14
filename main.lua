@@ -1,18 +1,20 @@
-require("lib/batteries"):export()
-Object = require("lib/classic")
-Gamestate = require("lib/hump/gamestate")
-local cartographer = require("lib/cartographer")
-local suit = require("lib/suit")
+require("lib.batteries"):export()
+Object = require("lib.classic")
+Gamestate = require("lib.hump.gamestate")
+local cartographer = require("lib.cartographer")
+local suit = require("lib.suit")
 
-local spritely = require("mod/spritely")
-local const = require("mod/constants")
-local overworldState = require("mod/states/overworld")
-local Player = require("mod/player")
-local Keys = require("mod/keys")
-local widgets = require("mod/widgets")
+local spritely = require("mod.spritely")
+local const = require("mod.constants")
+local overworldState = require("mod.states.overworld")
+local Player = require("mod.player")
+local Keys = require("mod.keys")
+
+local gui = suit.new()
 
 Game = {
-  keys = {}
+  keys = {},
+  showIntro = true
 }
 
 function love.conf(t)
@@ -32,8 +34,6 @@ function love.load()
 
   Game.player = Player(spritesheet, quad)
   Game.keys = Keys()
-
-  local text, dim = widgets.makeText("Hey Dad, I like beer!")
 
   Gamestate.registerEvents()
   Gamestate.switch(overworldState)

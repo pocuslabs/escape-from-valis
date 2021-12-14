@@ -1,14 +1,21 @@
-local suit = require("lib/suit")
+local suit = require("lib.suit")
 
-local Keys = require("mod/keys")
-local help = require("mod/helpers")
-local pauseState = require("mod/states/pause")
+local Keys = require("mod.keys")
+local help = require("mod.helpers")
+local pauseState = require("mod.states.pause")
+local widgets = require("mod.widgets")
+
+local introText = "Welcome to the Terror Dome!"
 
 local gui = suit.new()
 
 local overworldState = {}
 
 function overworldState:update(dt)
+  if Game.showIntro then
+    widgets.TextBox(gui, introText)
+  end
+
   local player = Game.player
 
   if player:isMovable(Game.map) then

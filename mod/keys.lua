@@ -1,4 +1,4 @@
-Object = require("lib/classic")
+Object = require("lib.classic")
 local Keys = Object:extend()
 
 function Keys:new()

@@ -1,4 +1,4 @@
-local help = require("mod/helpers")
+local help = require("mod.helpers")
 
 local pauseState = {}
 
