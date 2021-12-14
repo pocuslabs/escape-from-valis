@@ -16,8 +16,8 @@ local function TextBox(core, text, ...)
 
   x = x or DEFAULT_MARGIN
   w = w or winWidth - x - DEFAULT_MARGIN * 2
-  h = h or font:getHeight() * 3 + DEFAULT_MARGIN * 2
-  y = y or winHeight - h - DEFAULT_MARGIN * 2
+  h = h or font:getHeight() * 2 + DEFAULT_MARGIN * 2
+  y = y or winHeight - DEFAULT_MARGIN * 2
 
 	opt.state = core:registerHitbox(opt.id, x,y,w,h)
 	core:registerDraw(opt.draw or theme.TextBox, text, opt, x,y,w,h)
