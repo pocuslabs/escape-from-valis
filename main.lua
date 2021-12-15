@@ -2,7 +2,6 @@ require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
 local cartographer = require("lib.cartographer")
-local suit = require("lib.suit")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -21,7 +20,7 @@ end
 
 function love.load()
   -- love.window.setIcon(love.graphics.newImage(""))
-  love.window.setTitle("Escape from Detroit!")
+  love.window.setTitle("Escape from Valis!")
   love.window.setMode(const.WIDTH, const.HEIGHT)
   local font = love.graphics.newFont("fonts/merriweather/Merriweather-Regular.ttf", 32)
   love.graphics.setFont(font)
@@ -35,11 +34,4 @@ function love.load()
 
   Gamestate.registerEvents()
   Gamestate.switch(overworldState)
-end
-
-function love.update(dt)
-
-end
-
-function love.draw()
 end
