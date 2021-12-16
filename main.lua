@@ -15,6 +15,7 @@ Game = {
 }
 
 function love.conf(t)
+  t.identity = "escape-from-valis"
   t.console = true
 end
 
