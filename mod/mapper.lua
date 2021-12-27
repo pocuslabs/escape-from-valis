@@ -1,4 +1,14 @@
+Object = require("lib.classic")
+
 local const = require("mod.constants")
+
+local Level = Object:extend()
+
+function Level:new(roomCount)
+  self.roomCount = roomCount or 1
+  self.rooms = {}
+  self.map = {}
+end
 
 local mapper = {
   memo = {}
@@ -14,7 +24,7 @@ local function makeRooms(numRooms)
     maxWidth = 1,
     maxHeight = 1
   }
-  
+
   for _ in numRooms do
     local roomWidth = love.math.random(MIN_SIZE, MAX_SIZE)
     if roomWidth > rooms.maxWidth then rooms.maxWidth = roomWidth end
