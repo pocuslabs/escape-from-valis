@@ -6,51 +6,47 @@ local Level = Object:extend()
 
 function Level:new(roomCount)
   self.roomCount = roomCount or 1
+  self.maxWidth = 1
+  self.maxHeight = 1
   self.rooms = {}
   self.map = {}
 end
 
-function Level:isInside(x, y) -- x and y are tile coordinates NOT pixels, multiply by 16 to get px
-  if #self.rooms == 0 then
-    return false
-  end
+local Room = Object:extend()
 
-  local isInside = false
-  for room in self.rooms do
-    if x >= room.x or x <= room.x + room.w or y >= room.y or y <= room.y + room.h then
-      isInside = true
-    end
-  end
+local MIN_SIZE = 3  -- sizes are in tile units, 16x16
+local MAX_SIZE = 10
+local MAX_ROOMS = 10
 
-  return isInside
+function Room:new(x, y, w, h)
+  self.x = x or 1
+  self.y = y or 1
+  self.w = w or 1
+  self.h = h or 1
+  self.map = {}
+end
+
+function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels, multiply by 16 to get px
+  return x >= self.x or x <= self.x + self.w or y >= self.y or y <= self.y + self.h
 end
 
 local mapper = {
   memo = {}
 }
 
-local MIN_SIZE = 3  -- sizes are in tile units, 16x16
-local MAX_SIZE = 10
-local MAX_ROOMS = 10
-
 local function makeRooms(numRooms)
   numRooms = numRooms or 1
-  local rooms = {
-    maxWidth = 1,
-    maxHeight = 1
-  }
+  local level = Level(numRooms)
 
   for _ in numRooms do
     local roomWidth = love.math.random(MIN_SIZE, MAX_SIZE)
-    if roomWidth > rooms.maxWidth then rooms.maxWidth = roomWidth end
+    if roomWidth > level.maxWidth then level.maxWidth = roomWidth end
     local roomHeight = love.math.random(MIN_SIZE, MAX_SIZE)
-    if roomHeight > rooms.maxHeight then rooms.maxHeight = roomHeight end
+    if roomHeight > level.maxHeight then level.maxHeight = roomHeight end
 
-    local room = {
-      w = roomWidth,
-      h = roomHeight,
-      map = {}  -- this will be a 2D table (array) of tile indices
-    }
+    local roomX = love.math.random(level.maxWidth)
+    local roomY = love.math.random(level.maxHeight)
+    local room = Room(roomX, roomY, roomWidth, roomHeight)
 
     for x in roomWidth do
       local row = {}
@@ -66,7 +62,7 @@ local function makeRooms(numRooms)
       table.insert(room.map, row)
     end
 
-    table.insert(rooms, room)
+    table.insert(level.rooms, room)
   end
 end
 
@@ -89,7 +85,7 @@ function mapper.generate(number)
   for x in rooms.maxWidth do
     for y in rooms.maxHeight do
       if rooms.isInside(x, y) then
-
+        map[x][y] = room
       end
     end
   end
