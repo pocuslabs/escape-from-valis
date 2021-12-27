@@ -30,7 +30,7 @@ function mapper.generate(number)
     if roomHeight > maxHeight then maxHeight = roomHeight end
 
     local room = {
-      map = {}
+      map = {}  -- this will be a 2D table (array) of tile indices
     }
 
     for x in roomWidth do
