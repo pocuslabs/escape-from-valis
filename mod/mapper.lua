@@ -1,3 +1,5 @@
+local const = require("mod.constants")
+
 local mapper = {
   memo = {}
 }
@@ -10,31 +12,49 @@ function mapper.generate(number)
   end
 
   local level = {
-    number = number,  -- the number of the level we're on
-    rooms = {},  -- each room will be a 2D table of tile numbers
-    tiles = {}
+    number = number  -- the number of the level we're on
   }
 
-  local MIN_SIZE = 3
+  local MIN_SIZE = 3  -- sizes are in tile units, 16x16
   local MAX_SIZE = 10
   local MAX_ROOMS = 10
   local numRooms = love.math.random(MAX_ROOMS)
+  local maxWidth = 1
+  local maxHeight = 1
 
+  local rooms = {}
   for _ in numRooms do
-    local roomSize = love.math.random(MIN_SIZE, MAX_SIZE)
-    local room = {}
+    local roomWidth = love.math.random(MIN_SIZE, MAX_SIZE)
+    if roomWidth > maxWidth then maxWidth = roomWidth end
+    local roomHeight = love.math.random(MIN_SIZE, MAX_SIZE)
+    if roomHeight > maxHeight then maxHeight = roomHeight end
 
-    for x in roomSize do
+    local room = {
+      map = {}
+    }
+
+    for x in roomWidth do
       local row = {}
+      local isRowWall = x == 1 or x == roomWidth
 
-      for y in roomSize do
-        table.insert(row, 0)
+      for y in roomHeight do
+        local isWall = isRowWall or y == 0 or y == roomHeight
+        local tile = const.TILES.ground
+        if isWall then tile = const.TILES.wall end
+        table.insert(row, tile)
       end
 
-      table.insert(room, row)
+      table.insert(room.map, row)
     end
 
-    table.insert(level.rooms, room)
+    table.insert(rooms, room)
+  end
+
+  local map = {}
+  local roomPositions = {}
+  for room in rooms do
+    room.x = love.math.random(maxWidth)
+    room.y = love.math.random(maxHeight)
   end
 
   mapper.memo[number] = level
