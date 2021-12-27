@@ -4,32 +4,26 @@ local mapper = {
   memo = {}
 }
 
-function mapper.generate(number)
-  number = number or 1
-  -- we should cache the levels so we can call generate any number of times
-  if mapper.memo[number] then
-    return mapper.memo[number]
-  end
+local MIN_SIZE = 3  -- sizes are in tile units, 16x16
+local MAX_SIZE = 10
+local MAX_ROOMS = 10
 
-  local level = {
-    number = number  -- the number of the level we're on
+local function makeRooms(numRooms)
+  numRooms = numRooms or 1
+  local rooms = {
+    maxWidth = 1,
+    maxHeight = 1
   }
-
-  local MIN_SIZE = 3  -- sizes are in tile units, 16x16
-  local MAX_SIZE = 10
-  local MAX_ROOMS = 10
-  local numRooms = love.math.random(MAX_ROOMS)
-  local maxWidth = 1
-  local maxHeight = 1
-
-  local rooms = {}
+  
   for _ in numRooms do
     local roomWidth = love.math.random(MIN_SIZE, MAX_SIZE)
-    if roomWidth > maxWidth then maxWidth = roomWidth end
+    if roomWidth > rooms.maxWidth then rooms.maxWidth = roomWidth end
     local roomHeight = love.math.random(MIN_SIZE, MAX_SIZE)
-    if roomHeight > maxHeight then maxHeight = roomHeight end
+    if roomHeight > rooms.maxHeight then rooms.maxHeight = roomHeight end
 
     local room = {
+      w = roomWidth,
+      h = roomHeight,
       map = {}  -- this will be a 2D table (array) of tile indices
     }
 
@@ -49,13 +43,37 @@ function mapper.generate(number)
 
     table.insert(rooms, room)
   end
+end
+
+function mapper.generate(number)
+  number = number or 1  -- the level we're on
+  -- we should cache the levels so we can call generate any number of times
+  if mapper.memo[number] then
+    return mapper.memo[number]
+  end
+
+  local numRooms = love.math.random(MAX_ROOMS)
+  local rooms = makeRooms(numRooms)
+
+  for room in rooms do
+    room.x = love.math.random(rooms.maxWidth)
+    room.y = love.math.random(rooms.maxHeight)
+  end
 
   local map = {}
-  local roomPositions = {}
-  for room in rooms do
-    room.x = love.math.random(maxWidth)
-    room.y = love.math.random(maxHeight)
+  for x in rooms.maxWidth do
+    for y in rooms.maxHeight do
+      if rooms.isInside(x, y) then
+
+      end
+    end
   end
+
+  local level = {
+    number = number,  -- the number of the level we're on
+    rooms = rooms,
+    map = map
+  }
 
   mapper.memo[number] = level
   return level
