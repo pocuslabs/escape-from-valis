@@ -29,6 +29,10 @@ function Level:new(roomCount)
   self.rooms = {}
   self.map = {}
 
+  self:generate()
+end
+
+function Level:generate()
   -- make rooms
   for _ in self.roomCount do
     local roomWidth = love.math.random(MIN_SIZE, MAX_SIZE)
@@ -56,6 +60,25 @@ function Level:new(roomCount)
 
     table.insert(self.rooms, room)
   end
+
+  -- pregenerate a 2D array of w width and h height
+  local map = {}
+  for x in self.maxWidth do
+    map[x] = {}
+    for y in self.maxHeight do
+      table.insert(map[x], const.TILES.ground)
+    end
+  end
+
+  for x in self.maxWidth do
+    for y in self.maxHeight do
+      for room in self.rooms do
+        if room.isInside(x, y) then
+          map[x][y] = room.map[x][y]
+        end
+      end
+    end
+  end
 end
 
 local mapper = {
@@ -71,24 +94,6 @@ function mapper.generate(number)
 
   local numRooms = love.math.random(MAX_ROOMS)
   local level = Level(numRooms)
-
-  local map = {}
-  for x in level.maxWidth do
-    map[x] = {}
-    for y in level.maxHeight do
-      table.insert(map[x], const.TILES.ground)
-    end
-  end
-
-  for x in level.maxWidth do
-    for y in level.maxHeight do
-      for room in level.rooms do
-        if room.isInside(x, y) then
-          map[x][y] = room.map[x][y]
-        end
-      end
-    end
-  end
 
   mapper.memo[number] = level
   return level
