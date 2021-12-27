@@ -2,21 +2,11 @@ Object = require("lib.classic")
 
 local const = require("mod.constants")
 
-local Level = Object:extend()
-
-function Level:new(roomCount)
-  self.roomCount = roomCount or 1
-  self.maxWidth = 1
-  self.maxHeight = 1
-  self.rooms = {}
-  self.map = {}
-end
-
-local Room = Object:extend()
-
 local MIN_SIZE = 3  -- sizes are in tile units, 16x16
 local MAX_SIZE = 10
 local MAX_ROOMS = 10
+
+local Room = Object:extend()
 
 function Room:new(x, y, w, h)
   self.x = x or 1
@@ -30,22 +20,24 @@ function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels, multipl
   return x >= self.x or x <= self.x + self.w or y >= self.y or y <= self.y + self.h
 end
 
-local mapper = {
-  memo = {}
-}
+local Level = Object:extend()
 
-local function makeRooms(numRooms)
-  numRooms = numRooms or 1
-  local level = Level(numRooms)
+function Level:new(roomCount)
+  self.roomCount = roomCount or 1
+  self.maxWidth = 1
+  self.maxHeight = 1
+  self.rooms = {}
+  self.map = {}
 
-  for _ in numRooms do
+  -- make rooms
+  for _ in self.roomCount do
     local roomWidth = love.math.random(MIN_SIZE, MAX_SIZE)
-    if roomWidth > level.maxWidth then level.maxWidth = roomWidth end
+    if roomWidth > self.maxWidth then self.maxWidth = roomWidth end
     local roomHeight = love.math.random(MIN_SIZE, MAX_SIZE)
-    if roomHeight > level.maxHeight then level.maxHeight = roomHeight end
+    if roomHeight > self.maxHeight then self.maxHeight = roomHeight end
 
-    local roomX = love.math.random(level.maxWidth)
-    local roomY = love.math.random(level.maxHeight)
+    local roomX = love.math.random(self.maxWidth)
+    local roomY = love.math.random(self.maxHeight)
     local room = Room(roomX, roomY, roomWidth, roomHeight)
 
     for x in roomWidth do
@@ -62,9 +54,13 @@ local function makeRooms(numRooms)
       table.insert(room.map, row)
     end
 
-    table.insert(level.rooms, room)
+    table.insert(self.rooms, room)
   end
 end
+
+local mapper = {
+  memo = {}
+}
 
 function mapper.generate(number)
   number = number or 1  -- the level we're on
@@ -74,27 +70,25 @@ function mapper.generate(number)
   end
 
   local numRooms = love.math.random(MAX_ROOMS)
-  local rooms = makeRooms(numRooms)
-
-  for room in rooms do
-    room.x = love.math.random(rooms.maxWidth)
-    room.y = love.math.random(rooms.maxHeight)
-  end
+  local level = Level(numRooms)
 
   local map = {}
-  for x in rooms.maxWidth do
-    for y in rooms.maxHeight do
-      if rooms.isInside(x, y) then
-        map[x][y] = room
-      end
+  for x in level.maxWidth do
+    map[x] = {}
+    for y in level.maxHeight do
+      table.insert(map[x], const.TILES.ground)
     end
   end
 
-  local level = {
-    number = number,  -- the number of the level we're on
-    rooms = rooms,
-    map = map
-  }
+  for x in level.maxWidth do
+    for y in level.maxHeight do
+      for room in level.rooms do
+        if room.isInside(x, y) then
+          map[x][y] = room.map[x][y]
+        end
+      end
+    end
+  end
 
   mapper.memo[number] = level
   return level
