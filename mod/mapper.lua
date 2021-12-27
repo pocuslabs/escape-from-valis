@@ -10,6 +10,21 @@ function Level:new(roomCount)
   self.map = {}
 end
 
+function Level:isInside(x, y) -- x and y are tile coordinates NOT pixels, multiply by 16 to get px
+  if #self.rooms == 0 then
+    return false
+  end
+
+  local isInside = false
+  for room in self.rooms do
+    if x >= room.x or x <= room.x + room.w or y >= room.y or y <= room.y + room.h then
+      isInside = true
+    end
+  end
+
+  return isInside
+end
+
 local mapper = {
   memo = {}
 }
