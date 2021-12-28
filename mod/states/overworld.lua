@@ -4,7 +4,6 @@ local Keys = require("mod.keys")
 local help = require("mod.helpers")
 local pauseState = require("mod.states.pause")
 local widgets = require("mod.widgets")
-local mapper = require("mod.mapper")
 
 local introText = "Welcome to Valis!"
 
@@ -23,7 +22,7 @@ function overworldState:update(dt)
 end
 
 function overworldState:draw()
-  Game.map:draw()
+  Game.level:draw()
   Game.player:draw()
   gui:draw()
 end

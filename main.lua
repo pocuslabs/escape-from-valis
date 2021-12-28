@@ -8,12 +8,12 @@ local const = require("mod.constants")
 local overworldState = require("mod.states.overworld")
 local Player = require("mod.player")
 local Keys = require("mod.keys")
-local mapper = require("mod.mapper")
+local Level = require("mod.level")
 
 Game = {
   keys = {},
   showIntro = true,
-  currentLevel = 1
+  currentLevel = 1,
 }
 
 function love.conf(t)
@@ -28,12 +28,13 @@ function love.load()
   local font = love.graphics.newFont("fonts/merriweather/Merriweather-Regular.ttf", 32)
   love.graphics.setFont(font)
 
-  -- Game.map = cartographer.load("data/map.lua")
-  Game.level = mapper.generate(Game.currentLevel)
   local selector = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
-  local spritesheet, quad = selector(1, 1)
+  local playerSheet, quad = selector(1, 1)
 
-  Game.player = Player(spritesheet, quad)
+---@diagnostic disable-next-line: undefined-field
+  local pw, ph = love.graphics.getPixelDimensions()
+  Game.level = Level(pw, ph)
+  Game.player = Player(playerSheet, quad)
   Game.keys = Keys()
 
   Gamestate.registerEvents()

@@ -36,7 +36,7 @@ function Player:setMovement(level, dx, dy)
 
   local nx = self.x + dx
   local ny = self.y + dy
-  local isColliding = self:isColliding(map, nx, ny)
+  local isColliding = self:isColliding(nx, ny)
 
   if isColliding then return end
 
@@ -44,7 +44,7 @@ function Player:setMovement(level, dx, dy)
   self.dy = dy
 end
 
-function Player:isColliding(map, x, y)
+function Player:isColliding(x, y)
   if not x or not y then
     x = self.x
     y = self.y
@@ -61,21 +61,14 @@ function Player:isColliding(map, x, y)
   local gid = nil
   for _, corner in ipairs(corners) do
     local cx, cy = unpack(corner)
-    local layer = map.layers[1]
-    local thisGid = layer:getTileAtPixelPosition(cx, cy)
-    local issolid = map:getTileProperty(thisGid, "Solid")
-    if issolid then
+    local tile = Game.level:tileAtPixels(cx, cy)
+    if tile.solid then
       isColliding = true
-      gid = thisGid
+      gid = tile
     end
   end
 
   return isColliding, gid
-end
-
-function Player:stepBack()
-  self.x = self.ox
-  self.y = self.oy
 end
 
 function Player:move(dt)
