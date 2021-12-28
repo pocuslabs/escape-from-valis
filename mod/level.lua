@@ -1,25 +1,32 @@
 Object = require("lib.classic")
 local inspect = require("lib.inspect")
 
+local spritely = require("mod.spritely")
 local const = require("mod.constants")
 local Room = require("mod.room")
 
 local Level = Object:extend()
 
-function Level:new(roomCount)
-  self.roomCount = roomCount or 1
-  self.maxWidth = 1
-  self.maxHeight = 1
+function Level:new(pw, ph)
+  self.roomCount = love.math.random(const.MAX_ROOMS)
+
+  self.selector = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
+  self.memo = {}
+  self.tiles = {}
   self.rooms = {}
   self.map = {}
-  local pxWidth, pxHeight = love.graphics.getPixelDimenions()
-  self.width = math.ceil(pxWidth / const.TILE_SIZE)
-  self.height = math.ceil(pxHeight / const.TILE_SIZE)
+
+  self.width = math.ceil(pw / const.TILE_SIZE)
+  self.height = math.ceil(ph / const.TILE_SIZE)
+  self.maxWidth = 1
+  self.maxHeight = 1
 
   self:generate()
 end
 
-function Level:generate()
+function Level:generate(number)
+  number = number or 1  -- the level we're on
+
   -- make rooms
   for _=1, self.roomCount do
     -- if this room is bigger than the max, set the max
@@ -61,6 +68,37 @@ function Level:generate()
   end
 
   self.map = map
+end
+
+-- this function operates on tile coordinates, NOT pixels
+-- see mod.constants.TILES for examples
+function Level:tile(tx, ty)
+  local key = tx..","..ty
+  if self.tiles[key] then
+    return unpack(self.tiles[key])
+  end
+
+  local img, quad = self.selector(tx, ty)
+  self.tiles[key] = { img, quad }
+  return img, quad
+end
+
+function Level:tileAtPixels(px, py)
+  local tx = px / const.TILE_SIZE
+  local ty = py / const.TILE_SIZE
+  local tile = self.map[tx][ty]
+  return tile
+end
+
+function Level:draw()
+  for ty, row in ipairs(self.map) do
+    for tx, tile in ipairs(row) do
+      local img, quad = self:tile(unpack(tile))
+      local x = tx * const.TILE_SIZE
+      local y = ty * const.TILE_SIZE
+      love.graphics.draw(img, quad, x, y)
+    end
+  end
 end
 
 return Level

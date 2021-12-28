@@ -61,7 +61,7 @@ function Player:isColliding(x, y)
   local gid = nil
   for _, corner in ipairs(corners) do
     local cx, cy = unpack(corner)
-    local tile = Game.map:tileAtPixels(cx, cy)
+    local tile = Game.level:tileAtPixels(cx, cy)
     if tile.solid then
       isColliding = true
       gid = tile
