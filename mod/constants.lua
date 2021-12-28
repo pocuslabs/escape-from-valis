@@ -8,7 +8,11 @@ local constants = {
     ground = {4, 3},
     wall = {2, 1},
     door = {9, 8}
-  }
+  },
+  MIN_SIZE = 3,  -- sizes are in tile units, 16x16
+  MAX_SIZE = 10,
+  MAX_ROOMS = 10,
+  MAX_DOORS = 4
 }
 
 return constants
