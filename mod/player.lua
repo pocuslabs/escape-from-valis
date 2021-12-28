@@ -36,7 +36,7 @@ function Player:setMovement(level, dx, dy)
 
   local nx = self.x + dx
   local ny = self.y + dy
-  local isColliding = self:isColliding(map, nx, ny)
+  local isColliding = self:isColliding(level, nx, ny)
 
   if isColliding then return end
 

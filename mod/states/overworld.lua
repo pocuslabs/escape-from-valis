@@ -4,7 +4,6 @@ local Keys = require("mod.keys")
 local help = require("mod.helpers")
 local pauseState = require("mod.states.pause")
 local widgets = require("mod.widgets")
-local mapper = require("mod.mapper")
 
 local introText = "Welcome to Valis!"
 

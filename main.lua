@@ -8,12 +8,13 @@ local const = require("mod.constants")
 local overworldState = require("mod.states.overworld")
 local Player = require("mod.player")
 local Keys = require("mod.keys")
-local mapper = require("mod.mapper")
+local Map = require("mod.map")
 
 Game = {
   keys = {},
   showIntro = true,
-  currentLevel = 1
+  currentLevel = 1,
+  map = Map("gfx/dung2.png")
 }
 
 function love.conf(t)
@@ -29,7 +30,7 @@ function love.load()
   love.graphics.setFont(font)
 
   -- Game.map = cartographer.load("data/map.lua")
-  Game.level = mapper.generate(Game.currentLevel)
+  Game.level = Game.map:generate(Game.currentLevel)
   local selector = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
   local playerSheet, quad = selector(1, 1)
 
