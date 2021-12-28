@@ -14,13 +14,13 @@ function Player:new(spritesheet, quad)
   self.speed = 1
 end
 
-function Player:isMovable(map, dx, dy)
+function Player:isMovable(level, dx, dy)
   dx = dx or 0
   dy = dy or 0
   local nx = self.x + dx
   local ny = self.y + dy
 
-  local isColliding = self:isColliding(map, nx, ny)
+  local isColliding = self:isColliding(level, nx, ny)
 
   return not isColliding and nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
 end
@@ -29,8 +29,8 @@ function Player:isMoving()
   return self.dx ~= 0 or self.dy ~= 0
 end
 
-function Player:setMovement(map, dx, dy)
-  if not self:isMovable(map, dx, dy) then
+function Player:setMovement(level, dx, dy)
+  if not self:isMovable(level, dx, dy) then
     return
   end
 

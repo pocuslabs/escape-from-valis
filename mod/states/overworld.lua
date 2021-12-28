@@ -19,15 +19,7 @@ function overworldState:update(dt)
 
   local player = Game.player
 
-  if player:isMovable(Game.map) then
-    player:move(dt)
-  else
-    if player:isColliding(Game.map) then
-      player:stepBack()
-    end
-
-    player:setMovement(Game.map, 0, 0)
-  end
+  player:move(dt)
 end
 
 function overworldState:draw()
