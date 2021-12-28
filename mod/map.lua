@@ -40,4 +40,8 @@ function Map:generate(number)
   return level
 end
 
+function Map:draw()
+
+end
+
 return Map
