@@ -28,8 +28,11 @@ function Room:new(x, y, w, h)
   end
 end
 
-function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels
-  return x >= self.x or x <= (self.x + self.w) or y >= self.y or y <= (self.y + self.h)
+-- this function takes absolute x/y coordinates and tells us
+-- whether the room matches the coordinates
+-- note: x and y are tile coordinates NOT pixels
+function Room:isInside(ox, oy)
+  return ox >= self.x or ox <= (self.x + self.w) or oy >= self.y or oy <= (self.y + self.h)
 end
 
 function Room:makeDoors()

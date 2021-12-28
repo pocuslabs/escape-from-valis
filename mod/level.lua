@@ -20,9 +20,12 @@ function Level:generate()
   for _=1, self.roomCount do
     -- if this room is bigger than the max, set the max
     local w = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    if w > self.maxWidth then self.maxWidth = w end
+    local w2 = w * w
+    if w2 > self.maxWidth then self.maxWidth = w2 end
+
     local h = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    if h > self.maxHeight then self.maxHeight = h end
+    local h2 = h * h
+    if h2 > self.maxHeight then self.maxHeight = h2 end
 
     local ox = love.math.random(self.maxWidth)
     local oy = love.math.random(self.maxHeight)
@@ -40,22 +43,15 @@ function Level:generate()
     end
   end
 
-  print("MAP LEN", #map)
-  print("ROW LEN", #map[1])
-  print("ROOM 1", #self.rooms[1].map)
-  print("ROOM 1 ROW", #self.rooms[1].map[1])
-  print("ROOM 6", #self.rooms[6])
-
   -- fill in the room tiles
-  for x=1, self.maxWidth do
-    for y=1, self.maxHeight do
+  for ax=1, self.maxWidth do
+    for ay=1, self.maxHeight do
       for _, room in ipairs(self.rooms) do
-        if room:isInside(x, y) then
-          print("TRIPLE X", x)
-          print("WHY", y)
-          print("MAP COUNT", map[x])
-          debug.debug()
-          map[x][y] = room.map[x][y]
+        if room:isInside(ax, ay) then
+          print("TRIPLE X", ax)
+          print("WHY", ay)
+          print("MAP COUNT", map[ax])
+          map[ax][ay] = room.map[ax][ay]
         end
       end
     end
