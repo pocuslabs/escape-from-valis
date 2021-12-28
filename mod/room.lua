@@ -32,7 +32,10 @@ end
 -- whether the room matches the coordinates
 -- note: x and y are tile coordinates NOT pixels
 function Room:isInside(ox, oy)
-  return ox >= self.x or ox <= (self.x + self.w) or oy >= self.y or oy <= (self.y + self.h)
+  local hasCoords = ox <= #self.map and oy <= #self.map[1]
+  local xWithin = ox >= self.x and ox <= (self.x + self.w)
+  local yWithin = oy >= self.y and oy <= (self.y + self.h)
+  return hasCoords and xWithin and yWithin
 end
 
 function Room:makeDoors()

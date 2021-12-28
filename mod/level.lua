@@ -1,4 +1,5 @@
 Object = require("lib.classic")
+local inspect = require("lib.inspect")
 
 local const = require("mod.constants")
 local Room = require("mod.room")
@@ -43,14 +44,22 @@ function Level:generate()
     end
   end
 
+  print("TRIPLE X", self.maxWidth)
+  print("WHY", self.maxHeight)
+  print("MAP COUNT", #map)
+  print(inspect(map))
+  local room1 = self.rooms[1]
+  print("ROOMY", #room1.map)
+  print(inspect(room1))
+  print(inspect(room1.map))
+
   -- fill in the room tiles
+  -- note: ax and ay are absolute map coordinates
+  -- (as opposed to room-relative coordinates)
   for ax=1, self.maxWidth do
     for ay=1, self.maxHeight do
       for _, room in ipairs(self.rooms) do
         if room:isInside(ax, ay) then
-          print("TRIPLE X", ax)
-          print("WHY", ay)
-          print("MAP COUNT", map[ax])
           map[ax][ay] = room.map[ax][ay]
         end
       end
