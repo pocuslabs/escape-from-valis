@@ -5,9 +5,9 @@ local constants = {
   SPEED = 2,
   DEFAULT_MARGIN = 16,
   TILES = {
-    ground = 1,
-    wall = 2,
-    door = 3
+    ground = {4, 3},
+    wall = {2, 1},
+    door = {9, 8}
   }
 }
 

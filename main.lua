@@ -31,9 +31,9 @@ function love.load()
   -- Game.map = cartographer.load("data/map.lua")
   Game.level = mapper.generate(Game.currentLevel)
   local selector = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
-  local spritesheet, quad = selector(1, 1)
+  local playerSheet, quad = selector(1, 1)
 
-  Game.player = Player(spritesheet, quad)
+  Game.player = Player(playerSheet, quad)
   Game.keys = Keys()
 
   Gamestate.registerEvents()
