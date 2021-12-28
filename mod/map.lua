@@ -19,11 +19,11 @@ end
 function Map:tile(tx, ty)
   local key = tx..","..ty
   if self.tiles[key] then
-    return table.unpack(self.tiles[key])
+    return unpack(self.tiles[key])
   end
 
   local img, quad = self.selector(tx, ty)
-  self.tiles[key] = table.pack(img, quad)
+  self.tiles[key] = { img, quad }
   return img, quad
 end
 
@@ -42,9 +42,10 @@ function Map:generate(number)
 end
 
 function Map:draw(level)
-  for x, row in ipairs(level.map) do
-    for y, tile in ipairs(row) do
-      local img, quad = self:tile(table.unpack(tile))
+  print("MAP", inspect(level.map))
+  for y, row in ipairs(level.map) do
+    for x, tile in ipairs(row) do
+      local img, quad = self:tile(unpack(tile))
       print(inspect(img))
       print(inspect(quad))
       love.graphics.draw(img, quad, x, y)

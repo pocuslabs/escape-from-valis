@@ -29,8 +29,8 @@ function love.load()
   local font = love.graphics.newFont("fonts/merriweather/Merriweather-Regular.ttf", 32)
   love.graphics.setFont(font)
 
-  -- Game.map = cartographer.load("data/map.lua")
   Game.level = Game.map:generate(Game.currentLevel)
+  Game.map:draw(Game.level)
   local selector = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
   local playerSheet, quad = selector(1, 1)
 

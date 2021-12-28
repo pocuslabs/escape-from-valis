@@ -56,6 +56,8 @@ function Level:generate()
       end
     end
   end
+
+  self.map = map
 end
 
 return Level
