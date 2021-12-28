@@ -59,8 +59,8 @@ function Level:generate()
       for _, room in ipairs(self.rooms) do
         if room:isInside(x, y) then
           print("TRIPLE X", x)
-          print("ROOM", room.map[x])
-          print("MAP", map[x])
+          print("WHY", y)
+          print("MAP COUNT", map[x])
           debug.debug()
           map[x][y] = room.map[x][y]
         end
