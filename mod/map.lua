@@ -9,9 +9,12 @@ local Map = Object:extend()
 
 function Map:new(spritesheet)
   self.spritesheet = spritesheet
-  self.selector = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
+  self.selector = spritely.load(self.spritesheet, { padding = 2, margin = 2 })
   self.memo = {}
   self.tiles = {}
+  local pxWidth, pxHeight = love.graphics.getPixelDimenions()
+  self.width = math.ceil(pxWidth / const.TILE_SIZE)
+  self.height = math.ceil(pxHeight / const.TILE_SIZE)
 end
 
 -- this function operates on tile coordinates, NOT pixels

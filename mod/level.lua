@@ -12,6 +12,9 @@ function Level:new(roomCount)
   self.maxHeight = 1
   self.rooms = {}
   self.map = {}
+  local pxWidth, pxHeight = love.graphics.getPixelDimenions()
+  self.width = math.ceil(pxWidth / const.TILE_SIZE)
+  self.height = math.ceil(pxHeight / const.TILE_SIZE)
 
   self:generate()
 end
@@ -47,8 +50,8 @@ function Level:generate()
   -- fill in the room tiles
   -- note: ax and ay are absolute map coordinates
   -- (as opposed to room-relative coordinates)
-  for ax=1, self.maxWidth do
-    for ay=1, self.maxHeight do
+  for ay=1, self.width do
+    for ax=1, self.height do
       for _, room in ipairs(self.rooms) do
         if room:isInside(ax, ay) then
           map[ax][ay] = room.map[ax][ay]
