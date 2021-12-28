@@ -12,6 +12,20 @@ function Room:new(x, y, w, h)
 
   self.doors = self:makeDoors()
   self.map = {}
+
+  for ix=1, w do
+    local row = {}
+    local isRowWall = ix == 1 or ix == w
+
+    for iy=1, h do
+      local isWall = isRowWall or iy == 0 or iy == h
+      local tile = const.TILES.ground
+      if isWall then tile = const.TILES.wall end
+      table.insert(row, tile)
+    end
+
+    table.insert(self.map, row)
+  end
 end
 
 function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels
