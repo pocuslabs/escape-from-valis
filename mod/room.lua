@@ -13,12 +13,12 @@ function Room:new(x, y, w, h)
   self.doors = self:makeDoors()
   self.map = {}
 
-  for ix=1, w do
+  for iy=1, h do
     local row = {}
-    local isRowWall = ix == 1 or ix == w
+    local isRowWall = iy == 1 or iy == h
 
-    for iy=1, h do
-      local isWall = isRowWall or iy == 0 or iy == h
+    for ix=1, w do
+      local isWall = isRowWall or ix == 0 or ix == w
       local tile = const.TILES.ground
       if isWall then tile = const.TILES.wall end
       table.insert(row, tile)

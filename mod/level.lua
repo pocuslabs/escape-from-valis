@@ -47,10 +47,10 @@ function Level:generate(number)
 
   -- pregenerate a 2D array of w width and h height
   local map = {}
-  for x=1, self.maxWidth do
-    map[x] = {}
-    for _=1, self.maxHeight do
-      table.insert(map[x], const.TILES.ground)
+  for y=1, self.maxHeight do
+    map[y] = {}
+    for _=1, self.maxWidth do
+      table.insert(map[y], const.TILES.ground)
     end
   end
 
@@ -61,7 +61,7 @@ function Level:generate(number)
     for ax=1, self.height do
       for _, room in ipairs(self.rooms) do
         if room:isInside(ax, ay) then
-          map[ax][ay] = room.map[ax][ay]
+          map[ay][ax] = room.map[ay][ax]
         end
       end
     end
@@ -84,16 +84,16 @@ function Level:tile(tx, ty)
 end
 
 function Level:tileAtPixels(px, py)
-  local tx = px / const.TILE_SIZE
-  local ty = py / const.TILE_SIZE
-  local tile = self.map[tx][ty]
+  local tx = math.floor(px / const.TILE_SIZE)
+  local ty = math.floor(py / const.TILE_SIZE)
+  local tile = self.map[ty][tx]
   return tile
 end
 
 function Level:draw()
   for ty, row in ipairs(self.map) do
     for tx, tile in ipairs(row) do
-      local img, quad = self:tile(unpack(tile))
+      local img, quad = self:tile(unpack(tile.coordinates))
       local x = tx * const.TILE_SIZE
       local y = ty * const.TILE_SIZE
       love.graphics.draw(img, quad, x, y)

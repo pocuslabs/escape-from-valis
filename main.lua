@@ -1,7 +1,6 @@
 require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
-local cartographer = require("lib.cartographer")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
