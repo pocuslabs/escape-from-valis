@@ -42,12 +42,11 @@ function Map:generate(number)
 end
 
 function Map:draw(level)
-  print("MAP", inspect(level.map))
-  for y, row in ipairs(level.map) do
-    for x, tile in ipairs(row) do
+  for ty, row in ipairs(level.map) do
+    for tx, tile in ipairs(row) do
       local img, quad = self:tile(unpack(tile))
-      print(inspect(img))
-      print(inspect(quad))
+      local x = tx * const.TILE_SIZE
+      local y = ty * const.TILE_SIZE
       love.graphics.draw(img, quad, x, y)
     end
   end
