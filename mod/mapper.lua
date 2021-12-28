@@ -19,11 +19,11 @@ function Room:new(x, y, w, h)
   self.map = {}
 end
 
-function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels, multiply by 16 to get px
+function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels
   return x >= self.x or x <= self.x + self.w or y >= self.y or y <= self.y + self.h
 end
 
-function Room:_makeDoors()
+function Room:makeDoors()
   local dirs = {
     {0, 1},
     {1, 0},
