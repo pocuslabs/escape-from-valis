@@ -1,4 +1,5 @@
 Object = require("lib.classic")
+local inspect = require("lib.inspect")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -41,10 +42,12 @@ function Map:generate(number)
 end
 
 function Map:draw(level)
-  for _, row in ipairs(level.map) do
-    for _, tile in ipairs(row) do
+  for x, row in ipairs(level.map) do
+    for y, tile in ipairs(row) do
       local img, quad = self:tile(table.unpack(tile))
-      love.graphics.draw(img, quad)
+      print(inspect(img))
+      print(inspect(quad))
+      love.graphics.draw(img, quad, x, y)
     end
   end
 end
