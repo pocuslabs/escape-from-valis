@@ -44,15 +44,6 @@ function Level:generate()
     end
   end
 
-  print("TRIPLE X", self.maxWidth)
-  print("WHY", self.maxHeight)
-  print("MAP COUNT", #map)
-  print(inspect(map))
-  local room1 = self.rooms[1]
-  print("ROOMY", #room1.map)
-  print(inspect(room1))
-  print(inspect(room1.map))
-
   -- fill in the room tiles
   -- note: ax and ay are absolute map coordinates
   -- (as opposed to room-relative coordinates)
