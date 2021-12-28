@@ -15,7 +15,7 @@ function Room:new(x, y, w, h)
 end
 
 function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels
-  return x >= self.x or x <= self.x + self.w or y >= self.y or y <= self.y + self.h
+  return x >= self.x or x <= (self.x + self.w) or y >= self.y or y <= (self.y + self.h)
 end
 
 function Room:makeDoors()
