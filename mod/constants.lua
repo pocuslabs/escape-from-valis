@@ -6,7 +6,8 @@ local constants = {
   DEFAULT_MARGIN = 16,
   TILES = {
     ground = 1,
-    wall = 2
+    wall = 2,
+    door = 3
   }
 }
 

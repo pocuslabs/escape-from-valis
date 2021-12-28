@@ -5,6 +5,7 @@ local const = require("mod.constants")
 local MIN_SIZE = 3  -- sizes are in tile units, 16x16
 local MAX_SIZE = 10
 local MAX_ROOMS = 10
+local MAX_DOORS = 4
 
 local Room = Object:extend()
 
@@ -13,11 +14,37 @@ function Room:new(x, y, w, h)
   self.y = y or 1
   self.w = w or 1
   self.h = h or 1
+
+  self.doors = self:_makeDoors()
   self.map = {}
 end
 
 function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels, multiply by 16 to get px
   return x >= self.x or x <= self.x + self.w or y >= self.y or y <= self.y + self.h
+end
+
+function Room:_makeDoors()
+  local dirs = {
+    {0, 1},
+    {1, 0},
+    {0, -1},
+    {-1, 0}
+  }
+
+  local numDoors = love.math.random(MAX_DOORS)
+  local doors = {}
+  for _ in numDoors do
+    local idx
+    while not idx do
+      idx = love.math.random(#dirs)
+    end
+
+    local doorDir = dirs[idx] -- hodor
+    dirs[idx] = nil
+    table.insert(self.doors, doorDir)
+  end
+
+  return doors
 end
 
 local Level = Object:extend()
@@ -65,11 +92,12 @@ function Level:generate()
   local map = {}
   for x in self.maxWidth do
     map[x] = {}
-    for y in self.maxHeight do
+    for _ in self.maxHeight do
       table.insert(map[x], const.TILES.ground)
     end
   end
 
+  -- fill in the room tiles
   for x in self.maxWidth do
     for y in self.maxHeight do
       for room in self.rooms do
