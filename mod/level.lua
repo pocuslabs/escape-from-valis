@@ -18,28 +18,18 @@ end
 function Level:generate()
   -- make rooms
   for _=1, self.roomCount do
-    local roomWidth = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    if roomWidth > self.maxWidth then self.maxWidth = roomWidth end
-    local roomHeight = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    if roomHeight > self.maxHeight then self.maxHeight = roomHeight end
+    -- if this room is bigger than the max, set the max
+    local w = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
+    local w2 = w * w
+    if w2 > self.maxWidth then self.maxWidth = w2 end
 
-    local roomX = love.math.random(self.maxWidth)
-    local roomY = love.math.random(self.maxHeight)
-    local room = Room(roomX, roomY, roomWidth, roomHeight)
+    local h = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
+    local h2 = h * h
+    if h2 > self.maxHeight then self.maxHeight = h2 end
 
-    for x=1, roomWidth do
-      local row = {}
-      local isRowWall = x == 1 or x == roomWidth
-
-      for y=1, roomHeight do
-        local isWall = isRowWall or y == 0 or y == roomHeight
-        local tile = const.TILES.ground
-        if isWall then tile = const.TILES.wall end
-        table.insert(row, tile)
-      end
-
-      table.insert(room.map, row)
-    end
+    local ox = love.math.random(self.maxWidth)
+    local oy = love.math.random(self.maxHeight)
+    local room = Room(ox, oy, w, h)
 
     table.insert(self.rooms, room)
   end
@@ -54,11 +44,14 @@ function Level:generate()
   end
 
   -- fill in the room tiles
-  for x=1, self.maxWidth do    
-    for y=1, self.maxHeight do
+  for ax=1, self.maxWidth do
+    for ay=1, self.maxHeight do
       for _, room in ipairs(self.rooms) do
-        if room:isInside(x, y) then
-          map[x][y] = room.map[x][y]
+        if room:isInside(ax, ay) then
+          print("TRIPLE X", ax)
+          print("WHY", ay)
+          print("MAP COUNT", map[ax])
+          map[ax][ay] = room.map[ax][ay]
         end
       end
     end

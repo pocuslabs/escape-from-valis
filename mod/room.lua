@@ -12,10 +12,27 @@ function Room:new(x, y, w, h)
 
   self.doors = self:makeDoors()
   self.map = {}
+
+  for ix=1, w do
+    local row = {}
+    local isRowWall = ix == 1 or ix == w
+
+    for iy=1, h do
+      local isWall = isRowWall or iy == 0 or iy == h
+      local tile = const.TILES.ground
+      if isWall then tile = const.TILES.wall end
+      table.insert(row, tile)
+    end
+
+    table.insert(self.map, row)
+  end
 end
 
-function Room:isInside(x, y) -- x and y are tile coordinates NOT pixels
-  return x >= self.x or x <= (self.x + self.w) or y >= self.y or y <= (self.y + self.h)
+-- this function takes absolute x/y coordinates and tells us
+-- whether the room matches the coordinates
+-- note: x and y are tile coordinates NOT pixels
+function Room:isInside(ox, oy)
+  return ox >= self.x or ox <= (self.x + self.w) or oy >= self.y or oy <= (self.y + self.h)
 end
 
 function Room:makeDoors()
