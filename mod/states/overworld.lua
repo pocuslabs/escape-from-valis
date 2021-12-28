@@ -22,7 +22,7 @@ function overworldState:update(dt)
 end
 
 function overworldState:draw()
-  Game.map:draw()
+  Game.map:draw(Game.level)
   Game.player:draw()
   gui:draw()
 end

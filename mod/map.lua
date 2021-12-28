@@ -40,8 +40,13 @@ function Map:generate(number)
   return level
 end
 
-function Map:draw()
-
+function Map:draw(level)
+  for _, row in ipairs(level.map) do
+    for _, tile in ipairs(row) do
+      local img, quad = self:tile(table.unpack(tile))
+      love.graphics.draw(img, quad)
+    end
+  end
 end
 
 return Map
