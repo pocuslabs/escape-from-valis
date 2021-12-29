@@ -42,8 +42,8 @@ local function load(filename, opts)
     end
 
     -- calculate the total x and y offsets
-    local originX = margin + prevLeft + (x - 1) * w
-    local originY = margin + prevTop + (y - 1) * h
+    local originX = margin + prevLeft
+    local originY = margin + prevTop
     local sw, sh = spritesheet:getDimensions()
     local quad = love.graphics.newQuad(originX, originY, w, h, sw, sh)
     return spritesheet, quad
