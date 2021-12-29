@@ -1,5 +1,6 @@
 ---@diagnostic disable: undefined-global
 
+require("busted")
 require("love-mocks")
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
