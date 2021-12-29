@@ -86,7 +86,6 @@ end
 function Level:tileAtPixels(px, py)
   local tx = math.ceil(px / const.TILE_SIZE)
   local ty = math.ceil(py / const.TILE_SIZE)
-  print("TX,TY = "..tx..","..ty)
   local tile = self.map[ty][tx]
   return tile
 end
