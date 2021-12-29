@@ -6,13 +6,16 @@ local spritely = require("mod.spritely")
 local tileSheet = "gfx/dung2.png"
 
 describe("Spritely module", function()
-  it("returns a selector", function()
+  it("returns a selector function", function()
     local selector = spritely.load(tileSheet)
     assert.is_function(selector)
   end)
 
   it("pulls the first sprite", function()
-    assert.truthy("Yup.")
+    local selector = spritely.load(tileSheet)
+    local img, quad = selector(1, 1)
+    assert.is_truthy(img:is(love.graphics.Image))
+    assert.is_truthy(quad:is(love.graphics.Quad))
   end)
 
   it("takes margins into account")
