@@ -18,7 +18,7 @@ function Room:new(x, y, w, h)
     local isRowWall = iy == 1 or iy == h
 
     for ix=1, w do
-      local isWall = isRowWall or ix == 0 or ix == w
+      local isWall = isRowWall or ix == 1 or ix == w
       local tile = const.TILES.ground
       if isWall then tile = const.TILES.wall end
       table.insert(row, tile)

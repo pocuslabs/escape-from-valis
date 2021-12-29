@@ -1,5 +1,4 @@
 Object = require("lib.classic")
-local inspect = require("lib.inspect")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
