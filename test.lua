@@ -18,7 +18,11 @@ describe("Spritely module", function()
     assert.is_truthy(quad:typeOf(love.Quad))
   end)
 
-  it("takes margins into account")
+  it("takes margins into account", function()
+    local selector = spritely.load(tileSheet, { margin = 2 })
+    local img, quad = selector(4, 3)
+  end)
+  
   it("takes padding into account")
   it("can pull a sprite from the middle of the sheet")
   it("pulls a sprite from the end of the sheet")
