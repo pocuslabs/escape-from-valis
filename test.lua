@@ -2,6 +2,7 @@
 
 require("love-mocks")
 local spritely = require("mod.spritely")
+local const = require("mod.constants")
 
 local tileSheet = "gfx/dung2.png"
 
@@ -19,11 +20,22 @@ describe("Spritely module", function()
   end)
 
   it("takes margins into account", function()
-    local selector = spritely.load(tileSheet, { margin = 2 })
-    local img, quad = selector(4, 3)
+    local margin = 2
+    local selector = spritely.load(tileSheet, { margin = margin })
+    local tx = 4
+    local ty = 3
+    local tileSize = const.TILE_SIZE
+    local img, quad = selector(tx, ty)
+    local expectedX = (tx - 1) * tileSize + margin
+    local expectedY = (ty - 1) * tileSize + margin
+
+    local qx, qy = quad:getViewport()
+    assert.are.equal(qx, expectedX)
+    assert.are.equal(qy, expectedY)
   end)
-  
+
   it("takes padding into account")
+  it("takes both margins and padding into account")
   it("can pull a sprite from the middle of the sheet")
   it("pulls a sprite from the end of the sheet")
   it("handles out of bounds errors gracefully")
