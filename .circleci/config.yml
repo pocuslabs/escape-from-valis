@@ -2,10 +2,14 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+env:
+  - LUA=""
+  - LUA="luajit"
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
+  test:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -15,12 +19,24 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: "Install deps"
+          command: "sudo apt-get update && sudo apt-get install luajit luarocks"
+      - run:
+          name: "Install luafilesystem"
+          command: "sudo luarocks install luafilesystem"
+      - run:
+          name: "Install penlight"
+          command: "sudo luarocks install penlight"
+      - run:
+          name: "Install busted"
+          command: "sudo luarocks install busted"
+      - run:
+          name: "Run busted"
+          command: "busted"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  test-workflow:
     jobs:
-      - say-hello
+      - test
