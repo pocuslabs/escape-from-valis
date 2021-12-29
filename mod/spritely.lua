@@ -14,9 +14,11 @@ local function load(filename, opts)
     if not w then w = constants.TILE_SIZE end
     if not h then h = constants.TILE_SIZE end
 
+    -- make sure the coordinates are 1-indexed!
     if x < 1 then x = 1 end
     if y < 1 then y = 1 end
 
+    -- this calculates the pixel space taken up by all the sprites to the left
     local prevLeft
     if x == 1 then
       prevLeft = 0
@@ -24,6 +26,7 @@ local function load(filename, opts)
       prevLeft = (x - 1) * w + (x - 1) * padding
     end
 
+    -- same as above, but for sprites above the selected sprite
     local prevTop
     if y == 1 then
       prevTop = 0
@@ -31,6 +34,7 @@ local function load(filename, opts)
       prevTop = (y - 1) * h + (y - 1) * padding
     end
 
+    -- calculate the total x and y offsets
     local originX = margin + prevLeft + (x - 1) * w
     local originY = margin + prevTop + (y - 1) * h
     local quad = love.graphics.newQuad(originX, originY, w, h, spritesheet:getDimensions())
