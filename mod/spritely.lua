@@ -10,6 +10,8 @@ local function load(filename, opts)
   -- x and y are tile coordinates, 1-indexed
   -- i.e. each increment to x / y goes by w / h units, respectively
   local selector = function (x, y, w, h)
+    -- sane defaults
+    -- assuming uniform sprite size (i.e. all sprites should be the same size)
     if not x or not y then return nil end
     if not w then w = constants.TILE_SIZE end
     if not h then h = constants.TILE_SIZE end
@@ -23,21 +25,27 @@ local function load(filename, opts)
     if x == 1 then
       prevLeft = 0
     else
-      prevLeft = (x - 1) * w + (x - 1) * padding
+      local spriteSpace = (x - 1) * w
+      local paddingSpace = (x - 1) * padding
+      prevLeft = spriteSpace + paddingSpace
     end
 
     -- same as above, but for sprites above the selected sprite
+    -- lower y value == higher on the screen
     local prevTop
     if y == 1 then
       prevTop = 0
     else
-      prevTop = (y - 1) * h + (y - 1) * padding
+      local spriteSpace = (y - 1) * h
+      local paddingSpace = (y - 1) * padding
+      prevTop =  spriteSpace + paddingSpace
     end
 
     -- calculate the total x and y offsets
     local originX = margin + prevLeft + (x - 1) * w
     local originY = margin + prevTop + (y - 1) * h
-    local quad = love.graphics.newQuad(originX, originY, w, h, spritesheet:getDimensions())
+    local sw, sh = spritesheet:getDimensions()
+    local quad = love.graphics.newQuad(originX, originY, w, h, sw, sh)
     return spritesheet, quad
   end
 
