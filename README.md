@@ -23,17 +23,29 @@ Then change the directory to the project root, and run:
 lovec .
 ```
 
+## Testing
+
+We use [`busted`][bust] for testing. You can install `busted` from [luarocks][luarocks], and run the tests locally if you like, in your terminal:
+
+```bash
+luarocks install busted
+```
+
+Then you'll be able to run `busted` as a binary in the project root to run all the files matching `spec/**/*_spec.lua`. These tests will run automatically using CircleCI on every PR.
+
 ## Credits
 
 This game was made by:
 
-- [Richard Kubina][1]
-- [Austin Pocus][2]
+- [Richard Kubina][rk]
+- [Austin Pocus][ap]
 - (anyone else who comes up in the commit history)
 
 ## License
 
 This game is released under the MIT license. See the LICENSE file for details.
 
-[1]: https://github.com/RichardJohnn
-[2]: https://austinpocus.com
+[bust]: https://olivinelabs.com/busted
+[luarocks]: https://luarocks.org/
+[rk]: https://github.com/RichardJohnn
+[ap]: https://austinpocus.com
