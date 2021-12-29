@@ -35,9 +35,21 @@ describe("Spritely module", function()
     assert.are.equal(qy, expectedY)
   end)
 
-  it("takes padding into account")
+  it("takes padding into account", function()
+    local padding = 2
+    local selector = spritely.load(tileSheet, { padding = padding })
+    local tx = 5
+    local ty = 7
+    local tileSize = const.TILE_SIZE
+    local img, quad = selector(tx, ty)
+    local expectedX = (tx - 1) * tileSize + math.max(tx - 2, 0) * padding
+    local expectedY = (ty - 1) * tileSize + math.max(tx - 2, 0) * padding
+
+    local qx, qy = quad:getViewport()
+    assert.are.equal(qx, expectedX)
+    assert.are.equal(qy, expectedY)
+  end)
+
   it("takes both margins and padding into account")
-  it("can pull a sprite from the middle of the sheet")
-  it("pulls a sprite from the end of the sheet")
   it("handles out of bounds errors gracefully")
 end)
