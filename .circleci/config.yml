@@ -20,7 +20,7 @@ jobs:
       - checkout
       - run:
           name: "Install deps"
-          command: "sudo apt-get install luajit luarocks luafilesystem busted"
+          command: "sudo apt-get update && sudo apt-get install luajit luarocks luafilesystem busted"
       - run:
           name: "Run busted"
           command: "busted spec"
