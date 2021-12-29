@@ -20,7 +20,7 @@ function Player:isMovable(level, dx, dy)
   local nx = self.x + dx
   local ny = self.y + dy
 
-  local isColliding = self:isColliding(level, nx, ny)
+  local isColliding = self:isColliding(nx, ny)
 
   return not isColliding and nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
 end

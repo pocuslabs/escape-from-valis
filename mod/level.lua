@@ -57,8 +57,8 @@ function Level:generate(number)
   -- fill in the room tiles
   -- note: ax and ay are absolute map coordinates
   -- (as opposed to room-relative coordinates)
-  for ay=1, self.width do
-    for ax=1, self.height do
+  for ay=1, self.height do
+    for ax=1, self.width do
       for _, room in ipairs(self.rooms) do
         if room:isInside(ax, ay) then
           map[ay][ax] = room.map[ay][ax]
@@ -86,6 +86,7 @@ end
 function Level:tileAtPixels(px, py)
   local tx = math.floor(px / const.TILE_SIZE)
   local ty = math.floor(py / const.TILE_SIZE)
+  debug.debug()
   local tile = self.map[ty][tx]
   return tile
 end
