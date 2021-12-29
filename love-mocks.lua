@@ -43,12 +43,28 @@ local Quadmt = {
   end,
   getViewport = function(self)
     return unpack(self)
-  end
+  end,
+  typeOf = function(self, typ)
+    return typ == love.Quad
+  end,
 }
 
 Quadmt.__index = Quadmt
 
+local Imagemt = {
+  getDimensions = function(self)
+    return 1, 1
+  end,
+  typeOf = function(self, typ)
+    return typ == love.Image
+  end,
+}
+
+Imagemt.__index = Imagemt
+
 _G.love = {
+  Image = "image",  -- type mocks
+  Quad = "quad",
   graphics = {
     newQuad = function(...)
       return setmetatable({...}, Quadmt)
@@ -57,7 +73,8 @@ _G.love = {
     end,
     getLastDrawq = function()
     end,
-    newImage = function()
+    newImage = function(...)
+      return setmetatable({...}, Imagemt)
     end,
   }
 }
