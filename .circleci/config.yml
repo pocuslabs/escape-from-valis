@@ -23,7 +23,7 @@ jobs:
           command: "sudo apt-get update && sudo apt-get install luajit luarocks"
       - run:
           name: "Install lua deps"
-          command: "luarocks install luafilesystem busted"
+          command: "sudo luarocks install luafilesystem busted"
       - run:
           name: "Run busted"
           command: "busted spec"
