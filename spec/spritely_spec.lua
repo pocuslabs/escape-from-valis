@@ -25,10 +25,9 @@ describe("Spritely module", function()
     local selector = spritely.load(tileSheet, { margin = margin })
     local tx = 4
     local ty = 3
-    local tileSize = const.TILE_SIZE * const.SCALE
     local img, quad = selector(tx, ty)
-    local expectedX = (tx - 1) * tileSize + margin
-    local expectedY = (ty - 1) * tileSize + margin
+    local expectedX = 98  -- (x - 1) * const.TILE_SIZE * const.SCALE + margin
+    local expectedY = 66  -- same for y
 
     local qx, qy = quad:getViewport()
     assert.are.equal(qx, expectedX)
@@ -40,7 +39,6 @@ describe("Spritely module", function()
     local selector = spritely.load(tileSheet, { padding = padding })
     local tx = 3
     local ty = 4
-    local tileSize = const.TILE_SIZE * const.SCALE
     local img, quad = selector(tx, ty)
     local expectedX = 66
     local expectedY = 100
@@ -50,6 +48,31 @@ describe("Spritely module", function()
     assert.are.equal(expectedY, qy)
   end)
 
-  it("takes both margins and padding into account")
-  it("handles out of bounds errors gracefully")
+  it("takes both margins and padding into account", function()
+    local margin = 2
+    local padding = 2
+    local selector = spritely.load(tileSheet, { margin = margin, padding = padding })
+    local tx = 3
+    local ty = 4
+    local img, quad = selector(tx, ty)
+    local expectedX = 68
+    local expectedY = 102
+
+    local qx, qy = quad:getViewport()
+    assert.are.equal(expectedX, qx)
+    assert.are.equal(expectedY, qy)
+  end)
+
+  it("handles out of bounds errors gracefully", function ()
+    local selector = spritely.load(tileSheet)
+    local zx = 0
+    local zy = 0
+    local img, quad = selector(zx, zy)
+    local expectedX = 0
+    local expectedY = 0
+
+    local qx, qy = quad:getViewport()
+    assert.are.equal(expectedX, qx)
+    assert.are.equal(expectedY, qy)
+  end)
 end)
