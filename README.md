@@ -9,6 +9,20 @@ A quick little rogue-like game made with LÖVE.
 `brew install --cask love`
 then run `love main.lua`
 
+### Windows 11
+
+Install love2d from the website, then run the following in Powershell (using the default install directory):
+
+```powershell
+Set-Alias lovec 'C:\Program Files\LOVE\lovec.exe'
+```
+
+Then change the directory to the project root, and run:
+
+```powershell
+lovec .
+```
+
 ## Credits
 
 This game was made by:
