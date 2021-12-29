@@ -50,11 +50,12 @@ function Player:isColliding(x, y)
     y = self.y
   end
 
+  local tileSize = const.TILE_SIZE * const.SCALE
   local corners = {
     { x, y },
-    { math.min(x + const.TILE_SIZE, const.WIDTH), y },
-    { x, math.min(const.HEIGHT, y + const.TILE_SIZE) },
-    { math.min(x + const.TILE_SIZE, const.WIDTH), math.min(const.HEIGHT, y + const.TILE_SIZE) }
+    { math.min(x + tileSize, const.WIDTH), y },
+    { x, math.min(const.HEIGHT, y + tileSize) },
+    { math.min(x + tileSize, const.WIDTH), math.min(const.HEIGHT, y + tileSize) }
   }
 
   local isColliding = false
@@ -72,7 +73,7 @@ function Player:isColliding(x, y)
 end
 
 function Player:move(dt)
-  local speed = const.TILE_SIZE * const.SPEED * self.speed * dt
+  local speed = const.TILE_SIZE * const.SCALE * const.SPEED * self.speed * dt
   self.ox = self.x
   self.x = self.x + self.dx * speed
   self.oy = self.y

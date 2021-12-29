@@ -15,8 +15,8 @@ function Level:new(pw, ph)
   self.rooms = {}
   self.map = {}
 
-  self.width = math.ceil(pw / const.TILE_SIZE)
-  self.height = math.ceil(ph / const.TILE_SIZE)
+  self.width = math.ceil(pw / const.TILE_SIZE / const.SCALE)
+  self.height = math.ceil(ph / const.TILE_SIZE / const.SCALE)
   self.maxWidth = 1
   self.maxHeight = 1
 
@@ -83,8 +83,8 @@ function Level:tile(tx, ty)
 end
 
 function Level:tileAtPixels(px, py)
-  local tx = math.ceil(px / const.TILE_SIZE)
-  local ty = math.ceil(py / const.TILE_SIZE)
+  local tx = math.ceil(px / const.TILE_SIZE / const.SCALE)
+  local ty = math.ceil(py / const.TILE_SIZE / const.SCALE)
   local tile = self.map[ty][tx]
   return tile
 end
@@ -93,8 +93,8 @@ function Level:draw()
   for ty, row in ipairs(self.map) do
     for tx, tile in ipairs(row) do
       local img, quad = self:tile(unpack(tile.coordinates))
-      local x = tx * const.TILE_SIZE
-      local y = ty * const.TILE_SIZE
+      local x = tx * const.TILE_SIZE * const.SCALE
+      local y = ty * const.TILE_SIZE * const.SCALE
       love.graphics.draw(img, quad, x, y)
     end
   end

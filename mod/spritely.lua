@@ -13,8 +13,8 @@ local function load(filename, opts)
     -- sane defaults
     -- assuming uniform sprite size (i.e. all sprites should be the same size)
     if not x or not y then return nil end
-    if not w then w = constants.TILE_SIZE end
-    if not h then h = constants.TILE_SIZE end
+    if not w then w = constants.TILE_SIZE * constants.SCALE end
+    if not h then h = constants.TILE_SIZE * constants.SCALE end
 
     -- make sure the coordinates are 1-indexed!
     if x < 1 then x = 1 end
@@ -25,8 +25,8 @@ local function load(filename, opts)
     if x == 1 then
       prevLeft = 0
     else
-      local spriteSpace = (x - 1) * w
-      local paddingSpace = (x - 1) * padding
+      local spriteSpace = math.max(0, x - 1) * w
+      local paddingSpace = math.max(0, x - 2) * padding
       prevLeft = spriteSpace + paddingSpace
     end
 
@@ -36,9 +36,9 @@ local function load(filename, opts)
     if y == 1 then
       prevTop = 0
     else
-      local spriteSpace = (y - 1) * h
-      local paddingSpace = (y - 1) * padding
-      prevTop =  spriteSpace + paddingSpace
+      local spriteSpace = math.max(0, y - 1) * h
+      local paddingSpace = math.max(0, y - 2) * padding
+      prevTop = spriteSpace + paddingSpace
     end
 
     -- calculate the total x and y offsets
