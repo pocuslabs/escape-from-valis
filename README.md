@@ -1,5 +1,7 @@
 # Escape from Valis
 
+[![CircleCI](https://circleci.com/gh/pocuslabs/escape-from-valis.svg?style=svg)](https://circleci.com/gh/pocuslabs/escape-from-valis)
+
 A quick little rogue-like game made with LÖVE.
 
 ## Install
