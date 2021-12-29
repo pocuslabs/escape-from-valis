@@ -29,7 +29,7 @@ jobs:
           command: "sudo luarocks install busted"
       - run:
           name: "Run busted"
-          command: "busted spec"
+          command: "busted ."
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
