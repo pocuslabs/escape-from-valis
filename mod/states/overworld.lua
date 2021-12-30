@@ -4,6 +4,9 @@ local Keys = require("mod.keys")
 local help = require("mod.helpers")
 local pauseState = require("mod.states.pause")
 local widgets = require("mod.widgets")
+local audio = require("mod.audio")
+
+audio.load()
 
 local introText = "Welcome to Valis!"
 
@@ -15,6 +18,8 @@ function overworldState:update(dt)
   if Game.showIntro then
     widgets.TextBox(gui, introText)
   end
+
+  audio.play()
 
   local player = Game.player
 
