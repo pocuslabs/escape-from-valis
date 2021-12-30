@@ -13,7 +13,6 @@ local function play()
   if not music:isPlaying() then
 		love.audio.play(music)
 	end
-  --music:play()
 end
 
 return {
