@@ -1,6 +1,7 @@
 require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
+--local lurker = require("lib.lurker")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -20,6 +21,10 @@ function love.conf(t)
   t.console = true
 end
 
+--function love.update()
+  --lurker.update()
+--end
+
 function love.load()
   -- love.window.setIcon(love.graphics.newImage(""))
   love.window.setTitle("Escape from Valis!")
@@ -34,6 +39,7 @@ function love.load()
   local pw, ph = love.graphics.getPixelDimensions()
   Game.level = Level(pw, ph)
   Game.player = Player(playerSheet, quad)
+  Game.level.world:add(Game.player, Game.player.x, Game.player.y, Game.player.w, Game.player.h)
   Game.keys = Keys()
 
   Gamestate.registerEvents()

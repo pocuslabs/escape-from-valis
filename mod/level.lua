@@ -1,4 +1,6 @@
 Object = require("lib.classic")
+local bump = require('lib.bump')
+local inspect = require("lib.inspect")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -19,6 +21,9 @@ function Level:new(pw, ph)
   self.height = math.ceil(ph / const.TILE_SIZE / const.SCALE)
   self.maxWidth = 1
   self.maxHeight = 1
+
+
+  self.world = bump.newWorld(const.TILE_SIZE)
 
   self:generate()
 end
@@ -41,14 +46,23 @@ function Level:generate(number)
     local oy = love.math.random(self.maxHeight)
     local room = Room(ox, oy, w, h)
 
-    table.insert(self.rooms, room)
   end
 
   -- pregenerate a 2D array of w width and h height
   local map = {}
-  for y=1, self.maxHeight do
+  for y = 1, self.maxHeight do
     map[y] = {}
-    for _=1, self.maxWidth do
+    for x = 1, self.maxWidth do
+      local tile = {} 
+      for k, v in pairs(const.TILES.ground) do
+        tile[k] = v
+      end
+      tile.x = x * const.TILE_SIZE * 2
+      tile.y = y * const.TILE_SIZE * 2
+      tile.w = const.TILE_SIZE * 2
+      tile.h = const.TILE_SIZE * 2
+      tile.type = "cross"
+      self.world:add(tile, tile.x, tile.x, tile.w, tile.h) -- x,y, width, height
       table.insert(map[y], const.TILES.ground)
     end
   end
@@ -89,15 +103,23 @@ function Level:tileAtPixels(px, py)
   return tile
 end
 
+local function drawBox(box, r,g,b)
+  love.graphics.setColor(r,g,b,70)
+  love.graphics.rectangle("fill", box.x, box.y, box.w/3, box.h/3)
+  love.graphics.setColor(r,g,b)
+  love.graphics.rectangle("line", box.x, box.y, box.w/3, box.h/3)
+end
+
 function Level:draw()
-  for ty, row in ipairs(self.map) do
-    for tx, tile in ipairs(row) do
-      local img, quad = self:tile(unpack(tile.coordinates))
-      local x = tx * const.TILE_SIZE * const.SCALE
-      local y = ty * const.TILE_SIZE * const.SCALE
-      love.graphics.draw(img, quad, x, y)
-    end
+  bump.bump_debug.draw(self.world)
+  local img, quad = self.selector(4, 3, const.TILE_SIZE, const.TILE_SIZE)
+
+  local items = self.world:getItems()
+  for _, tile in ipairs(items) do
+    drawBox(tile, 0, 222, 0)
+    love.graphics.draw(img, quad, tile.x, tile.y)
   end
+
 end
 
 return Level
