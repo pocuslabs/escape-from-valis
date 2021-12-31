@@ -7,6 +7,7 @@ local constants = {
   DEFAULT_MARGIN = 16,
   TILES = {
     ground = {
+      name = "ground",
       coordinates = {4, 3}  -- these tile coordinates will be fed into the spritely module
     },
     wall = {

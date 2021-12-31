@@ -52,13 +52,15 @@ function Level:generate(number)
   for y = 1, self.maxHeight do
     map[y] = {}
     for x = 1, self.maxWidth do
-      self.world:add({
-        name = const.TILES.ground,
-        x = x * const.TILE_SIZE,
-        y = y * const.TILE_SIZE,
-        w = const.TILE_SIZE,
-        h = const.TILE_SIZE,
-      }, x, y, const.TILE_SIZE, const.TILE_SIZE) -- x,y, width, height
+      local tile = {} 
+      for k, v in pairs(const.TILES.ground) do
+        tile[k] = v
+      end
+      tile.x = x * const.TILE_SIZE
+      tile.y = y * const.TILE_SIZE
+      tile.w = const.TILE_SIZE
+      tile.h = const.TILE_SIZE
+      self.world:add(tile, tile.x, tile.x, tile.w, tile.h) -- x,y, width, height
       table.insert(map[y], const.TILES.ground)
     end
   end
@@ -120,6 +122,11 @@ function Level:draw()
   local items, len = self.world:getItems()
   for _, tile in ipairs(items) do
     drawBox(tile, 0, 222, 0)
+    for k, v in pairs(tile.coordinates) do
+      print(k, v)
+    end
+    --local img, quad = self:tile(unpack(tile.coordinates))
+    --love.graphics.draw(img, quad, tile.x, tile.y)
   end
 
 end

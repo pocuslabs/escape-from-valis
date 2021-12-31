@@ -9,8 +9,8 @@ function Player:new(spritesheet, quad)
   self.quad = quad
   self.x = 1
   self.y = 1
-  self.w = 1
-  self.h = 1
+  self.w = const.TILE_SIZE
+  self.h = const.TILE_SIZE
   self.dx = 0
   self.dy = 0
   self.speed = 80
@@ -93,8 +93,16 @@ function Player:update(dt)
   end
 end
 
+local function drawBox(box, r,g,b)
+  love.graphics.setColor(r,g,b,70)
+  love.graphics.rectangle("fill", box.x, box.y, box.w, box.h)
+  love.graphics.setColor(r,g,b)
+  love.graphics.rectangle("line", box.x, box.y, box.w, box.h)
+end
+
 function Player:draw()
   love.graphics.draw(self.spritesheet, self.quad, self.x, self.y)
+  drawBox(self, 0, .4, .4)
 end
 
 return Player
