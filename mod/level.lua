@@ -103,9 +103,9 @@ end
 
 local function drawBox(box, r,g,b)
   love.graphics.setColor(r,g,b,70)
-  love.graphics.rectangle("fill", box.x, box.y, box.w, box.h)
+  love.graphics.rectangle("fill", box.x, box.y, box.w/2, box.h/2)
   love.graphics.setColor(r,g,b)
-  love.graphics.rectangle("line", box.x, box.y, box.w, box.h)
+  love.graphics.rectangle("line", box.x, box.y, box.w/2, box.h/2)
 end
 
 function Level:draw()
@@ -122,10 +122,8 @@ function Level:draw()
   local items, len = self.world:getItems()
   for _, tile in ipairs(items) do
     drawBox(tile, 0, 222, 0)
-    for k, v in pairs(tile.coordinates) do
-      print(k, v)
-    end
-    --local img, quad = self:tile(unpack(tile.coordinates))
+    local img, quad = self.selector(tile.x, tile.y, tile.w/2, tile.h/2)
+    --print("selector", img, quad)
     --love.graphics.draw(img, quad, tile.x, tile.y)
   end
 
