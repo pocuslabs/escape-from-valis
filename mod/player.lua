@@ -88,7 +88,8 @@ function Player:update(dt)
     self.x, self.y, cols, cols_len = Game.level.world:move(self, self.x + dx, self.y + dy)
     for i=1, cols_len do
       local col = cols[i]
-      --print(("col.other = %s, col.type = %s, col.normal = %d,%d"):format(col.other, col.type, col.normal.x, col.normal.y))
+      print(("col.other = %s, col.type = %s, col.normal = %d,%d"):format(col.other, col.type, col.normal.x, col.normal.y))
+      love.event.push('collide')
     end
   end
 end

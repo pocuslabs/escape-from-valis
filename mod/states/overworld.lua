@@ -4,9 +4,9 @@ local Keys = require("mod.keys")
 local help = require("mod.helpers")
 local pauseState = require("mod.states.pause")
 local widgets = require("mod.widgets")
---local audio = require("mod.audio")
+local audio = require("mod.audio")
 
---audio.load()
+audio.load()
 
 local introText = "Welcome to Valis!"
 
