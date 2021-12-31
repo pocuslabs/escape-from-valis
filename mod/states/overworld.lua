@@ -19,8 +19,6 @@ function overworldState:update(dt)
     widgets.TextBox(gui, introText)
   end
 
-  audio.play()
-
   local player = Game.player
 
   player:move(dt)
