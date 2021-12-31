@@ -1,6 +1,7 @@
 require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
+local lurker = require("lib.lurker")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -21,7 +22,7 @@ function love.conf(t)
 end
 
 function love.update()
-  require("lurker").update()
+  lurker.update()
 end
 
 function love.load()

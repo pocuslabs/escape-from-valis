@@ -1,6 +1,7 @@
 Object = require("lib.classic")
-
 local bump = require('lib.bump')
+local inspect = require("lib.inspect")
+
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
 local Room = require("mod.room")
@@ -110,19 +111,11 @@ end
 
 function Level:draw()
   bump.bump_debug.draw(self.world)
-  --for ty, row in ipairs(self.map) do
-    --for tx, tile in ipairs(row) do
-      --local img, quad = self:tile(unpack(tile.coordinates))
-      --local x = tx * const.TILE_SIZE * const.SCALE
-      --local y = ty * const.TILE_SIZE * const.SCALE
-      --love.graphics.draw(img, quad, x, y)
-    --end
-  --end
 
-  local items, len = self.world:getItems()
+  local items = self.world:getItems()
   for _, tile in ipairs(items) do
     drawBox(tile, 0, 222, 0)
-    local img, quad = self.selector(tile.x, tile.y, tile.w/2, tile.h/2)
+    --local img, quad = self.selector(tile.x, tile.y, tile.w/2, tile.h/2)
     --print("selector", img, quad)
     --love.graphics.draw(img, quad, tile.x, tile.y)
   end
