@@ -22,7 +22,7 @@ function Level:new(pw, ph)
   self.maxHeight = 1
 
 
-  self.world = bump.newWorld(50)
+  self.world = bump.newWorld(const.TILE_SIZE)
 
   self:generate()
 end
@@ -54,8 +54,8 @@ function Level:generate(number)
     for x = 1, self.maxWidth do
       self.world:add({
         name = const.TILES.ground,
-        x = x,
-        y = y,
+        x = x * const.TILE_SIZE,
+        y = y * const.TILE_SIZE,
         w = const.TILE_SIZE,
         h = const.TILE_SIZE,
       }, x, y, const.TILE_SIZE, const.TILE_SIZE) -- x,y, width, height
@@ -119,7 +119,7 @@ function Level:draw()
 
   local items, len = self.world:getItems()
   for _, tile in ipairs(items) do
-    drawBox(tile, 255, 0, 0)
+    drawBox(tile, 0, 222, 0)
   end
 
 end
