@@ -110,14 +110,6 @@ end
 
 function Level:draw()
   bump.bump_debug.draw(self.world)
-  --for ty, row in ipairs(self.map) do
-    --for tx, tile in ipairs(row) do
-      --local img, quad = self:tile(unpack(tile.coordinates))
-      --local x = tx * const.TILE_SIZE * const.SCALE
-      --local y = ty * const.TILE_SIZE * const.SCALE
-      --love.graphics.draw(img, quad, x, y)
-    --end
-  --end
 
   local items, len = self.world:getItems()
   for _, tile in ipairs(items) do
@@ -125,8 +117,6 @@ function Level:draw()
     for k, v in pairs(tile.coordinates) do
       print(k, v)
     end
-    --local img, quad = self:tile(unpack(tile.coordinates))
-    --love.graphics.draw(img, quad, tile.x, tile.y)
   end
 
 end
