@@ -61,6 +61,7 @@ function Level:generate(number)
       tile.y = y * const.TILE_SIZE
       tile.w = const.TILE_SIZE
       tile.h = const.TILE_SIZE
+      tile.type = "touch"
       self.world:add(tile, tile.x, tile.x, tile.w, tile.h) -- x,y, width, height
       table.insert(map[y], const.TILES.ground)
     end
@@ -110,14 +111,13 @@ local function drawBox(box, r,g,b)
 end
 
 function Level:draw()
-  bump.bump_debug.draw(self.world)
+  --bump.bump_debug.draw(self.world)
+  local img, quad = self.selector(4, 3, const.TILE_SIZE, const.TILE_SIZE)
 
   local items = self.world:getItems()
   for _, tile in ipairs(items) do
     drawBox(tile, 0, 222, 0)
-    --local img, quad = self.selector(tile.x, tile.y, tile.w/2, tile.h/2)
-    --print("selector", img, quad)
-    --love.graphics.draw(img, quad, tile.x, tile.y)
+    love.graphics.draw(img, quad, tile.x, tile.y)
   end
 
 end
