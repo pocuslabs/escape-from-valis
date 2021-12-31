@@ -105,13 +105,13 @@ end
 
 local function drawBox(box, r,g,b)
   love.graphics.setColor(r,g,b,70)
-  love.graphics.rectangle("fill", box.x, box.y, box.w/2, box.h/2)
+  love.graphics.rectangle("fill", box.x, box.y, box.w/3, box.h/3)
   love.graphics.setColor(r,g,b)
-  love.graphics.rectangle("line", box.x, box.y, box.w/2, box.h/2)
+  love.graphics.rectangle("line", box.x, box.y, box.w/3, box.h/3)
 end
 
 function Level:draw()
-  --bump.bump_debug.draw(self.world)
+  bump.bump_debug.draw(self.world)
   local img, quad = self.selector(4, 3, const.TILE_SIZE, const.TILE_SIZE)
 
   local items = self.world:getItems()
