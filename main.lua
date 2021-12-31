@@ -20,6 +20,10 @@ function love.conf(t)
   t.console = true
 end
 
+function love.update()
+  require("lurker").update()
+end
+
 function love.load()
   -- love.window.setIcon(love.graphics.newImage(""))
   love.window.setTitle("Escape from Valis!")
