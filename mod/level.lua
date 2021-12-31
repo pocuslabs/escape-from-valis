@@ -57,11 +57,11 @@ function Level:generate(number)
       for k, v in pairs(const.TILES.ground) do
         tile[k] = v
       end
-      tile.x = x * const.TILE_SIZE
-      tile.y = y * const.TILE_SIZE
-      tile.w = const.TILE_SIZE
-      tile.h = const.TILE_SIZE
-      tile.type = "touch"
+      tile.x = x * const.TILE_SIZE * 2
+      tile.y = y * const.TILE_SIZE * 2
+      tile.w = const.TILE_SIZE * 2
+      tile.h = const.TILE_SIZE * 2
+      tile.type = "cross"
       self.world:add(tile, tile.x, tile.x, tile.w, tile.h) -- x,y, width, height
       table.insert(map[y], const.TILES.ground)
     end

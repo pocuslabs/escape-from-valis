@@ -1,7 +1,7 @@
 require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
-local lurker = require("lib.lurker")
+--local lurker = require("lib.lurker")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -21,9 +21,9 @@ function love.conf(t)
   t.console = true
 end
 
-function love.update()
-  lurker.update()
-end
+--function love.update()
+  --lurker.update()
+--end
 
 function love.load()
   -- love.window.setIcon(love.graphics.newImage(""))
