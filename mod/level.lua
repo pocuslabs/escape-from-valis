@@ -115,10 +115,6 @@ function Level:draw()
   local items = self.world:getItems()
   for _, tile in ipairs(items) do
     drawBox(tile, 0, 222, 0)
-    -- -- print("TT", inspect(tile.coordinates))
-    -- for k, v in pairs(tile.coordinates) do
-    --   -- print(k, v)
-    -- end
   end
 
 end
