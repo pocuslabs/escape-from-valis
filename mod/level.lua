@@ -1,5 +1,6 @@
 Object = require("lib.classic")
 
+local bump = require('lib.bump')
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
 local Room = require("mod.room")
@@ -19,6 +20,9 @@ function Level:new(pw, ph)
   self.height = math.ceil(ph / const.TILE_SIZE / const.SCALE)
   self.maxWidth = 1
   self.maxHeight = 1
+
+
+  self.world = bump.newWorld(50)
 
   self:generate()
 end
@@ -41,14 +45,20 @@ function Level:generate(number)
     local oy = love.math.random(self.maxHeight)
     local room = Room(ox, oy, w, h)
 
-    table.insert(self.rooms, room)
   end
 
   -- pregenerate a 2D array of w width and h height
   local map = {}
-  for y=1, self.maxHeight do
+  for y = 1, self.maxHeight do
     map[y] = {}
-    for _=1, self.maxWidth do
+    for x = 1, self.maxWidth do
+      self.world:add({
+        name = const.TILES.ground,
+        x = x,
+        y = y,
+        w = const.TILE_SIZE,
+        h = const.TILE_SIZE,
+      }, x, y, const.TILE_SIZE, const.TILE_SIZE) -- x,y, width, height
       table.insert(map[y], const.TILES.ground)
     end
   end
@@ -89,15 +99,29 @@ function Level:tileAtPixels(px, py)
   return tile
 end
 
+local function drawBox(box, r,g,b)
+  love.graphics.setColor(r,g,b,70)
+  love.graphics.rectangle("fill", box.x, box.y, box.w, box.h)
+  love.graphics.setColor(r,g,b)
+  love.graphics.rectangle("line", box.x, box.y, box.w, box.h)
+end
+
 function Level:draw()
-  for ty, row in ipairs(self.map) do
-    for tx, tile in ipairs(row) do
-      local img, quad = self:tile(unpack(tile.coordinates))
-      local x = tx * const.TILE_SIZE * const.SCALE
-      local y = ty * const.TILE_SIZE * const.SCALE
-      love.graphics.draw(img, quad, x, y)
-    end
+  bump.bump_debug.draw(self.world)
+  --for ty, row in ipairs(self.map) do
+    --for tx, tile in ipairs(row) do
+      --local img, quad = self:tile(unpack(tile.coordinates))
+      --local x = tx * const.TILE_SIZE * const.SCALE
+      --local y = ty * const.TILE_SIZE * const.SCALE
+      --love.graphics.draw(img, quad, x, y)
+    --end
+  --end
+
+  local items, len = self.world:getItems()
+  for _, tile in ipairs(items) do
+    drawBox(tile, 255, 0, 0)
   end
+
 end
 
 return Level

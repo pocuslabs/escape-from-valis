@@ -9,39 +9,15 @@ function Player:new(spritesheet, quad)
   self.quad = quad
   self.x = 1
   self.y = 1
+  self.w = 1
+  self.h = 1
   self.dx = 0
   self.dy = 0
-  self.speed = 1
-end
-
-function Player:isMovable(level, dx, dy)
-  dx = dx or 0
-  dy = dy or 0
-  local nx = self.x + dx
-  local ny = self.y + dy
-
-  local isColliding = self:isColliding(nx, ny)
-
-  return not isColliding and nx >= 0 and nx <= const.WIDTH and ny >= 0 and ny <= const.HEIGHT
+  self.speed = 80
 end
 
 function Player:isMoving()
   return self.dx ~= 0 or self.dy ~= 0
-end
-
-function Player:setMovement(level, dx, dy)
-  if not self:isMovable(level, dx, dy) then
-    return
-  end
-
-  local nx = self.x + dx
-  local ny = self.y + dy
-  local isColliding = self:isColliding(nx, ny)
-
-  if isColliding then return end
-
-  self.dx = dx
-  self.dy = dy
 end
 
 function Player:isColliding(x, y)
@@ -91,6 +67,29 @@ end
 function Player:act()
   if Game.showIntro then
     Game.showIntro = false
+  end
+end
+
+function Player:update(dt)
+  local dx, dy, speed = 0, 0, self.speed
+  if love.keyboard.isDown('right') then
+    dx = speed * dt
+  elseif love.keyboard.isDown('left') then
+    dx = -speed * dt
+  end
+  if love.keyboard.isDown('down') then
+    dy = speed * dt
+  elseif love.keyboard.isDown('up') then
+    dy = -speed * dt
+  end
+
+  if dx ~= 0 or dy ~= 0 then
+    local cols
+    self.x, self.y, cols, cols_len = Game.level.world:move(self, self.x + dx, self.y + dy)
+    for i=1, cols_len do
+      local col = cols[i]
+      --print(("col.other = %s, col.type = %s, col.normal = %d,%d"):format(col.other, col.type, col.normal.x, col.normal.y))
+    end
   end
 end
 

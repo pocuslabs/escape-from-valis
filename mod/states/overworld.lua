@@ -4,9 +4,9 @@ local Keys = require("mod.keys")
 local help = require("mod.helpers")
 local pauseState = require("mod.states.pause")
 local widgets = require("mod.widgets")
-local audio = require("mod.audio")
+--local audio = require("mod.audio")
 
-audio.load()
+--audio.load()
 
 local introText = "Welcome to Valis!"
 
@@ -19,9 +19,7 @@ function overworldState:update(dt)
     widgets.TextBox(gui, introText)
   end
 
-  local player = Game.player
-
-  player:move(dt)
+  Game.player:update(dt)
 end
 
 function overworldState:draw()
@@ -46,7 +44,6 @@ function overworldState:keypressed(key, scancode, isrepeat)
      love.event.quit()
   elseif Keys.isDirection(key) then
     local dx, dy = Keys.getDirection(key)
-    player:setMovement(Game.map, dx, dy)
   end
 end
 
@@ -71,7 +68,6 @@ function overworldState:keyreleased(key, scancode)
     end
 
     local dx, dy = Keys.getDirection(firstKey)
-    player:setMovement(Game.map, dx, dy)
   elseif key == "s" then
     player:walk()
   elseif key == "x" then
