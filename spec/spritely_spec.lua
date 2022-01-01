@@ -14,8 +14,8 @@ describe("Spritely module", function()
   end)
 
   it("pulls the first sprite", function()
-    local selector = spritely.load(tileSheet)
-    local img, quad = selector(1, 1)
+    local selector, img = spritely.load(tileSheet)
+    local quad = selector(1, 1)
     assert.is_truthy(img:typeOf(love.Image))
     assert.is_truthy(quad:typeOf(love.Quad))
   end)
@@ -25,7 +25,7 @@ describe("Spritely module", function()
     local selector = spritely.load(tileSheet, { margin = margin })
     local tx = 4
     local ty = 3
-    local img, quad = selector(tx, ty)
+    local quad = selector(tx, ty)
     local expectedX = 98  -- (x - 1) * const.TILE_SIZE * const.SCALE + margin
     local expectedY = 66  -- same for y
 
@@ -39,7 +39,7 @@ describe("Spritely module", function()
     local selector = spritely.load(tileSheet, { padding = padding })
     local tx = 3
     local ty = 4
-    local img, quad = selector(tx, ty)
+    local quad = selector(tx, ty)
     local expectedX = 66
     local expectedY = 100
 
@@ -54,7 +54,7 @@ describe("Spritely module", function()
     local selector = spritely.load(tileSheet, { margin = margin, padding = padding })
     local tx = 3
     local ty = 4
-    local img, quad = selector(tx, ty)
+    local quad = selector(tx, ty)
     local expectedX = 68
     local expectedY = 102
 
@@ -67,7 +67,7 @@ describe("Spritely module", function()
     local selector = spritely.load(tileSheet)
     local zx = 0
     local zy = 0
-    local img, quad = selector(zx, zy)
+    local quad = selector(zx, zy)
     local expectedX = 0
     local expectedY = 0
 

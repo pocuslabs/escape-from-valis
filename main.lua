@@ -1,7 +1,6 @@
 require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
---local lurker = require("lib.lurker")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -33,14 +32,13 @@ function love.load()
   local font = love.graphics.newFont("fonts/merriweather/Merriweather-Regular.ttf", 32)
   love.graphics.setFont(font)
 
-  local selector = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
-  local playerSheet, quad = selector(1, 1)
+  local selector, playerSheet = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
+  local quad = selector(1, 1)
 
 ---@diagnostic disable-next-line: undefined-field
   local pw, ph = love.graphics.getPixelDimensions()
   Game.level = Level(pw, ph)
   Game.player = Player(playerSheet, quad)
-  Game.level.world:add(Game.player, Game.player.x, Game.player.y, Game.player.w, Game.player.h)
   Game.keys = Keys()
 
   Gamestate.registerEvents()
