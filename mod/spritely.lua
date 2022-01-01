@@ -6,6 +6,7 @@ local function load(filename, opts)
   local margin = opts.margin or 0
 
   local spritesheet = love.graphics.newImage(filename)
+  local cache = {}
 
   -- x and y are tile coordinates, 1-indexed
   -- i.e. each increment to x / y goes by w / h units, respectively
@@ -19,6 +20,11 @@ local function load(filename, opts)
     -- make sure the coordinates are 1-indexed!
     if x < 1 then x = 1 end
     if y < 1 then y = 1 end
+
+    local ckey = {x, y, w, h}
+    if cache[ckey] then
+      return unpack(cache[ckey])
+    end
 
     -- this calculates the pixel space taken up by all the sprites to the left
     local prevLeft
@@ -46,6 +52,8 @@ local function load(filename, opts)
     local originY = margin + prevTop
     local sw, sh = spritesheet:getDimensions()
     local quad = love.graphics.newQuad(originX, originY, w, h, sw, sh)
+    cache[ckey] = { spritesheet, quad }
+
     return spritesheet, quad
   end
 

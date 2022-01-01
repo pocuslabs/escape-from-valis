@@ -22,7 +22,6 @@ function Level:new(pw, ph)
   self.maxWidth = 1
   self.maxHeight = 1
 
-
   self.world = bump.newWorld(const.TILE_SIZE)
 
   self:generate()
@@ -103,23 +102,15 @@ function Level:tileAtPixels(px, py)
   return tile
 end
 
-local function drawBox(box, r,g,b)
-  love.graphics.setColor(r,g,b,70)
-  love.graphics.rectangle("fill", box.x, box.y, box.w/3, box.h/3)
-  love.graphics.setColor(r,g,b)
-  love.graphics.rectangle("line", box.x, box.y, box.w/3, box.h/3)
-end
-
 function Level:draw()
-  bump.bump_debug.draw(self.world)
-  local img, quad = self.selector(4, 3, const.TILE_SIZE, const.TILE_SIZE)
-
-  local items = self.world:getItems()
-  for _, tile in ipairs(items) do
-    drawBox(tile, 0, 222, 0)
-    love.graphics.draw(img, quad, tile.x, tile.y)
+  for y, row in ipairs(self.map) do
+    for x, tile in ipairs(row) do
+      print("T", inspect(tile))
+      local tx, ty = unpack(tile.coordinates)
+      local img, quad = self.selector(tx, ty)
+      love.graphics.draw(img, quad, x, y)
+    end
   end
-
 end
 
 return Level
