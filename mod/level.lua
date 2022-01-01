@@ -48,7 +48,7 @@ function Level:generate(number)
   local map = {}
   for y = 1, self.maxHeight do
     map[y] = {}
-    for x = 1, self.maxWidth do
+    for _ = 1, self.maxWidth do
       table.insert(map[y], const.TILES.ground)
     end
   end
@@ -74,7 +74,7 @@ end
 function Level:tile(tx, ty)
   local key = tx..","..ty
   if self.tiles[key] then
-    return unpack(self.tiles[key])
+    return self.tiles[key]
   end
 
   local quad = self.selector(tx, ty)
@@ -93,8 +93,10 @@ function Level:draw()
   for y, row in ipairs(self.map) do
     for x, tile in ipairs(row) do
       local tx, ty = unpack(tile.coordinates)
-      local quad = self.tile(tx, ty)
-      love.graphics.draw(self.spritesheet, quad, x, y)
+      local quad = self.selector(tx, ty)
+      local px = x * const.TILE_SIZE * const.SCALE
+      local py = y * const.TILE_SIZE * const.SCALE
+      love.graphics.draw(self.spritesheet, quad, px, py)
     end
   end
 end
