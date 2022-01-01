@@ -1,5 +1,4 @@
 Object = require("lib.classic")
-local bump = require('lib.bump')
 local inspect = require("lib.inspect")
 
 local spritely = require("mod.spritely")
@@ -22,8 +21,6 @@ function Level:new(pw, ph)
   self.maxWidth = 1
   self.maxHeight = 1
 
-  self.world = bump.newWorld(const.TILE_SIZE)
-
   self:generate()
 end
 
@@ -44,7 +41,7 @@ function Level:generate(number)
     local ox = love.math.random(self.maxWidth)
     local oy = love.math.random(self.maxHeight)
     local room = Room(ox, oy, w, h)
-
+    table.insert(self.rooms, room)
   end
 
   -- pregenerate a 2D array of w width and h height
@@ -52,16 +49,6 @@ function Level:generate(number)
   for y = 1, self.maxHeight do
     map[y] = {}
     for x = 1, self.maxWidth do
-      local tile = {} 
-      for k, v in pairs(const.TILES.ground) do
-        tile[k] = v
-      end
-      tile.x = x * const.TILE_SIZE * 2
-      tile.y = y * const.TILE_SIZE * 2
-      tile.w = const.TILE_SIZE * 2
-      tile.h = const.TILE_SIZE * 2
-      tile.type = "cross"
-      self.world:add(tile, tile.x, tile.x, tile.w, tile.h) -- x,y, width, height
       table.insert(map[y], const.TILES.ground)
     end
   end
@@ -105,7 +92,6 @@ end
 function Level:draw()
   for y, row in ipairs(self.map) do
     for x, tile in ipairs(row) do
-      print("T", inspect(tile))
       local tx, ty = unpack(tile.coordinates)
       local img, quad = self.selector(tx, ty)
       love.graphics.draw(img, quad, x, y)

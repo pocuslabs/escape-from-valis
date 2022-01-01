@@ -34,7 +34,6 @@ function love.load()
   local pw, ph = love.graphics.getPixelDimensions()
   Game.level = Level(pw, ph)
   Game.player = Player(playerSheet, quad)
-  Game.level.world:add(Game.player, Game.player.x, Game.player.y, Game.player.w, Game.player.h)
   Game.keys = Keys()
 
   Gamestate.registerEvents()

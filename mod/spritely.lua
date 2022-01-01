@@ -6,6 +6,7 @@ local function load(filename, opts)
   local margin = opts.margin or 0
 
   local spritesheet = love.graphics.newImage(filename)
+  local sw, sh = spritesheet:getDimensions()
   local cache = {}
 
   -- x and y are tile coordinates, 1-indexed
@@ -50,7 +51,6 @@ local function load(filename, opts)
     -- calculate the total x and y offsets
     local originX = margin + prevLeft
     local originY = margin + prevTop
-    local sw, sh = spritesheet:getDimensions()
     local quad = love.graphics.newQuad(originX, originY, w, h, sw, sh)
     cache[ckey] = { spritesheet, quad }
 
