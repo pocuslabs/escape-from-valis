@@ -42,8 +42,6 @@ function overworldState:keypressed(key, scancode, isrepeat)
 
   if key == "escape" then
      love.event.quit()
-  elseif Keys.isDirection(key) then
-    local dx, dy = Keys.getDirection(key)
   end
 end
 
