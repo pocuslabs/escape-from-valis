@@ -10,7 +10,7 @@ local Level = Object:extend()
 function Level:new(pw, ph)
   self.roomCount = love.math.random(const.MAX_ROOMS)
 
-  self.selector = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
+  self.selector, self.spritesheet = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
   self.memo = {}
   self.tiles = {}
   self.rooms = {}
@@ -77,9 +77,9 @@ function Level:tile(tx, ty)
     return unpack(self.tiles[key])
   end
 
-  local img, quad = self.selector(tx, ty)
-  self.tiles[key] = { img, quad }
-  return img, quad
+  local quad = self.selector(tx, ty)
+  self.tiles[key] = quad
+  return quad
 end
 
 function Level:tileAtPixels(px, py)
@@ -93,8 +93,8 @@ function Level:draw()
   for y, row in ipairs(self.map) do
     for x, tile in ipairs(row) do
       local tx, ty = unpack(tile.coordinates)
-      local img, quad = self.selector(tx, ty)
-      love.graphics.draw(img, quad, x, y)
+      local quad = self.tile(tx, ty)
+      love.graphics.draw(self.spritesheet, quad, x, y)
     end
   end
 end

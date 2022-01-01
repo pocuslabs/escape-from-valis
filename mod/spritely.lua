@@ -24,7 +24,7 @@ local function load(filename, opts)
 
     local ckey = {x, y, w, h}
     if cache[ckey] then
-      return unpack(cache[ckey])
+      return cache[ckey]
     end
 
     -- this calculates the pixel space taken up by all the sprites to the left
@@ -52,12 +52,12 @@ local function load(filename, opts)
     local originX = margin + prevLeft
     local originY = margin + prevTop
     local quad = love.graphics.newQuad(originX, originY, w, h, sw, sh)
-    cache[ckey] = { spritesheet, quad }
+    cache[ckey] = quad
 
-    return spritesheet, quad
+    return quad
   end
 
-  return selector
+  return selector, spritesheet
 end
 
 local spritely = {
