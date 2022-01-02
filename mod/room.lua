@@ -7,27 +7,29 @@ local Room = Object:extend()
 
 function Room:new(x, y, w, h)
   -- pass in tile coordinates, but use absolute pixel coordinates internally
-  self.x = help.tileToPixel(x or 1)
-  self.y = help.tileToPixel(y or 1)
-  self.w = help.tileToPixel(w or 1)
-  self.h = help.tileToPixel(h or 1)
+  x = x or 1
+  y = y or 1
+  w = w or 1
+  h = h or 1
+  self.x, self.y = help.tileToPixel(x, y)
+  self.w, self.h = help.tileToPixel(w, h)
 
   self.doors = self:makeDoors()
   self.map = {}
 
-  for iy=1, h do
+  for ty=1, h do
     local row = {}
-    local isRowWall = iy == y or iy == h
+    local isRowWall = ty == y or ty == h
 
-    for ix=1, w do
-      local isWall = isRowWall or ix == x or ix == w
+    for tx=1, w do
+      local isWall = isRowWall or tx == x or tx == w
       local tile = const.TILES.ground
       if isWall then
         tile = const.TILES.wall
-        local name = "Tile "..ix..","..iy
+        local name = "Tile "..tx..","..ty
         local tileId = { name = name }
         local size = const.TILE_SIZE * const.SCALE
-        Game.world:add(tileId, ix, iy, size, size)
+        Game.world:add(tileId, tx, ty, size, size)
       end
 
       table.insert(row, tile)
@@ -39,11 +41,10 @@ end
 
 -- this function takes absolute x/y coordinates and tells us
 -- whether the room matches the coordinates
--- note: x and y are tile coordinates NOT pixels
-function Room:isInside(ox, oy)
-  local hasCoords = oy <= #self.map and ox <= #self.map[1]
-  local xWithin = ox >= self.x and ox <= (self.x + self.w)
-  local yWithin = oy >= self.y and oy <= (self.y + self.h)
+function Room:isInside(ax, ay)
+  local hasCoords = ay <= #self.map and ax <= #self.map[1]
+  local xWithin = ax >= self.x and ax <= (self.x + self.w)
+  local yWithin = ay >= self.y and ay <= (self.y + self.h)
   return hasCoords and xWithin and yWithin
 end
 

@@ -4,7 +4,7 @@ local inspect = require("lib.inspect")
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
 local Room = require("mod.room")
-
+local help = require("mod.helpers")
 local Level = Object:extend()
 
 function Level:new(pw, ph)
@@ -59,7 +59,8 @@ function Level:generate(number)
   for ay=1, self.height do
     for ax=1, self.width do
       for _, room in ipairs(self.rooms) do
-        if room:isInside(ax, ay) then
+        local px, py = help.tileToPixel(ax, ay)
+        if room:isInside(px, py) then
           map[ay][ax] = room.map[ay][ax]
         end
       end
@@ -83,8 +84,7 @@ function Level:tile(tx, ty)
 end
 
 function Level:tileAtPixels(px, py)
-  local tx = math.ceil(px / const.TILE_SIZE / const.SCALE)
-  local ty = math.ceil(py / const.TILE_SIZE / const.SCALE)
+  local tx, ty = help.pixelToTile(px, py)
   local tile = self.map[ty][tx]
   return tile
 end
