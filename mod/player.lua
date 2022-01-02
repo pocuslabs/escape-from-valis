@@ -14,6 +14,7 @@ function Player:new(spritesheet, quad)
   self.dx = 0
   self.dy = 0
   self.speed = 80
+  self.bumpId = { name = "Player" }
 end
 
 function Player:isMoving()
@@ -48,14 +49,6 @@ function Player:isColliding(x, y)
   return isColliding, gid
 end
 
-function Player:move(dt)
-  local speed = const.TILE_SIZE * const.SCALE * const.SPEED * self.speed * dt
-  self.ox = self.x
-  self.x = self.x + self.dx * speed
-  self.oy = self.y
-  self.y = self.y + self.dy * speed
-end
-
 function Player:run()
   self.speed = 1.75
 end
@@ -83,8 +76,11 @@ function Player:update(dt)
     dy = -speed * dt
   end
 
-  self.x = self.x + dx
-  self.y = self.y + dy
+  local nx = self.x + dx
+  local ny = self.y + dy
+  local rx, ry = Game.world:move(self.bumpId, nx, ny)
+  self.x = rx
+  self.y = ry
 end
 
 function Player:draw()

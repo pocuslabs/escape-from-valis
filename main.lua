@@ -1,6 +1,7 @@
 require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
+local bump = require("lib.bump")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -12,7 +13,8 @@ local Level = require("mod.level")
 Game = {
   keys = {},
   showIntro = true,
-  currentLevel = 1
+  currentLevel = 1,
+  world = bump.newWorld(const.TILE_SIZE)
 }
 
 function love.conf(t)
@@ -34,8 +36,7 @@ function love.load()
   local pw, ph = love.graphics.getPixelDimensions()
   Game.level = Level(pw, ph)
   local p1 = Player(playerSheet, quad)
-  local p1Rect = { name = "Player" }
-  -- Game.world:add(p1Rect, p1.x, p1.y, p1.w, p1.h)
+  Game.world:add(p1.bumpId, p1.x, p1.y, p1.w, p1.h)
   Game.player = p1
   Game.keys = Keys()
 
