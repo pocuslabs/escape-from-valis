@@ -4,10 +4,11 @@ local inspect = require("lib.inspect")
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
 local Room = require("mod.room")
+local help = require("mod.helpers")
 
 local Level = Object:extend()
 
-function Level:new(pw, ph)
+function Level:new(number, pw, ph)
   self.roomCount = love.math.random(const.MAX_ROOMS)
 
   self.selector, self.spritesheet = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
@@ -16,15 +17,10 @@ function Level:new(pw, ph)
   self.rooms = {}
   self.map = {}
 
-  self.width = math.ceil(pw / const.TILE_SIZE / const.SCALE)
-  self.height = math.ceil(ph / const.TILE_SIZE / const.SCALE)
+  self.width, self.height = help.pixelToTile(pw, ph)
   self.maxWidth = 1
   self.maxHeight = 1
 
-  self:generate()
-end
-
-function Level:generate(number)
   number = number or 1  -- the level we're on
 
   -- make rooms
@@ -38,9 +34,9 @@ function Level:generate(number)
     local h2 = h * h
     if h2 > self.maxHeight then self.maxHeight = h2 end
 
-    local ox = love.math.random(self.maxWidth)
-    local oy = love.math.random(self.maxHeight)
-    local room = Room(ox, oy, w, h)
+    local x = love.math.random(self.maxWidth)
+    local y = love.math.random(self.maxHeight)
+    local room = Room(x, y, w, h)
     table.insert(self.rooms, room)
   end
 
@@ -59,7 +55,8 @@ function Level:generate(number)
   for ay=1, self.height do
     for ax=1, self.width do
       for _, room in ipairs(self.rooms) do
-        if room:isInside(ax, ay) then
+        local px, py = help.tileToPixel(ax, ay)
+        if room:isInside(px, py) then
           map[ay][ax] = room.map[ay][ax]
         end
       end
@@ -83,19 +80,17 @@ function Level:tile(tx, ty)
 end
 
 function Level:tileAtPixels(px, py)
-  local tx = math.ceil(px / const.TILE_SIZE / const.SCALE)
-  local ty = math.ceil(py / const.TILE_SIZE / const.SCALE)
+  local tx, ty = help.pixelToTile(px, py)
   local tile = self.map[ty][tx]
   return tile
 end
 
 function Level:draw()
-  for y, row in ipairs(self.map) do
-    for x, tile in ipairs(row) do
-      local tx, ty = unpack(tile.coordinates)
-      local quad = self.selector(tx, ty)
-      local px = x * const.TILE_SIZE * const.SCALE
-      local py = y * const.TILE_SIZE * const.SCALE
+  for ty, row in ipairs(self.map) do
+    for tx, tile in ipairs(row) do
+      local sx, sy = unpack(tile.coordinates)
+      local quad = self.selector(sx, sy)
+      local px, py = help.tileToPixel(tx, ty)
       love.graphics.draw(self.spritesheet, quad, px, py)
     end
   end

@@ -1,3 +1,5 @@
+local const = require("mod.constants")
+
 local function rgba(r, g, b, a)
   a = a or 1
   return r / 255, g / 255, b / 255, a
@@ -35,11 +37,21 @@ local function tlen(t)
   return count
 end
 
+local function pixelToTile(x, y)
+  return math.ceil(x / const.TILE_SIZE / const.SCALE), math.ceil(y / const.TILE_SIZE / const.SCALE)
+end
+
+local function tileToPixel(x, y)
+  return x * const.TILE_SIZE * const.SCALE, y * const.TILE_SIZE * const.SCALE
+end
+
 local helpers = {
   rgba = rgba,
   every = every,
   tequals = tequals,
-  tlen = tlen
+  tlen = tlen,
+  pixelToTile = pixelToTile,
+  tileToPixel = tileToPixel
 }
 
 return helpers

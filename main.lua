@@ -1,6 +1,7 @@
 require("lib.batteries"):export()
 Object = require("lib.classic")
 Gamestate = require("lib.hump.gamestate")
+local bump = require("lib.bump")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -8,21 +9,17 @@ local overworldState = require("mod.states.overworld")
 local Player = require("mod.player")
 local Keys = require("mod.keys")
 local Level = require("mod.level")
-local lurker = require("lib.lurker")
 
 Game = {
   keys = {},
   showIntro = true,
   currentLevel = 1,
+  world = bump.newWorld(const.TILE_SIZE)
 }
 
 function love.conf(t)
   t.identity = "escape-from-valis"
   t.console = true
-end
-
-function love.update()
-  lurker.update()
 end
 
 function love.load()
@@ -37,8 +34,10 @@ function love.load()
 
 ---@diagnostic disable-next-line: undefined-field
   local pw, ph = love.graphics.getPixelDimensions()
-  Game.level = Level(pw, ph)
-  Game.player = Player(playerSheet, quad)
+  Game.level = Level(Game.currentLevel, pw, ph)
+  local p1 = Player(playerSheet, quad)
+  Game.world:add(p1.bumpId, p1.x, p1.y, p1.w, p1.h)
+  Game.player = p1
   Game.keys = Keys()
 
   Gamestate.registerEvents()
