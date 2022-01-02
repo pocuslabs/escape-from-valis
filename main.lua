@@ -8,21 +8,16 @@ local overworldState = require("mod.states.overworld")
 local Player = require("mod.player")
 local Keys = require("mod.keys")
 local Level = require("mod.level")
-local lurker = require("lib.lurker")
 
 Game = {
   keys = {},
   showIntro = true,
-  currentLevel = 1,
+  currentLevel = 1
 }
 
 function love.conf(t)
   t.identity = "escape-from-valis"
   t.console = true
-end
-
-function love.update()
-  lurker.update()
 end
 
 function love.load()
@@ -38,7 +33,10 @@ function love.load()
 ---@diagnostic disable-next-line: undefined-field
   local pw, ph = love.graphics.getPixelDimensions()
   Game.level = Level(pw, ph)
-  Game.player = Player(playerSheet, quad)
+  local p1 = Player(playerSheet, quad)
+  local p1Rect = { name = "Player" }
+  -- Game.world:add(p1Rect, p1.x, p1.y, p1.w, p1.h)
+  Game.player = p1
   Game.keys = Keys()
 
   Gamestate.registerEvents()

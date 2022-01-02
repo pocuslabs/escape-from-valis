@@ -20,7 +20,14 @@ function Room:new(x, y, w, h)
     for ix=1, w do
       local isWall = isRowWall or ix == 1 or ix == w
       local tile = const.TILES.ground
-      if isWall then tile = const.TILES.wall end
+      if isWall then
+        tile = const.TILES.wall
+        -- local name = "Tile "..ix..","..iy
+        -- local tileId = { name = name }
+        -- local size = const.TILE_SIZE * const.SCALE
+        -- Game.world:add(tileId, ix, iy, size, size)
+      end
+
       table.insert(row, tile)
     end
 
@@ -50,7 +57,7 @@ function Room:makeDoors()
   local doors = {}
   for _=1, numDoors do
     local idx
-    while not idx do
+    while not idx or not doors[idx] do
       idx = love.math.random(#dirs)
     end
 

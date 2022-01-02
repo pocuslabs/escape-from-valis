@@ -1,3 +1,5 @@
-ignore_files = {
-  "lib/**/*"
+std = {
+  ignore = {
+    "lib/**/*"
+  }
 }
