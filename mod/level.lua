@@ -86,11 +86,11 @@ function Level:tileAtPixels(px, py)
 end
 
 function Level:draw()
-  for y, row in ipairs(self.map) do
-    for x, tile in ipairs(row) do
-      local tx, ty = unpack(tile.coordinates)
-      local quad = self.selector(tx, ty)
-      local px, py = help.tileToPixel(x, y)
+  for ty, row in ipairs(self.map) do
+    for tx, tile in ipairs(row) do
+      local sx, sy = unpack(tile.coordinates)
+      local quad = self.selector(sx, sy)
+      local px, py = help.tileToPixel(tx, ty)
       love.graphics.draw(self.spritesheet, quad, px, py)
     end
   end
