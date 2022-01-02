@@ -49,11 +49,7 @@ Much of this is still in flux, so stay tuned!
 
 We use [`busted`][bust] for testing. These tests are limited to the `spritely` module, at least for now.
 
-You can install `busted` from [luarocks][luarocks], and run the tests locally if you like, in your terminal:
-
-```bash
-luarocks install busted
-```
+You can install `busted` from [luarocks][luarocks], and run the tests locally if you like, in your terminal, with `luarocks install busted`.
 
 Then you'll be able to run `busted` as a binary in the project root to run all the files matching `spec/**/*_spec.lua`. These tests will run automatically using CircleCI on every PR.
 
