@@ -8,7 +8,7 @@ local help = require("mod.helpers")
 
 local Level = Object:extend()
 
-function Level:new(pw, ph)
+function Level:new(number, pw, ph)
   self.roomCount = love.math.random(const.MAX_ROOMS)
 
   self.selector, self.spritesheet = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
@@ -21,10 +21,6 @@ function Level:new(pw, ph)
   self.maxWidth = 1
   self.maxHeight = 1
 
-  self:generate()
-end
-
-function Level:generate(number)
   number = number or 1  -- the level we're on
 
   -- make rooms
@@ -38,9 +34,9 @@ function Level:generate(number)
     local h2 = h * h
     if h2 > self.maxHeight then self.maxHeight = h2 end
 
-    local ox = love.math.random(self.maxWidth)
-    local oy = love.math.random(self.maxHeight)
-    local room = Room(ox, oy, w, h)
+    local x = love.math.random(self.maxWidth)
+    local y = love.math.random(self.maxHeight)
+    local room = Room(x, y, w, h)
     table.insert(self.rooms, room)
   end
 
