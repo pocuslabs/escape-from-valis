@@ -61,7 +61,7 @@ This game was made by:
 
 - [Richard Kubina][rk]
 - [Austin Pocus][ap]
-- (anyone else who comes up in the commit history)
+- (Anyone else who comes up in the commit history)
 
 ## License
 
