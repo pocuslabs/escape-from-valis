@@ -57,7 +57,7 @@ function Room:makeDoors()
   local doors = {}
   for _=1, numDoors do
     local idx
-    while not idx or not doors[idx] do
+    while not idx do
       idx = love.math.random(#dirs)
     end
 
