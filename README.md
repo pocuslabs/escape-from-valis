@@ -37,6 +37,14 @@ The "ax/ay" convention is pixel-based, but unlike other pixel values, relates to
 
 Currently, this is a very loose and informal spec. It's likely to change -- check the code comments as well for more details!
 
+## Levels and rooms
+
+Each "level" represents, as you might expect, a level in the game. These levels are numbered, starting at level 1. Each level can contain many rooms, at least `MIN_ROOMS` and up to (and including) `MAX_ROOMS` (those constants are defined in `mod/constants.lua`).
+
+In turn, each room will have a width and height between certain constraints, also defined in that constants file. The room will be bound by walls, and may have 1 to 4 "doors", really just openings leading to a path between rooms.
+
+Much of this is still in flux, so stay tuned!
+
 ## Testing
 
 We use [`busted`][bust] for testing. You can install `busted` from [luarocks][luarocks], and run the tests locally if you like, in your terminal:
