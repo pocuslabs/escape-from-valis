@@ -38,7 +38,7 @@ local function tlen(t)
 end
 
 local function pixelToTile(x, y)
-  return x / const.TILE_SIZE / const.SCALE, y / const.TILE_SIZE / const.SCALE
+  return math.ceil(x / const.TILE_SIZE / const.SCALE), math.ceil(y / const.TILE_SIZE / const.SCALE)
 end
 
 local function tileToPixel(x, y)

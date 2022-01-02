@@ -4,7 +4,7 @@ local inspect = require("lib.inspect")
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
 local Room = require("mod.room")
-
+local help = require("mod.help")
 local Level = Object:extend()
 
 function Level:new(pw, ph)
@@ -16,8 +16,7 @@ function Level:new(pw, ph)
   self.rooms = {}
   self.map = {}
 
-  self.width = math.ceil(pw / const.TILE_SIZE / const.SCALE)
-  self.height = math.ceil(ph / const.TILE_SIZE / const.SCALE)
+  self.width, self.height = help.pixelToTile(pw, ph)
   self.maxWidth = 1
   self.maxHeight = 1
 
@@ -83,8 +82,7 @@ function Level:tile(tx, ty)
 end
 
 function Level:tileAtPixels(px, py)
-  local tx = math.ceil(px / const.TILE_SIZE / const.SCALE)
-  local ty = math.ceil(py / const.TILE_SIZE / const.SCALE)
+  local tx, ty = help.pixelToTile(px, py)
   local tile = self.map[ty][tx]
   return tile
 end
@@ -94,8 +92,7 @@ function Level:draw()
     for x, tile in ipairs(row) do
       local tx, ty = unpack(tile.coordinates)
       local quad = self.selector(tx, ty)
-      local px = x * const.TILE_SIZE * const.SCALE
-      local py = y * const.TILE_SIZE * const.SCALE
+      local px, py = help.tileToPixel(x, y)
       love.graphics.draw(self.spritesheet, quad, px, py)
     end
   end
