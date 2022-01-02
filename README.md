@@ -9,7 +9,7 @@ A quick little rogue-like game made with LÖVE.
 ### macOS
 
 `brew install --cask love`
-then run `love main.lua`
+`love ./` at the base directory of this repository
 
 ### Windows 11
 
