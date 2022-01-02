@@ -47,7 +47,9 @@ Much of this is still in flux, so stay tuned!
 
 ## Testing
 
-We use [`busted`][bust] for testing. You can install `busted` from [luarocks][luarocks], and run the tests locally if you like, in your terminal:
+We use [`busted`][bust] for testing. These tests are limited to the `spritely` module, at least for now.
+
+You can install `busted` from [luarocks][luarocks], and run the tests locally if you like, in your terminal:
 
 ```bash
 luarocks install busted
