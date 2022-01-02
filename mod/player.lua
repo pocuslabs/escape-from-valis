@@ -65,14 +65,14 @@ end
 
 function Player:update(dt)
   local dx, dy, speed = 0, 0, self.speed
-  if love.keyboard.isDown('right') then
+  if Game.keys.state['right'] then
     dx = speed * dt
-  elseif love.keyboard.isDown('left') then
+  elseif Game.keys.state['left'] then
     dx = -speed * dt
   end
-  if love.keyboard.isDown('down') then
+  if Game.keys.state['down'] then
     dy = speed * dt
-  elseif love.keyboard.isDown('up') then
+  elseif Game.keys.state['up'] then
     dy = -speed * dt
   end
 
