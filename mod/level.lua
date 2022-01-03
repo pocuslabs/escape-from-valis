@@ -49,15 +49,12 @@ function Level:new(number, pw, ph)
     end
   end
 
-  -- fill in the room tiles
-  -- note: ax and ay are absolute map coordinates
-  -- (as opposed to room-relative coordinates)
-  for ay=1, self.height do
-    for ax=1, self.width do
+  for y=1, self.height do
+    for x=1, self.width do
       for _, room in ipairs(self.rooms) do
-        local px, py = help.tileToPixel(ax, ay)
+        local px, py = help.tileToPixel(x, y)
         if room:isInside(px, py) then
-          map[ay][ax] = room.map[ay][ax]
+          map[y][x] = room.map[y][x]
         end
       end
     end
