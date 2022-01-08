@@ -1,5 +1,6 @@
 Object = require("lib.classic")
 local inspect = require("lib.inspect")
+local bump_debug = require("lib.bump_debug")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -81,6 +82,8 @@ function Level:draw()
       love.graphics.draw(self.spritesheet, quad, px, py)
     end
   end
+
+  bump_debug.draw(Game.world)
 end
 
 return Level
