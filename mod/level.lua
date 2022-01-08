@@ -25,7 +25,7 @@ function Level:new(number, pixelW, pixelH)
   number = number or 1  -- the level we're on
 
   -- make rooms
-  for _=1, self.roomCount do
+  for roomNumber=1, self.roomCount do
     -- if this room is bigger than the max, set the max
     local roomW = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
     local width2 = roomW * roomW
@@ -37,6 +37,21 @@ function Level:new(number, pixelW, pixelH)
 
     local roomPosX = love.math.random(self.maxWidth - roomW)
     local roomPosY = love.math.random(self.maxHeight - roomH)
+
+    local roomId = { name = "Room "..roomNumber }
+    Game.world:add(roomId, roomPosX, roomPosY, roomW, roomH)
+    local actualX, actualY = Game.world:check(roomId, roomPosX, roomPosY)
+    
+    if roomPosX ~= actualX then
+      roomPosX = actualX
+    end
+
+    if roomPosY ~= actualY then
+      roomPosY = actualY
+    end
+
+    Game.world:move(roomId, roomPosX, roomPosY)
+
     local room = Room(roomPosX, roomPosY, roomW, roomH)
     table.insert(self.rooms, room)
   end
