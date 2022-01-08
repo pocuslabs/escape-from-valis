@@ -10,7 +10,7 @@ local help = require("mod.helpers")
 local Level = Object:extend()
 
 function Level:new(number, pixelW, pixelH)
-  self.roomCount = love.math.random(const.MAX_ROOMS)
+  self.roomCount = love.math.random(const.MIN_ROOMS, const.MAX_ROOMS)
 
   self.selector, self.spritesheet = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
   self.memo = {}
@@ -39,7 +39,8 @@ function Level:new(number, pixelW, pixelH)
     local roomPosY = love.math.random(self.maxHeight - roomH)
 
     local roomId = { name = "Room "..roomNumber }
-    Game.world:add(roomId, roomPosX, roomPosY, roomW, roomH)
+    local pxWidth, pxHeight = help.tileToPixel(roomW, roomH)
+    Game.world:add(roomId, roomPosX, roomPosY, pxWidth, pxHeight)
     local actualX, actualY = Game.world:check(roomId, roomPosX, roomPosY)
     
     if roomPosX ~= actualX then
@@ -48,6 +49,14 @@ function Level:new(number, pixelW, pixelH)
 
     if roomPosY ~= actualY then
       roomPosY = actualY
+    end
+
+    if roomPosY > self.maxHeight then
+      self.maxHeight = roomPosY
+    end
+
+    if roomPosX > self.maxWidth then
+      self.maxWidth = roomPosX
     end
 
     Game.world:move(roomId, roomPosX, roomPosY)
