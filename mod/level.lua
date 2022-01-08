@@ -27,11 +27,11 @@ function Level:new(number, pixelW, pixelH)
   -- make rooms
   for roomNumber=1, self.roomCount do
     -- if this room is bigger than the max, set the max
-    local roomW = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
+    local roomW = love.math.random(const.MIN_SIZE + 1, const.MAX_SIZE + 1)
     local width2 = roomW * roomW
     if width2 > self.maxWidth then self.maxWidth = width2 end
 
-    local roomH = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
+    local roomH = love.math.random(const.MIN_SIZE + 1, const.MAX_SIZE + 1)
     local height2 = roomH * roomH
     if height2 > self.maxHeight then self.maxHeight = height2 end
 
@@ -70,7 +70,7 @@ function Level:new(number, pixelW, pixelH)
     for ty, row in ipairs(room.map) do
       for tx, tile in ipairs(row) do
         local originTX, originTY = help.pixelToTile(room.posX, room.posY)
-        local actualX, actualY = originTX + tx, originTY + ty
+        local actualX, actualY = math.min(#map[1], originTX + tx), math.min(#map, originTY + ty)
 
         if tile.solid then
           local tileName = "Tile "..tx..","..ty

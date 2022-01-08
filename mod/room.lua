@@ -33,8 +33,6 @@ function Room:new(x, y, w, h)
   end
 end
 
--- this function takes absolute x/y coordinates and tells us
--- whether the room matches the coordinates
 function Room:isInside(screenX, screenY)
   local xWithin = screenX >= self.posX and screenX <= (self.posX + self.w)
   local yWithin = screenY >= self.posY and screenY <= (self.posY + self.h)
