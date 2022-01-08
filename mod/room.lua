@@ -26,11 +26,6 @@ function Room:new(x, y, w, h)
       local tile = const.TILES.ground
       if isWall then
         tile = const.TILES.wall
-        local name = "Tile "..tx..","..ty
-        local tileId = { name = name }
-        local size = const.TILE_SIZE * const.SCALE
-        local px, py = help.tileToPixel(tx, ty)
-        Game.world:add(tileId, px, py, size, size)
       end
 
       table.insert(row, tile)

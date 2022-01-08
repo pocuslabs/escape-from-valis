@@ -55,6 +55,15 @@ function Level:new(number, pixelW, pixelH)
       for tx, tile in ipairs(row) do
         local originTX, originTY = help.pixelToTile(room.posX, room.posY)
         local actualX, actualY = originTX + tx, originTY + ty
+
+        if tile.solid then
+          local tileName = "Tile "..tx..","..ty
+          local tileId = { name = tileName }
+          local size = const.TILE_SIZE * const.SCALE
+          local px, py = help.tileToPixel(actualX, actualY)
+          Game.world:add(tileId, px, py, size, size)
+        end
+
         map[actualY][actualX] = tile
       end
     end
