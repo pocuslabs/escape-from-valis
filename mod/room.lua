@@ -19,10 +19,10 @@ function Room:new(x, y, w, h)
 
   for ty=1, h do
     local row = {}
-    local isRowWall = ty == y or ty == h
+    local isRowWall = ty == 1 or ty == h
 
     for tx=1, w do
-      local isWall = isRowWall or tx == x or tx == w
+      local isWall = isRowWall or tx == 1 or tx == w
       local tile = const.TILES.ground
       if isWall then
         tile = const.TILES.wall

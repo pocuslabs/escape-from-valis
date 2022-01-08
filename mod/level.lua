@@ -34,8 +34,8 @@ function Level:new(number, pixelW, pixelH)
     local height2 = roomH * roomH
     if height2 > self.maxHeight then self.maxHeight = height2 end
 
-    local roomPosX = love.math.random(self.maxWidth)
-    local roomPosY = love.math.random(self.maxHeight)
+    local roomPosX = love.math.random(self.maxWidth - roomW)
+    local roomPosY = love.math.random(self.maxHeight - roomH)
     local room = Room(roomPosX, roomPosY, roomW, roomH)
     table.insert(self.rooms, room)
   end
@@ -50,11 +50,12 @@ function Level:new(number, pixelW, pixelH)
   end
 
   -- fill in the room tiles
-  for ty=1, self.height do
-    for tx=1, self.width do
+  for ty=1, self.maxHeight do
+    for tx=1, self.maxWidth do
       for _, room in ipairs(self.rooms) do
         local px, py = help.tileToPixel(tx, ty)
         if room:isInside(px, py) then
+          print("INSIDE", room.map[ty][tx])
           map[ty][tx] = room.map[ty][tx]
         end
       end
@@ -62,25 +63,6 @@ function Level:new(number, pixelW, pixelH)
   end
 
   self.map = map
-end
-
--- this function operates on tile coordinates, NOT pixels
--- see mod.constants.TILES for examples
-function Level:tile(tx, ty)
-  local key = tx..","..ty
-  if self.tiles[key] then
-    return self.tiles[key]
-  end
-
-  local quad = self.selector(tx, ty)
-  self.tiles[key] = quad
-  return quad
-end
-
-function Level:tileAtPixels(px, py)
-  local tx, ty = help.pixelToTile(px, py)
-  local tile = self.map[ty][tx]
-  return tile
 end
 
 function Level:draw()
