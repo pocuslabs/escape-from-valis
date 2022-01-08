@@ -13,8 +13,6 @@ function Room:new(x, y, w, h)
   h = h or 1
   self.posX, self.posY = help.tileToPixel(x, y)
   self.w, self.h = help.tileToPixel(w, h)
-
-  self.doors = self:makeDoors()
   self.map = {}
 
   for ty=1, h do
@@ -35,32 +33,10 @@ function Room:new(x, y, w, h)
   end
 end
 
--- this function takes absolute x/y coordinates and tells us
--- whether the room matches the coordinates
 function Room:isInside(screenX, screenY)
   local xWithin = screenX >= self.posX and screenX <= (self.posX + self.w)
   local yWithin = screenY >= self.posY and screenY <= (self.posY + self.h)
   return xWithin and yWithin
-end
-
-function Room:makeDoors()
-  local dirs = {
-    {0, 1},
-    {1, 0},
-    {0, -1},
-    {-1, 0}
-  }
-
-  local numDoors = love.math.random(const.MAX_DOORS)
-  local doors = {}
-  for _=1, numDoors do
-    local idx = love.math.random(#dirs)
-    local doorDir = dirs[idx] -- hodor
-    dirs[idx] = nil
-    table.insert(doors, doorDir)
-  end
-
-  return doors
 end
 
 return Room
