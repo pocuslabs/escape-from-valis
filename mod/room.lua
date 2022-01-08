@@ -66,6 +66,7 @@ function Room:pathTo(tx, ty)
     end
 
     local tx, ty = help.pixelToTile(curX, curY)
+    print("TX, TY", tx, ty)
     self.map[ty][tx] = const.TILES.ground
   end
 end
