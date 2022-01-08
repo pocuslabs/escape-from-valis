@@ -81,8 +81,6 @@ function Level:draw()
       love.graphics.draw(self.spritesheet, quad, px, py)
     end
   end
-
-  -- bump_debug.draw(Game.world)
 end
 
 return Level
