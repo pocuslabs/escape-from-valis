@@ -60,9 +60,8 @@ function Level:new(number, pixelW, pixelH)
         if tile.solid then
           local tileName = "Tile "..tx..","..ty
           local tileId = { name = tileName }
-          local size = const.TILE_SIZE * const.SCALE
           local px, py = help.tileToPixel(actualX, actualY)
-          Game.world:add(tileId, px, py, size, size)
+          Game.world:add(tileId, px, py, const.TILE_SIZE, const.TILE_SIZE)
         end
 
         map[actualY][actualX] = tile
@@ -83,7 +82,7 @@ function Level:draw()
     end
   end
 
-  bump_debug.draw(Game.world)
+  -- bump_debug.draw(Game.world)
 end
 
 return Level

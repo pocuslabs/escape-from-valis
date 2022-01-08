@@ -15,8 +15,8 @@ local function load(filename, opts)
     -- sane defaults
     -- assuming uniform sprite size (i.e. all sprites should be the same size)
     if not x or not y then return nil end
-    if not w then w = constants.TILE_SIZE * constants.SCALE end
-    if not h then h = constants.TILE_SIZE * constants.SCALE end
+    if not w then w = constants.TILE_SIZE end
+    if not h then h = constants.TILE_SIZE end
 
     -- make sure the coordinates are 1-indexed!
     if x < 1 then x = 1 end
