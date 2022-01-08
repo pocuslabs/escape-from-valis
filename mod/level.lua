@@ -42,7 +42,7 @@ function Level:new(number, pixelW, pixelH)
     local pxWidth, pxHeight = help.tileToPixel(roomW, roomH)
     Game.world:add(roomId, roomPosX, roomPosY, pxWidth, pxHeight)
     local actualX, actualY = Game.world:check(roomId, roomPosX, roomPosY)
-    
+
     if roomPosX ~= actualX then
       roomPosX = actualX
     end
@@ -86,6 +86,14 @@ function Level:new(number, pixelW, pixelH)
           local tileId = { name = tileName }
           local px, py = help.tileToPixel(actualX, actualY)
           Game.world:add(tileId, px, py, const.TILE_SIZE, const.TILE_SIZE)
+        end
+
+        if actualY > #map then
+          actualY = #map
+        end
+    
+        if actualX > #map[1] then
+          actualX = #map[1]
         end
 
         map[actualY][actualX] = tile

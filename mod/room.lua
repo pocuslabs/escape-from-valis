@@ -39,4 +39,35 @@ function Room:isInside(screenX, screenY)
   return xWithin and yWithin
 end
 
+function Room:pixelCenter()
+  return self.w / 2, self.h / 2
+end
+
+function Room:pathTo(tx, ty)
+  local centerX, centerY = self:pixelCenter()
+  local targetX, targetY = help.tileToPixel(tx, ty)
+
+  local curX = centerX
+  local curY = centerY
+  while curX ~= targetX and curY ~= targetY do
+    local diffX, diffY = (targetX - curX) / const.TILE_SIZE, (targetY - curY) / const.TILE_SIZE
+    local slope = diffY / diffX
+    local xSign = 1
+    local ySign = 1
+    if targetX - curX < 0 then xSign = -1 end
+    if targetY - curY < 0 then ySign = -1 end
+
+    if slope > 1 then
+      -- y diff is greater
+      curY = curY + const.TILE_SIZE * ySign
+    else
+      -- x diff is greater
+      curX = curX + const.TILE_SIZE * xSign
+    end
+
+    local tx, ty = help.pixelToTile(curX, curY)
+    self.map[ty][tx] = const.TILES.ground
+  end
+end
+
 return Room
