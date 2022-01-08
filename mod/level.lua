@@ -1,5 +1,6 @@
 Object = require("lib.classic")
 local inspect = require("lib.inspect")
+local bump_debug = require("lib.bump_debug")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
@@ -50,14 +51,20 @@ function Level:new(number, pixelW, pixelH)
   end
 
   -- fill in the room tiles
-  for ty=1, self.maxHeight do
-    for tx=1, self.maxWidth do
-      for _, room in ipairs(self.rooms) do
-        local px, py = help.tileToPixel(tx, ty)
-        if room:isInside(px, py) then
-          print("INSIDE", room.map[ty][tx])
-          map[ty][tx] = room.map[ty][tx]
+  for _, room in ipairs(self.rooms) do
+    for ty, row in ipairs(room.map) do
+      for tx, tile in ipairs(row) do
+        local originTX, originTY = help.pixelToTile(room.posX, room.posY)
+        local actualX, actualY = originTX + tx, originTY + ty
+
+        if tile.solid then
+          local tileName = "Tile "..tx..","..ty
+          local tileId = { name = tileName }
+          local px, py = help.tileToPixel(actualX, actualY)
+          Game.world:add(tileId, px, py, const.TILE_SIZE, const.TILE_SIZE)
         end
+
+        map[actualY][actualX] = tile
       end
     end
   end
@@ -68,8 +75,8 @@ end
 function Level:draw()
   for ty, row in ipairs(self.map) do
     for tx, tile in ipairs(row) do
-      local sx, sy = unpack(tile.coordinates)
-      local quad = self.selector(sx, sy)
+      local spriteX, spriteY = unpack(tile.coordinates)
+      local quad = self.selector(spriteX, spriteY)
       local px, py = help.tileToPixel(tx, ty)
       love.graphics.draw(self.spritesheet, quad, px, py)
     end

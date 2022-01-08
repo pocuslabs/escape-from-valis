@@ -26,11 +26,6 @@ function Room:new(x, y, w, h)
       local tile = const.TILES.ground
       if isWall then
         tile = const.TILES.wall
-        local name = "Tile "..tx..","..ty
-        local tileId = { name = name }
-        local size = const.TILE_SIZE * const.SCALE
-        local px, py = help.tileToPixel(tx, ty)
-        Game.world:add(tileId, px, py, size, size)
       end
 
       table.insert(row, tile)
@@ -43,10 +38,9 @@ end
 -- this function takes absolute x/y coordinates and tells us
 -- whether the room matches the coordinates
 function Room:isInside(screenX, screenY)
-  local hasCoords = screenY >= 1 and screenX >= 1 and screenY <= #self.map and screenX <= #self.map[1]
-  local xWithin = screenX >= self.posX and screenX <= (self.posX + self.posY)
+  local xWithin = screenX >= self.posX and screenX <= (self.posX + self.w)
   local yWithin = screenY >= self.posY and screenY <= (self.posY + self.h)
-  return hasCoords and xWithin and yWithin
+  return xWithin and yWithin
 end
 
 function Room:makeDoors()

@@ -14,6 +14,7 @@ function Player:new(spritesheet, quad)
   self.dx = 0
   self.dy = 0
   self.speed = 80
+  self.bumpOffset = 4
   self.bumpId = { name = "Player" }
 end
 
