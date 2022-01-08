@@ -53,7 +53,9 @@ function Level:new(number, pixelW, pixelH)
   for _, room in ipairs(self.rooms) do
     for ty, row in ipairs(room.map) do
       for tx, tile in ipairs(row) do
-        map[ty][tx] = tile
+        local originTX, originTY = help.pixelToTile(room.posX, room.posY)
+        local actualX, actualY = originTX + tx, originTY + ty
+        map[actualY][actualX] = tile
       end
     end
   end
