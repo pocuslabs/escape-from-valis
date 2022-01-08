@@ -89,11 +89,11 @@ function Level:new(number, pixelW, pixelH)
         end
 
         if actualY > #map then
-          actualY = #map
+          actualY = #map - 1
         end
     
         if actualX > #map[1] then
-          actualX = #map[1]
+          actualX = #map[1] - 1
         end
 
         map[actualY][actualX] = tile
