@@ -3,7 +3,7 @@ local music
 local function load()
 
   -- the "stream" tells LÖVE to stream the file from disk, good for longer music tracksend
-	music = love.audio.newSource("data/audio/chiptunes.mp3", "stream") 
+	music = love.audio.newSource("data/audio/chiptunes.mp3", "stream")
   music:setLooping(true)
   love.audio.setEffect('reverb', {
     type = 'reverb',

@@ -21,34 +21,6 @@ function Player:isMoving()
   return self.dx ~= 0 or self.dy ~= 0
 end
 
-function Player:isColliding(x, y)
-  if not x or not y then
-    x = self.x
-    y = self.y
-  end
-
-  local tileSize = const.TILE_SIZE * const.SCALE
-  local corners = {
-    { x, y },
-    { math.min(x + tileSize, const.WIDTH), y },
-    { x, math.min(const.HEIGHT, y + tileSize) },
-    { math.min(x + tileSize, const.WIDTH), math.min(const.HEIGHT, y + tileSize) }
-  }
-
-  local isColliding = false
-  local gid = nil
-  for _, corner in ipairs(corners) do
-    local cx, cy = unpack(corner)
-    local tile = Game.level:tileAtPixels(cx, cy)
-    if tile.solid then
-      isColliding = true
-      gid = tile
-    end
-  end
-
-  return isColliding, gid
-end
-
 function Player:run()
   self.speed = 1.75
 end
@@ -76,11 +48,11 @@ function Player:update(dt)
     dy = -speed * dt
   end
 
-  local nx = self.x + dx
-  local ny = self.y + dy
-  local rx, ry = Game.world:move(self.bumpId, nx, ny)
-  self.x = rx
-  self.y = ry
+  local newX = self.x + dx
+  local newY = self.y + dy
+  local realX, realY = Game.world:move(self.bumpId, newX, newY)
+  self.x = realX
+  self.y = realY
 end
 
 function Player:draw()

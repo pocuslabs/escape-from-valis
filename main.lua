@@ -33,8 +33,8 @@ function love.load()
   local quad = selector(1, 1)
 
 ---@diagnostic disable-next-line: undefined-field
-  local pw, ph = love.graphics.getPixelDimensions()
-  Game.level = Level(Game.currentLevel, pw, ph)
+  local screenW, screenH = love.graphics.getPixelDimensions()
+  Game.level = Level(Game.currentLevel, screenW, screenH)
   local p1 = Player(playerSheet, quad)
   Game.world:add(p1.bumpId, p1.x, p1.y, p1.w, p1.h)
   Game.player = p1

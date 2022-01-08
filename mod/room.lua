@@ -11,7 +11,7 @@ function Room:new(x, y, w, h)
   y = y or 1
   w = w or 1
   h = h or 1
-  self.x, self.y = help.tileToPixel(x, y)
+  self.posX, self.posY = help.tileToPixel(x, y)
   self.w, self.h = help.tileToPixel(w, h)
 
   self.doors = self:makeDoors()
@@ -42,10 +42,10 @@ end
 
 -- this function takes absolute x/y coordinates and tells us
 -- whether the room matches the coordinates
-function Room:isInside(ax, ay)
-  local hasCoords = ay <= #self.map and ax <= #self.map[1]
-  local xWithin = ax >= self.x and ax <= (self.x + self.w)
-  local yWithin = ay >= self.y and ay <= (self.y + self.h)
+function Room:isInside(screenX, screenY)
+  local hasCoords = screenY >= 1 and screenX >= 1 and screenY <= #self.map and screenX <= #self.map[1]
+  local xWithin = screenX >= self.posX and screenX <= (self.posX + self.posY)
+  local yWithin = screenY >= self.posY and screenY <= (self.posY + self.h)
   return hasCoords and xWithin and yWithin
 end
 

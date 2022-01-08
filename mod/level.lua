@@ -8,7 +8,7 @@ local help = require("mod.helpers")
 
 local Level = Object:extend()
 
-function Level:new(number, pw, ph)
+function Level:new(number, pixelW, pixelH)
   self.roomCount = love.math.random(const.MAX_ROOMS)
 
   self.selector, self.spritesheet = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
@@ -17,7 +17,7 @@ function Level:new(number, pw, ph)
   self.rooms = {}
   self.map = {}
 
-  self.width, self.height = help.pixelToTile(pw, ph)
+  self.width, self.height = help.pixelToTile(pixelW, pixelH)
   self.maxWidth = 1
   self.maxHeight = 1
 
@@ -26,17 +26,17 @@ function Level:new(number, pw, ph)
   -- make rooms
   for _=1, self.roomCount do
     -- if this room is bigger than the max, set the max
-    local w = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    local w2 = w * w
-    if w2 > self.maxWidth then self.maxWidth = w2 end
+    local roomW = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
+    local width2 = roomW * roomW
+    if width2 > self.maxWidth then self.maxWidth = width2 end
 
-    local h = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    local h2 = h * h
-    if h2 > self.maxHeight then self.maxHeight = h2 end
+    local roomH = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
+    local height2 = roomH * roomH
+    if height2 > self.maxHeight then self.maxHeight = height2 end
 
-    local x = love.math.random(self.maxWidth)
-    local y = love.math.random(self.maxHeight)
-    local room = Room(x, y, w, h)
+    local roomPosX = love.math.random(self.maxWidth)
+    local roomPosY = love.math.random(self.maxHeight)
+    local room = Room(roomPosX, roomPosY, roomW, roomH)
     table.insert(self.rooms, room)
   end
 
@@ -50,14 +50,12 @@ function Level:new(number, pw, ph)
   end
 
   -- fill in the room tiles
-  -- note: ax and ay are absolute map coordinates
-  -- (as opposed to room-relative coordinates)
-  for ay=1, self.height do
-    for ax=1, self.width do
+  for ty=1, self.height do
+    for tx=1, self.width do
       for _, room in ipairs(self.rooms) do
-        local px, py = help.tileToPixel(ax, ay)
+        local px, py = help.tileToPixel(tx, ty)
         if room:isInside(px, py) then
-          map[ay][ax] = room.map[ay][ax]
+          map[ty][tx] = room.map[ty][tx]
         end
       end
     end
