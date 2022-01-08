@@ -50,14 +50,10 @@ function Level:new(number, pixelW, pixelH)
   end
 
   -- fill in the room tiles
-  for ty=1, self.maxHeight do
-    for tx=1, self.maxWidth do
-      for _, room in ipairs(self.rooms) do
-        local px, py = help.tileToPixel(tx, ty)
-        if room:isInside(px, py) then
-          print("INSIDE", room.map[ty][tx])
-          map[ty][tx] = room.map[ty][tx]
-        end
+  for _, room in ipairs(self.rooms) do
+    for ty, row in ipairs(room.map) do
+      for tx, tile in ipairs(row) do
+        map[ty][tx] = tile
       end
     end
   end
@@ -68,8 +64,8 @@ end
 function Level:draw()
   for ty, row in ipairs(self.map) do
     for tx, tile in ipairs(row) do
-      local sx, sy = unpack(tile.coordinates)
-      local quad = self.selector(sx, sy)
+      local spriteX, spriteY = unpack(tile.coordinates)
+      local quad = self.selector(spriteX, spriteY)
       local px, py = help.tileToPixel(tx, ty)
       love.graphics.draw(self.spritesheet, quad, px, py)
     end
