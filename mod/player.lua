@@ -27,7 +27,7 @@ function Player:run()
 end
 
 function Player:walk()
-  self.speed = 1
+  self.speed = 80
 end
 
 function Player:act()
