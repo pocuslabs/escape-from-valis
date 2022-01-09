@@ -23,7 +23,7 @@ function Player:isMoving()
 end
 
 function Player:run()
-  self.speed = 1.75
+  self.speed = self.speed * 1.75
 end
 
 function Player:walk()
