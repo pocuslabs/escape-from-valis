@@ -9,6 +9,7 @@ local overworldState = require("mod.states.overworld")
 local Player = require("mod.player")
 local Keys = require("mod.keys")
 local Level = require("mod.level")
+local lurker = require("lib.lurker")
 
 Game = {
   keys = {},
@@ -20,6 +21,10 @@ Game = {
 function love.conf(t)
   t.identity = "escape-from-valis"
   t.console = true
+end
+
+function love.update()
+  lurker.update()
 end
 
 function love.load()
