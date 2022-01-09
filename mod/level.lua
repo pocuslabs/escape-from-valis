@@ -42,6 +42,12 @@ function Level:new(number, pixelW, pixelH)
     local pxWidth, pxHeight = help.tileToPixel(roomW, roomH)
     Game.world:add(roomId, roomPosX, roomPosY, pxWidth, pxHeight)
     local actualX, actualY = Game.world:check(roomId, roomPosX, roomPosY)
+    if actualX < 0 then
+      actualX = 0
+    end
+    if actualY < 0 then
+      actualY = 0
+    end
 
     if roomPosX ~= actualX then
       roomPosX = actualX
