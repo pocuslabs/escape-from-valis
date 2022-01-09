@@ -7,8 +7,8 @@ local Room = Object:extend()
 
 function Room:new(x, y, w, h)
   -- pass in tile coordinates, but use absolute pixel coordinates internally
-  x = x or 1
-  y = y or 1
+  x = math.abs(x) or 1
+  y = math.abs(y) or 1
   w = w or 1
   h = h or 1
   self.posX, self.posY = help.tileToPixel(x, y)

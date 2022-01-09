@@ -38,10 +38,12 @@ local function tlen(t)
 end
 
 local function pixelToTile(x, y)
+  print("OtX,OtY", x, y)
   return math.ceil(x / const.TILE_SIZE), math.ceil(y / const.TILE_SIZE)
 end
 
 local function tileToPixel(x, y)
+  print("OX,OY", x, y)
   return x * const.TILE_SIZE, y * const.TILE_SIZE
 end
 
