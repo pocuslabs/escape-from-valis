@@ -84,9 +84,7 @@ function Level:new(number, pixelW, pixelH)
   for _, room in ipairs(self.rooms) do
     for ty, row in ipairs(room.map) do
       for tx, tile in ipairs(row) do
-        print("TX, TY", tx, ty)
         local originTX, originTY = help.pixelToTile(room.posX, room.posY)
-        print("OG", originTX, originTY)
         local actualX, actualY = math.min(#map[1], originTX + tx), math.min(#map, originTY + ty)
 
         if tile.solid then
@@ -103,7 +101,7 @@ function Level:new(number, pixelW, pixelH)
         if actualX > #map[1] then
           actualX = #map[1] - 1
         end
-        print("ACTUALLY", actualX, actualY)
+
         map[actualY][actualX] = tile
       end
     end

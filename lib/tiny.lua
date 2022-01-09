@@ -230,7 +230,7 @@ end
 -- removed from the world, after all Entities are removed from the System.
 --   * `function system:preWrap(dt)` - Called on each system before update is
 -- called on any system.
---   * `function system:postWrap(dt)` - Called on each system in reverse order
+--   * `function system:postWrap(dt) - Called on each system in reverse order
 -- after update is called on each system. The idea behind `preWrap` and
 -- `postWrap` is to allow for systems that modify the behavior of other systems.
 -- Say there is a DrawingSystem, which draws sprites to the screen, and a
@@ -278,13 +278,11 @@ end
 --
 -- There is another option to (hopefully) increase performance in systems that
 -- have items added to or removed from them often, and have lots of entities in
--- them.  Setting the `nocache` field of the system might improve performance.
+-- them.  Setting the `nocache' field of the system might improve performance.
 -- It is still experimental. There are some restriction to systems without
--- caching, however.
---
---   * There is no `entities` table.
---   * Callbacks such onAdd, onRemove, and onModify will never be called
---   * Noncached systems cannot be sorted (There is no entities list to sort).
+-- caching, however.  * There is no `entities` table.  * Callbacks such onAdd,
+-- onRemove, and onModify will never be called * Noncached systems cannot be
+-- sorted (There is no entities list to sort).
 --
 -- @section System
 
@@ -309,7 +307,7 @@ local function processingSystemUpdate(system, dt)
 
     if process then
         if system.nocache then
-            local entities = system.world.entities
+            local entities = system.world.entityList
             local filter = system.filter
             if filter then
                 for i = 1, #entities do
@@ -821,7 +819,6 @@ end
 -- the order in which they Systems processed, because lower indexed Systems are
 -- processed first. Returns the old system.index.
 function tiny.setSystemIndex(world, system, index)
-    tiny_manageSystems(world)
     local oldIndex = system.index
     local systems = world.systems
 
