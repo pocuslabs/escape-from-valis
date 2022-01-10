@@ -56,8 +56,4 @@ function Player:update(dt)
   self.y = realY
 end
 
-function Player:draw()
-  love.graphics.draw(self.spritesheet, self.quad, self.x, self.y)
-end
-
 return Player
