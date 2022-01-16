@@ -6,17 +6,6 @@ local help = require("mod.helpers")
 
 local Level = Object:extend()
 
-local function roomOverlaps(rooms, x, y, w, h)
-  local overlaps = false
-  for _, room in ipairs(rooms) do
-    if x >= room.x and x <= room.w or y >= room.y and y <= room.h then
-      overlaps = true
-    end
-  end
-
-  return overlaps
-end
-
 function Level:new(number, pixelW, pixelH)
   self.selector, self.spritesheet = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
   self.map = {}
@@ -43,20 +32,6 @@ function Level:new(number, pixelW, pixelH)
     local roomh = love.math.random(const.MIN_SIZE + 1, const.MAX_SIZE + 1) * const.TILE_SIZE
     local roomx = love.math.random(self.width - roomw)
     local roomy = love.math.random(self.height - roomh)
-    local maxWidth = roomw
-    local maxHeight = roomh
-    while roomOverlaps(self.rooms, roomx, roomy, roomw, roomh) and maxWidth >= 1 and maxHeight >= 1 do
-      maxWidth = maxWidth - 1
-      maxHeight = maxHeight - 1
-      roomw = love.math.random(const.MIN_SIZE + 1, maxWidth) * const.TILE_SIZE
-      roomh = love.math.random(const.MIN_SIZE + 1, maxHeight) * const.TILE_SIZE
-      roomx = love.math.random(self.width - roomw)
-      roomy = love.math.random(self.height - roomh)
-    end
-
-    if roomw < 1 or roomh < 1 then
-      break
-    end
 
     local roomId = { name = "Room "..roomNumber }
     local pxWidth, pxHeight = help.tileToPixel(roomw, roomh)
