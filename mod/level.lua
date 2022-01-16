@@ -2,7 +2,6 @@ Object = require("lib.classic")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
-local Room = require("mod.room")
 local help = require("mod.helpers")
 
 local Level = Object:extend()
