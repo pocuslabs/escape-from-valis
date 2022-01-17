@@ -33,27 +33,6 @@ function Level:new(number, pixelW, pixelH)
     local roomx = love.math.random(self.width - roomw)
     local roomy = love.math.random(self.height - roomh)
 
-    local roomId = { name = "Room "..roomNumber }
-    local pxWidth, pxHeight = help.tileToPixel(roomw, roomh)
-    Game.world:add(roomId, roomx, roomy, pxWidth, pxHeight)
-    local actualX, actualY = Game.world:check(roomId, roomx, roomy)
-    if actualX < 0 then
-      actualX = 0
-    end
-    if actualY < 0 then
-      actualY = 0
-    end
-
-    if roomx ~= actualX then
-      roomx = actualX
-    end
-
-    if roomy ~= actualY then
-      roomy = actualY
-    end
-
-    Game.world:move(roomId, roomx, roomx)
-
     local room = {
       x = roomx,
       y = roomy,
