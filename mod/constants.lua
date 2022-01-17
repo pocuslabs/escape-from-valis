@@ -21,8 +21,7 @@ local constants = {
   MIN_SIZE = 3,  -- sizes are in tile units, 16x16
   MAX_SIZE = 5,
   MIN_ROOMS = 2,
-  MAX_ROOMS = 10,
-  MAX_DOORS = 4
+  MAX_ROOMS = 10
 }
 
 return constants

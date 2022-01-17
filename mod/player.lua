@@ -1,4 +1,5 @@
 Object = require("lib.classic")
+local anim8 = require("lib.anim8")
 
 local const = require("mod.constants")
 
@@ -16,6 +17,9 @@ function Player:new(spritesheet, quad)
   self.speed = 80
   self.bumpOffset = 4
   self.bumpId = { name = "Player" }
+
+  local g = anim8.newGrid(self.w, self.h, self.spritesheet:getWidth(), self.spritesheet:getHeight())
+  self.animation = anim8.newAnimation(g(1, '1-2'), 0.2)
 end
 
 function Player:isMoving()
@@ -54,6 +58,11 @@ function Player:update(dt)
   local realX, realY = Game.world:move(self.bumpId, newX, newY)
   self.x = realX
   self.y = realY
+  self.animation:update(dt)
+end
+
+function Player:draw()
+  self.animation:draw(self.spritesheet, self.x, self.y)
 end
 
 return Player
