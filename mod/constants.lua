@@ -26,7 +26,7 @@ local constants = {
     movement = 100
   },
   DT_THRESHOLD = 16,
-  WALK_FRAMES = 16
+  WALK_FRAMES = 32
 }
 
 return constants
