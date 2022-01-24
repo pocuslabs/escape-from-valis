@@ -17,6 +17,11 @@ function Player:new(spritesheet, quad)
   self.speed = 80
   self.bumpOffset = 4
   self.bumpId = { name = "Player" }
+  self.pxToWalk = 0
+  self.dtAcc = 0
+  self.moves = {}
+  self.currentMove = nil
+  self.currentFrame = 0
 
   local g = anim8.newGrid(self.w, self.h, self.spritesheet:getWidth(), self.spritesheet:getHeight())
   self.animation = anim8.newAnimation(g(1, '1-2'), 0.2)
@@ -41,24 +46,54 @@ function Player:act()
 end
 
 function Player:update(dt)
-  local dx, dy, speed = 0, 0, self.speed
-  if Game.keys.state['right'] then
-    dx = speed * dt
-  elseif Game.keys.state['left'] then
-    dx = -speed * dt
-  end
-  if Game.keys.state['down'] then
-    dy = speed * dt
-  elseif Game.keys.state['up'] then
-    dy = -speed * dt
+  self.dtAcc = self.dtAcc + dt * 1000
+  print("DT", self.dtAcc)
+  if self.dtAcc < const.DT_THRESHOLD then
+    return
   end
 
-  local newX = self.x + dx
-  local newY = self.y + dy
+  if not self.currentMove then 
+    self.currentMove = table.remove(self.moves, 1)
+  end
+  local move = self.currentMove
+  if not move then
+    return
+  end
+
+  print("MOVE", move)
+  local dx, dy, speed = 0, 0, self.speed
+  
+  local mx, my = unpack(self:moveDirection(move))
+  local newX, newY = self.x + mx, self.y + my
   local realX, realY = Game.world:move(self.bumpId, newX, newY)
   self.x = realX
   self.y = realY
   self.animation:update(dt)
+  self.dtAcc = 0
+  self.currentFrame = self.currentFrame + 1
+  if self.currentFrame > const.WALK_FRAMES then
+    self.currentFrame = 0
+    self.currentMove = nil
+  end
+end
+
+function Player:queueMove(move)
+  print("QUEUEING", move)
+  table.insert(self.moves, move)
+end
+
+function Player:moveDirection(move)
+  if move == "right" then
+    return {1, 0}
+  elseif move == "left" then
+    return {-1, 0}
+  elseif move == "down" then
+    return {0, 1}
+  elseif move == "up" then
+    return {0, -1}
+  else
+    return nil
+  end
 end
 
 function Player:draw()

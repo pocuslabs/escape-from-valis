@@ -40,6 +40,10 @@ function overworldState:keypressed(key, scancode, isrepeat)
 
   if player:isMoving() then return end
 
+  if Keys.isDirection(key) then
+    player:queueMove(key)
+  end
+
   if key == "escape" then
      love.event.quit()
   end
@@ -55,10 +59,7 @@ function overworldState:keyreleased(key, scancode)
 
   local player = Game.player
 
-  if Keys.isDirection(key) and help.tlen(Game.keys.state) == 0 then
-    player.dx = 0
-    player.dy = 0
-  elseif key == "s" then
+  if key == "s" then
     player:walk()
   elseif key == "x" then
     player:act()

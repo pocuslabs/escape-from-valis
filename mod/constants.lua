@@ -21,7 +21,12 @@ local constants = {
   MIN_SIZE = 3,  -- sizes are in tile units, 16x16
   MAX_SIZE = 5,
   MIN_ROOMS = 2,
-  MAX_ROOMS = 10
+  MAX_ROOMS = 10,
+  TIMERS = {
+    movement = 100
+  },
+  DT_THRESHOLD = 16,
+  WALK_FRAMES = 16
 }
 
 return constants
