@@ -29,7 +29,7 @@ function Player:new(spritesheet, quad)
 end
 
 function Player:isMoving()
-  return self.dx ~= 0 or self.dy ~= 0
+  return #self.moves > 0 or self.currentMove ~= nil
 end
 
 function Player:run()
