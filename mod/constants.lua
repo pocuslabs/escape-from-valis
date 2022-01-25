@@ -22,10 +22,7 @@ local constants = {
   MAX_SIZE = 5,
   MIN_ROOMS = 2,
   MAX_ROOMS = 10,
-  TIMERS = {
-    movement = 100
-  },
-  DT_THRESHOLD = 16,
+  DT_THRESHOLD = 10,
   WALK_FRAMES = 32
 }
 
