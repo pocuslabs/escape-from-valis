@@ -26,7 +26,7 @@ describe("Spritely module", function()
     local tx = 4
     local ty = 3
     local quad = selector(tx, ty)
-    local expectedX = 98  -- (x - 1) * const.TILE_SIZE * const.SCALE + margin
+    local expectedX = 98  -- (x - 1) * const.TILE_SIZE + margin
     local expectedY = 66  -- same for y
 
     local qx, qy = quad:getViewport()

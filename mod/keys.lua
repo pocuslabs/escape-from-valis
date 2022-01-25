@@ -13,6 +13,14 @@ function Keys:off(key)
   self.state[key] = nil
 end
 
+function Keys:hasDirection()
+  if self.state["up"] then return "up" end
+  if self.state["down"] then return "down" end
+  if self.state["left"] then return "left" end
+  if self.state["right"] then return "right" end
+  return nil
+end
+
 Keys.getDirection = function (key)
   if key == "up" then
     return 0, -1

@@ -1,8 +1,7 @@
 local constants = {
   WIDTH = 1024,
   HEIGHT = 768,
-  TILE_SIZE = 16,
-  SCALE = 2,
+  TILE_SIZE = 32,
   SPEED = 2,
   DEFAULT_MARGIN = 16,
   TILES = {
@@ -21,8 +20,13 @@ local constants = {
   },
   MIN_SIZE = 3,  -- sizes are in tile units, 16x16
   MAX_SIZE = 5,
+  MIN_ROOMS = 2,
   MAX_ROOMS = 10,
-  MAX_DOORS = 4
+  TIMERS = {
+    movement = 100
+  },
+  DT_THRESHOLD = 16,
+  WALK_FRAMES = 32
 }
 
 return constants

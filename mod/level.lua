@@ -1,67 +1,88 @@
 Object = require("lib.classic")
-local inspect = require("lib.inspect")
 
 local spritely = require("mod.spritely")
 local const = require("mod.constants")
-local Room = require("mod.room")
+local help = require("mod.helpers")
 
 local Level = Object:extend()
 
-function Level:new(pw, ph)
-  self.roomCount = love.math.random(const.MAX_ROOMS)
-
+function Level:new(number, pixelW, pixelH)
   self.selector, self.spritesheet = spritely.load("gfx/dung2.png", { padding = 2, margin = 2 })
-  self.memo = {}
-  self.tiles = {}
-  self.rooms = {}
   self.map = {}
+  self.rooms = {}
 
-  self.width = math.ceil(pw / const.TILE_SIZE / const.SCALE)
-  self.height = math.ceil(ph / const.TILE_SIZE / const.SCALE)
-  self.maxWidth = 1
-  self.maxHeight = 1
+  self.width, self.height = pixelW, pixelH
+  self.tilew, self.tileh = help.pixelToTile(pixelW, pixelH)
+  self.roomCount = love.math.random(const.MIN_ROOMS, const.MAX_ROOMS)
 
-  self:generate()
-end
-
-function Level:generate(number)
   number = number or 1  -- the level we're on
-
-  -- make rooms
-  for _=1, self.roomCount do
-    -- if this room is bigger than the max, set the max
-    local w = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    local w2 = w * w
-    if w2 > self.maxWidth then self.maxWidth = w2 end
-
-    local h = love.math.random(const.MIN_SIZE, const.MAX_SIZE)
-    local h2 = h * h
-    if h2 > self.maxHeight then self.maxHeight = h2 end
-
-    local ox = love.math.random(self.maxWidth)
-    local oy = love.math.random(self.maxHeight)
-    local room = Room(ox, oy, w, h)
-    table.insert(self.rooms, room)
-  end
 
   -- pregenerate a 2D array of w width and h height
   local map = {}
-  for y = 1, self.maxHeight do
+  for y = 1, self.tileh do
     map[y] = {}
-    for _ = 1, self.maxWidth do
+    for _ = 1, self.tilew do
       table.insert(map[y], const.TILES.ground)
     end
   end
 
-  -- fill in the room tiles
-  -- note: ax and ay are absolute map coordinates
-  -- (as opposed to room-relative coordinates)
-  for ay=1, self.height do
-    for ax=1, self.width do
-      for _, room in ipairs(self.rooms) do
-        if room:isInside(ax, ay) then
-          map[ay][ax] = room.map[ay][ax]
+  -- make rooms
+  for roomNumber=1, self.roomCount do
+    local roomw = love.math.random(const.MIN_SIZE + 1, const.MAX_SIZE + 1) * const.TILE_SIZE
+    local roomh = love.math.random(const.MIN_SIZE + 1, const.MAX_SIZE + 1) * const.TILE_SIZE
+    local roomx = love.math.random(self.width - roomw)
+    local roomy = love.math.random(self.height - roomh)
+
+    local room = {
+      x = roomx,
+      y = roomy,
+      w = roomw,
+      h = roomh,
+      map = {}
+    }
+    for ty=1, self.tileh do
+      local row = {}
+      local isRowWall = ty == 1 or ty == self.tileh
+
+      for tx=1, self.tilew do
+        local isWall = isRowWall or tx == 1 or tx == self.tilew
+        local tile = const.TILES.ground
+        if isWall then
+          tile = const.TILES.wall
         end
+
+        table.insert(row, tile)
+      end
+
+      table.insert(room.map, row)
+    end
+
+    table.insert(self.rooms, room)
+  end
+
+  -- fill in the room tiles
+  for _, room in ipairs(self.rooms) do
+    for ty, row in ipairs(room.map) do
+      for tx, tile in ipairs(row) do
+        local originTX, originTY = help.pixelToTile(room.x, room.y)
+        local actualX, actualY = math.min(#map[1], originTX + tx), math.min(#map, originTY + ty)
+
+        if tile.solid then
+          local tileName = "Tile "..tx..","..ty
+          local tileId = { name = tileName }
+          local px, py = help.tileToPixel(actualX, actualY)
+          Game.world:add(tileId, px, py, const.TILE_SIZE, const.TILE_SIZE)
+        end
+
+        if actualY > #map then
+          actualY = #map - 1
+        end
+
+        if actualX > #map[1] then
+          actualX = #map[1] - 1
+        end
+
+        map[actualY][actualX] = tile
       end
     end
   end
@@ -69,33 +90,12 @@ function Level:generate(number)
   self.map = map
 end
 
--- this function operates on tile coordinates, NOT pixels
--- see mod.constants.TILES for examples
-function Level:tile(tx, ty)
-  local key = tx..","..ty
-  if self.tiles[key] then
-    return self.tiles[key]
-  end
-
-  local quad = self.selector(tx, ty)
-  self.tiles[key] = quad
-  return quad
-end
-
-function Level:tileAtPixels(px, py)
-  local tx = math.ceil(px / const.TILE_SIZE / const.SCALE)
-  local ty = math.ceil(py / const.TILE_SIZE / const.SCALE)
-  local tile = self.map[ty][tx]
-  return tile
-end
-
 function Level:draw()
-  for y, row in ipairs(self.map) do
-    for x, tile in ipairs(row) do
-      local tx, ty = unpack(tile.coordinates)
-      local quad = self.selector(tx, ty)
-      local px = x * const.TILE_SIZE * const.SCALE
-      local py = y * const.TILE_SIZE * const.SCALE
+  for ty, row in ipairs(self.map) do
+    for tx, tile in ipairs(row) do
+      local spriteX, spriteY = unpack(tile.coordinates)
+      local quad = self.selector(spriteX, spriteY)
+      local px, py = help.tileToPixel(tx, ty)
       love.graphics.draw(self.spritesheet, quad, px, py)
     end
   end

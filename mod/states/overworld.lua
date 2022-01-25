@@ -38,12 +38,14 @@ function overworldState:keypressed(key, scancode, isrepeat)
     player:run()
   end
 
-  if player:isMoving(Game.map) then return end
+  if player:isMoving() then return end
+
+  if Keys.isDirection(key) then
+    player:queueMove(key)
+  end
 
   if key == "escape" then
      love.event.quit()
-  elseif Keys.isDirection(key) then
-    local dx, dy = Keys.getDirection(key)
   end
 end
 
@@ -57,18 +59,7 @@ function overworldState:keyreleased(key, scancode)
 
   local player = Game.player
 
-  if Keys.isDirection(key) and help.tlen(Game.keys.state) == 0 then
-    player.dx = 0
-    player.dy = 0
-  elseif Keys.isDirection(key) and help.tlen(Game.keys.state) > 0 then
-    local firstKey
-    for k in pairs(Game.keys.state) do
-      firstKey = k
-      break
-    end
-
-    local dx, dy = Keys.getDirection(firstKey)
-  elseif key == "s" then
+  if key == "s" then
     player:walk()
   elseif key == "x" then
     player:act()
