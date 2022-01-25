@@ -20,6 +20,7 @@ function Player:new(spritesheet, quad)
   self.pxToWalk = 0
   self.dtAcc = 0
   self.moves = {}
+  self.keys = {}
   self.currentMove = nil
   self.currentFrame = 0
 
@@ -73,12 +74,17 @@ function Player:update(dt)
   self.currentFrame = self.currentFrame + 1
   if self.currentFrame > const.WALK_FRAMES then
     self.currentFrame = 0
+    self.keys[self.currentMove] = nil
     self.currentMove = nil
+
+    local newDir = Game.keys:hasDirection()
+    if newDir then self.currentMove = newDir end
   end
 end
 
 function Player:queueMove(move)
   print("QUEUEING", move)
+  self.keys[move] = true
   table.insert(self.moves, move)
 end
 
