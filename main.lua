@@ -37,18 +37,11 @@ function love.load()
   local selector, playerSheet = spritely.load("gfx/blowhard2.png", { padding = 2, margin = 2 })
   local quad = selector(1, 1)
 
-<<<<<<< HEAD
-  local screenW, screenH = love.graphics.getPixelDimensions()
-  Game.level = Level(Game.currentLevel, screenW, screenH)
-  local p1 = Player(playerSheet, quad)
-  Game.world:add(p1.bumpId, p1.x, p1.y, p1.w, p1.h)
-=======
 ---@diagnostic disable-next-line: undefined-field
   local screenW, screenH = love.graphics.getPixelDimensions()
   Game.level = Level(Game.currentLevel, screenW, screenH)
   local p1 = Player(playerSheet, quad)
   Game.world:add(p1.bumpId, p1.x, p1.y + p1.bumpOffset, p1.w, p1.h)
->>>>>>> 66054db9eb555b76ed6589dbc1d0a6add49ab6a5
   Game.player = p1
   Game.keys = Keys()
 
