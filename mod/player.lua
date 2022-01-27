@@ -8,14 +8,13 @@ local Player = Object:extend()
 function Player:new(spritesheet, quad)
   self.spritesheet = spritesheet
   self.quad = quad
-  self.x = 1
-  self.y = 1
+  self.x = 0
+  self.y = 0
   self.w = const.TILE_SIZE
   self.h = const.TILE_SIZE
   self.dx = 0
   self.dy = 0
   self.speed = 80
-  self.bumpOffset = 4
   self.bumpId = { name = "Player" }
   self.pxToWalk = 0
   self.dtAcc = 0
@@ -48,7 +47,6 @@ end
 
 function Player:update(dt)
   self.dtAcc = self.dtAcc + dt * 1000
-  print("DT", self.dtAcc)
   if self.dtAcc < const.DT_THRESHOLD then
     return
   end
@@ -61,9 +59,6 @@ function Player:update(dt)
     return
   end
 
-  print("MOVE", move)
-  local dx, dy, speed = 0, 0, self.speed
-  
   local mx, my = unpack(self:moveDirection(move))
   local newX, newY = self.x + mx, self.y + my
   local realX, realY = Game.world:move(self.bumpId, newX, newY)
@@ -72,7 +67,7 @@ function Player:update(dt)
   self.animation:update(dt)
   self.dtAcc = 0
   self.currentFrame = self.currentFrame + 1
-  if self.currentFrame > const.WALK_FRAMES then
+  if self.currentFrame >= const.TILE_SIZE then
     self.currentFrame = 0
     self.keys[self.currentMove] = nil
     self.currentMove = nil
@@ -83,7 +78,6 @@ function Player:update(dt)
 end
 
 function Player:queueMove(move)
-  print("QUEUEING", move)
   self.keys[move] = true
   table.insert(self.moves, move)
 end

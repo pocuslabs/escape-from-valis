@@ -22,8 +22,7 @@ local constants = {
   MAX_SIZE = 5,
   MIN_ROOMS = 2,
   MAX_ROOMS = 10,
-  DT_THRESHOLD = 10,
-  WALK_FRAMES = 32
+  DT_THRESHOLD = 10
 }
 
 return constants

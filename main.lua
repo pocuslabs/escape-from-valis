@@ -41,7 +41,7 @@ function love.load()
   local screenW, screenH = love.graphics.getPixelDimensions()
   Game.level = Level(Game.currentLevel, screenW, screenH)
   local p1 = Player(playerSheet, quad)
-  Game.world:add(p1.bumpId, p1.x, p1.y + p1.bumpOffset, p1.w, p1.h)
+  Game.world:add(p1.bumpId, p1.x, p1.y, p1.w, p1.h)
   Game.player = p1
   Game.keys = Keys()
 
